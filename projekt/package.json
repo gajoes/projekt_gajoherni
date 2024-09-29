@@ -1,0 +1,18 @@
+{
+  "name": "projekt_zaliczeniowy",
+  "version": "1.0.0",
+  "description": "Kacper Gajowniczek Karol Hernandez",
+  "main": "index.js",
+  "scripts": {
+    "compile:sass": "sass --watch scss:assets/css"
+  },
+  "author": "Gajo i Herni",
+  "license": "ISC",
+  "devDependencies": {
+    "sass": "^1.79.4"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.6.0",
+    "bootstrap": "^5.3.3"
+  }
+}
