@@ -1,0 +1,110 @@
+*{
+  margin:0;
+  padding:0;
+  }
+  
+  body{
+  width: 100%;
+  height: 100vh;
+  
+  }
+  
+  .containerMain{
+  height: 100%;
+  width:100%;
+  background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url(./img/tloLogowanie.jpg);
+  background-position: center;
+  background-size:cover;
+  position: absolute;
+  font-family: sans-serif;
+  }
+  
+  .container{
+  width:380px;
+  height: 480px;
+  position: relative;
+  margin: 6% auto;
+  background: white;
+  padding: 5px;
+  overflow: hidden;
+  }
+  
+  .btnContainer{
+  width: 274px;
+  margin: 35px auto;
+  position: relative;
+  box-shadow: 0 0 20px 9px #644f0844;
+  border-radius: 30px;
+  }
+  
+  .btn{
+  padding: 10px 30px;
+  cursor: pointer;
+  background: transparent;
+  border:0;
+  outline: none;
+  position: relative;
+  }
+  #btnPosition{
+  top: 0;
+  left: 0;
+  width: 130px;
+  height: 100%;
+  position: absolute;
+  background:linear-gradient(to right, #fff1c9,#e4a125);
+  border-radius: 30px;
+  transition: 0.5s;
+  }
+  
+  .forms{
+  top: 180px;
+  position: absolute;
+  width: 280px;
+  transition: 0.5s;
+  }
+  
+  .data{
+  width: 100%;
+  padding:10px 0;
+  margin:5px 0;
+  border-left:0;
+  border-top:0;
+  border-right:0;
+  border-bottom:1px solid #999;
+  outline:none
+  }
+  
+  .eulaCheck{
+  margin: 30px 10px 30px 0;
+  }
+  
+  .eula{
+  color:#777;
+  font-size: 12px;
+  bottom:64px;
+  position: absolute;
+  }
+  
+  .btn-submit{
+  width: 85%;
+  padding:10px 30px;
+  cursor: pointer;
+  display: block;
+  margin: auto;
+  background:linear-gradient(to right, #fff1c9,#e4a125);
+  border: 0;
+  outline: none;
+  border-radius: 30px;
+  }
+  #login{
+  left:50px;
+  }
+  
+  #rejestracja{
+  left:450px;
+  }
+
+  #prawo{
+    padding-left:31px;
+    white-space: pre;
+  }
