@@ -22265,6 +22265,38 @@ readers do not read off random characters that represent icons */
 
 body {
   font-family: Arial, sans-serif;
+  background-color: rgb(33, 37, 41);
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: white;
+}
+
+.navbar-custom-font {
+  font-size: 36px;
+}
+
+.brand-logo-sizing {
+  width: 60px;
+  height: 60px;
+}
+
+.navbar-elements-font {
+  font-size: 24px;
+}
+
+.nav-login-user {
+  vertical-align: middle;
+  margin-right: 20px;
+}
+
+.nav-right-bar {
+  width: 60px;
+  height: 60px;
+}
+
+.nav-link-right {
+  text-decoration: none;
 }
 
 /*# sourceMappingURL=style.css.map */
