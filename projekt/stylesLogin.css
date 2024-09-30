@@ -12,7 +12,7 @@
   .containerMain{
   height: 100%;
   width:100%;
-  background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url(./img/tloLogin.jpg);
+  background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url(./img/tloLogin2.jpg);
   background-position: center;
   background-size:cover;
   position: absolute;
@@ -33,7 +33,7 @@
   width: 274px;
   margin: 35px auto;
   position: relative;
-  box-shadow: 0 0 20px 9px #644f0844;
+  box-shadow: 0 0 20px 9px #00000044;
   border-radius: 30px;
   }
   
@@ -51,7 +51,7 @@
   width: 130px;
   height: 100%;
   position: absolute;
-  background:linear-gradient(to right, #fff1c9,#e4a125);
+  background:linear-gradient(to right, #afa8a8,#696969);
   border-radius: 30px;
   transition: 0.5s;
   }
@@ -91,7 +91,7 @@
   cursor: pointer;
   display: block;
   margin: auto;
-  background:linear-gradient(to right, #fff1c9,#e4a125);
+  background:linear-gradient(to right, #afa8a8,#696969);
   border: 0;
   outline: none;
   border-radius: 30px;
