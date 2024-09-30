@@ -1,5 +1,58 @@
 <?php
 require_once 'database.php';
+session_start();
+
+if($_SERVER['REQUEST_METHOD']==='POST' && isset($_POST['register'])){
+    $username=$_POST['username'];
+    $email=$_POST['email'];
+    $password=password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+    $query=$conn->prepare("SELECT * FROM Uzytkownicy WHERE email=? OR username=? ");
+    $query->bind_param("ss",$email,$username);
+    $query->execute();
+    $result=$query->get_result();
+
+    if($result->num_rows>0){
+        echo "Taki użytkownik już istnieje!";
+    }else{
+        $query=$conn->prepare("INSERT INTO Uzytkownicy (username, email, haslo) VALUES (?, ?, ?)");
+        $query->bind_param("sss",$username,$email,$password);
+
+        if($query->execute()){
+            echo "Zostałeś pomyślnie zarejestrowany!";
+        }else{
+            echo "Rejestracja się nie powiodła!";
+        }
+    }
+}
+
+if($_SERVER['REQUEST_METHOD']==='POST'&& isset($_POST['login'])){
+    $username=$_POST['username'];
+    $password=$_POST['password'];
+
+    $query=$conn->prepare("SELECT * FROM Uzytkownicy WHERE username=?");
+    if(!$query){
+        die("Przygotowanie query się nie powiodło!".$conn->error);
+    }
+
+    $query->bind_param("s",$username);
+    $query->execute();
+    $result=$query->get_result();
+    $user=$result->fetch_assoc();
+
+    if($user&&password_verify($password,$user['haslo'])){
+        $_SESSION['user_id']=$user['id_uzytkownika'];
+
+        if(isset($_POST['remember'])){
+            setcookie('user_id',$user['id_uzytkownika'],time()+(86400*10),"/");
+        }
+
+        header("Location: panel.php");
+        exit();
+    }else{
+        echo "Zły login lub hasło!";
+    }
+}
 ?>
 
 <!DOCTYPE html>
