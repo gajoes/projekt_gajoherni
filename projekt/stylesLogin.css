@@ -108,3 +108,17 @@
       padding-left:31px;
       white-space: pre;
     }
+
+    .zapomnialesHasla{
+      padding-top: 10px;
+      font-size: 12px;
+    }
+
+    .zapomnialesHasla a{
+      text-decoration: none;
+      color: #777;
+    }
+
+    .zapomnialesHasla a:visited{
+      text-decoration: none;
+    }
