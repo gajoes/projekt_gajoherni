@@ -22,6 +22,8 @@ echo "Witamy!"
     <title>Panel użytkownika</title>
 </head>
 <body>
-    <button type="button" class="btn btn-primary" href="wyloguj.php">Primary</button>
+    <a href="wyloguj.php">
+    <button type="button" class="btn btn-primary">Wyloguj</button>
+    </a>
 </body>
 </html>
