@@ -45,7 +45,7 @@ require_once 'database.php';
         </div>
 
         <div class="d-flex align-items-center">
-            <a class="nav-link" href="login.html">
+            <a class="nav-link" href="login.php">
                 <img src="https://www.pngkit.com/png/full/88-885453_login-white-on-clear-user-icon.png" alt="Logowanie" class="nav-right-bar" style="margin-right:20px;" width="20" height="20">
             </a>
             <a class="nav-link" href="#">
