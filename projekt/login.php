@@ -83,7 +83,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'&& isset($_POST['login'])){
 <input type="text" class="data" name="username" placeholder="Username" required>
 <input type="password" class="data" name="password" placeholder="Hasło" required>
 <input type="email" class="data" name="email" placeholder="Email" required>
-<input type="checkbox" class="eulaCheck"><span class="eula">Zgadzam sie na warunki i kondycje</span>
+<input type="checkbox" class="eulaCheck"><span class="eula" required>Zgadzam sie na warunki i kondycje</span>
 <button type="submit" name="register" class="btn-submit">Zarejestruj sie</button>
 </form>
 </div>
