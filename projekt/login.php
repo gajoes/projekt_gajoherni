@@ -72,19 +72,19 @@ if($_SERVER['REQUEST_METHOD']==='POST'&& isset($_POST['login'])){
 <button type="button" class="btn" onclick="login()">Zaloguj się</button>
 <button type="button" class="btn" id="prawo" onclick="rejestracja()">    Rejestracja</button>
 </div>
-<form id="login" class="forms">
-<input type="text" class="data" placeholder="Username" required>
-<input type="text" class="data" placeholder="Hasło" required>
+<form id="login" class="forms" method="POST" action="">
+<input type="text" class="data" name="username" placeholder="Username" required>
+<input type="password" class="data" name="password" placeholder="Hasło" required>
 <p class="zapomnialesHasla"><a href="forgotPassword.php">Zapomniałeś hasła?</a></p>
 <input type="checkbox" class="eulaCheck"><span class="eula">Zapamiętaj mnie</span>
-<button type="submit" class="btn-submit">Zaloguj się</button>
+<button type="submit" name="login" class="btn-submit">Zaloguj się</button>
 </form>
-<form id="rejestracja"class="forms">
-<input type="text" class="data" placeholder="Username" required>
-<input type="text" class="data" placeholder="Hasło" required>
-<input type="email" class="data" placeholder="Email" required>
-<input type="checkbox" class="eulaCheck"><span class="eula">Zgadzam sie na warunki i kondycje</span>
-<button type="submit" class="btn-submit">Zarejestruj sie</button>
+<form id="rejestracja"class="forms" method="POST" action="">
+<input type="text" class="data" name="username" placeholder="Username" required>
+<input type="password" class="data" name="password" placeholder="Hasło" required>
+<input type="email" class="data" name="email" placeholder="Email" required>
+<input type="checkbox" class="eulaCheck" required><span class="eula">Zgadzam sie na warunki i kondycje</span>
+<button type="submit" name="register" class="btn-submit">Zarejestruj sie</button>
 </form>
 </div>
 </div>
