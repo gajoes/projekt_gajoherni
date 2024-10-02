@@ -53,6 +53,10 @@ if($_SERVER['REQUEST_METHOD']==='POST'&& isset($_POST['login'])){
         echo "Zły login lub hasło!";
     }
 }
+if (isset($_SESSION['user_id']) || isset($_COOKIE['user_id'])){
+    header("Location: panel.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
