@@ -160,8 +160,8 @@ window.onload=function(){
       document.getElementById('popup').style.display='none';
     },3000);
   
-    <?php unset($_SESSION['update_success']);?>
-    <?php endif;?>
+    <?php unset($_SESSION['update_success']); ?>
+    <?php endif; ?>
 
 };
 

@@ -127,13 +127,13 @@ if (isset($_SESSION['user_id']) || isset($_COOKIE['user_id'])) {
             document.getElementById('popup-message').textContent=message;
             popup.classList.add(type,'show');
             setTimeout(function(){
-                popup.classList.remove('show';)
+                popup.classList.remove('show');
             },3000);
         }
 
         <?php if (!empty($popup_message)) { ?>
             showPopup("<?php echo $popup_message;?>","<?php echo $popup_type;?>");
-        <?php}?>
+        <?php } ?>
 
     </script>
 </body>

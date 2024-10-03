@@ -1,9 +1,9 @@
 <?php
 
-$host = 'localhost';
-$dbname = 'database';
-$username = 'root';
-$password = '';
+$host = 'mysql.ct8.pl';
+$dbname = 'm50521_baza_danych';
+$username = 'm50521_admin';
+$password = 'n5XY7NnRdSp4gEh';
 
 $conn = new mysqli($host, $username, $password, $dbname);
 
