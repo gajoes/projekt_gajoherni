@@ -105,6 +105,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
       </nav>
       <div id="popup" style="display:none; position:fixed; top:20px; left:50%; transform:translateX(-50%); background-color:#28a745; color:white; padding:15px; border-radius:5px; z-index:1000;">
       <span id="popup-message"></span>
+      </div>
 <div class="container mt-5 contFormularz">
     <h2>Witamy, <?php echo htmlspecialchars($user['username']); ?>!</h2>
     <h4>Jeżeli masz chwilę czasu, dokończ konfigurację konta podając resztę potrzebnych danych!</h4>
@@ -159,7 +160,7 @@ window.onload=function(){
       document.getElementById('popup').style.display='none';
     },3000);
   
-    <?php unset($_SESSION['update_sucess']);?>
+    <?php unset($_SESSION['update_success']);?>
     <?php endif;?>
 
 };
