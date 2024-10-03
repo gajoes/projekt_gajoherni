@@ -33,7 +33,7 @@ if ($mysqli->affected_rows) {
   $mail->Subject = "Password Reset";
   $mail->Body = <<<END
 
-  Click <a href="http://localhost/reset-password.php?token=$token">here</a> to reset your password. 
+  Kliknij w <a href="http://localhost/Projekt/projekt_gajoherni-2/projekt/resetPassword.php?token=$token">ten link</a> aby zresetowac hasło. 
 
   END;
   #zmienic nazwe na prawidlowa strone!
@@ -43,5 +43,26 @@ if ($mysqli->affected_rows) {
     echo "Wiadomość nie mogła zostać wysłana. {$mail->ErrorInfo}";
   }
 }
+?>
+<!DOCTYPE html>
+<html lang="en">
 
-echo "Wiadomość została wysłana.";
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Odzyskiwanie hasła</title>
+  <link rel="stylesheet" href="./css/stylesForgotPassword.css">
+</head>
+
+<body>
+  <div class="containerMain">
+    <div class="container">
+      <p class="forgetText">Wysłano email</p>
+      <form id="login" class="forms" method="" action="">
+        <p class="forgetText2">Możesz zamknąć tę stronę.</p>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>
