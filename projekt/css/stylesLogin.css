@@ -135,6 +135,7 @@
       font-weight: bold;
       opacity: 0;
       transition: visibility 0s, opacity 0.5s linear;
+      font-family: sans-serif;
     }
     .popup-wiadomosc.success{
       background-color: #28a745;
