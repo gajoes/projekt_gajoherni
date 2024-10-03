@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-elements-font">
         <div class="container-fluid">
         <a class="navbar-brand">
-            <img src="https://www.tygodniksiedlecki.com/wp-content/uploads/2023/06/1679304184007_466747_337016932_521814090125248_6226818314851252904_n.jpg" width="30" height="30" class="d-inline-block align-top brand-logo-sizing" alt="Jurzyk">
+            <img src="./css/img/logo.webp" width="30" height="30" class="d-inline-block align-top brand-logo-sizing" alt="Jurzyk">
         <a class="navbar-brand navbar-custom-font">Sklep</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
