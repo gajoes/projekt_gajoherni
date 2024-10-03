@@ -30,7 +30,7 @@ if ($mysqli->affected_rows) {
 
   $mail->setFrom("noreply@example.com");
   $mail->addAddress($email);
-  $mail->Subject = "Password Reset";
+  $mail->Subject = "Reset hasła";
   $mail->Body = <<<END
 
   Kliknij w <a href="http://localhost/Projekt/projekt_gajoherni-2/projekt/resetPassword.php?token=$token">ten link</a> aby zresetowac hasło. 
