@@ -6,7 +6,7 @@ $token_hash = hash("sha256", $token);
 
 $mysqli = require __DIR__ . "/database.php";
 
-$sql = "SELECT * FROM uzytkownicy
+$sql = "SELECT * FROM Uzytkownicy
         WHERE reset_token_hash = ?";
 
 $stmt = $mysqli->prepare($sql);
@@ -29,7 +29,7 @@ if (strtotime($username["reset_token_expires_at"]) <= time()) {
 
 $haslo = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
-$sql = "UPDATE uzytkownicy
+$sql = "UPDATE Uzytkownicy
         SET haslo = ?,
             reset_token_hash = NULL,
             reset_token_expires_at = NULL
