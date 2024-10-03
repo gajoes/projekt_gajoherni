@@ -167,5 +167,27 @@ window.onload=function(){
 
 </script>
 
+<style>
+  .contFormularz{
+    max-width: 600px;
+    margin-left:0;
+    margin-right: auto;
+    padding: 20px;
+    color: white;
+}
+  .form-group{
+    margin-bottom: 15px;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"]{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+</style>
+
 </body>
 </html>
