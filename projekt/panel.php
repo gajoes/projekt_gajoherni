@@ -46,7 +46,9 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
     $updateAddress->bind_param("sssssi",$ulica,$nr_domu,$nr_mieszkania,$miasto,$kod_pocztowy,$user_id);
     $updateAddress->execute();
 
-    echo "Dane zostały pomyślnie zaktualizowane!";
+    $_SESSION['update_success']="Dane zostały pomyślnie zaktualizowane!";
+    header("Location:panel.php");
+    exit();
 }
 
 ?>
@@ -101,8 +103,11 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
         </div>
         </div>
       </nav>
-<div class="container mt-5">
+      <div id="popup" style="display:none; position:fixed; top:20px; left:50%; transform:translateX(-50%); background-color:#28a745; color:white; padding:15px; border-radius:5px; z-index:1000;">
+      <span id="popup-message"></span>
+<div class="container mt-5 contFormularz">
     <h2>Witamy, <?php echo htmlspecialchars($user['username']); ?>!</h2>
+    <h4>Jeżeli masz chwilę czasu, dokończ konfigurację konta podając resztę potrzebnych danych!</h4>
     <form method="POST" action="">
         <div class="form-group">
             <label for="imie">Imię</label>
@@ -142,5 +147,24 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
         <button type="button" class="btn btn-secondary mt-3" class="btnWyloguj">Wyloguj</button>
     </a>
 </div>
+
+<script>
+
+window.onload=function(){
+  <?php if(isset($_SESSION['update_success'])):?>
+    document.getElementById('popup-message').textContent="<?php echo $_SESSION['update_success']; ?>";
+    document.getElementById('popup').style.display='block';
+
+    setTimeout(function(){
+      document.getElementById('popup').style.display='none';
+    },3000);
+  
+    <?php unset($_SESSION['update_sucess']);?>
+    <?php endif;?>
+
+};
+
+</script>
+
 </body>
 </html>
