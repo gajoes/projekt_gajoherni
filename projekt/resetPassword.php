@@ -43,7 +43,7 @@ if (strtotime($username["reset_token_expires_at"]) <= time()) {
     <div class="container">
       <p class="forgetText">Ustaw nowe hasło</p>
       <div id="error-popup" class="error-popup">Hasła do siebie nie pasują!</div>
-      <form id="login" class="forms" method="POST" action="processResetPassword.php">
+      <form id="login" class="forms" method="POST" action="processResetPassword.php" onsubmit="return walidacjaHasla();">
         <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
         <input type="password" id="password" class="data" name="password" placeholder="Nowe hasło" required>
         <input type="password" id="confirm_password" class="data" name="confirm_password" placeholder="Powtórz hasło" required>
