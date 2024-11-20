@@ -2,6 +2,9 @@
 require_once 'database.php';
 session_start();
 
+$popup_message="";
+$popup_type="";
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     $username = $_POST['username'];
     $email = $_POST['email'];
@@ -13,22 +16,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     $result = $query->get_result();
 
     if ($result->num_rows > 0) {
-        echo "Taki użytkownik już istnieje!";
+        $popup_message="Taki użytkownik już jest zarejestrowany!";
+        $popup_type="error";
     } else {
         $query = $conn->prepare("INSERT INTO Uzytkownicy (username, email, haslo) VALUES (?, ?, ?)");
         $query->bind_param("sss", $username, $email, $password);
 
         if ($query->execute()) {
-            echo "Zostałeś pomyślnie zarejestrowany!";
+            $popup_message="Pomyślnie zarejestrowano użytkownika!";
+            $popup_type="success";
         } else {
-            echo "Rejestracja się nie powiodła!";
+            $popup_message="Nie udało się zarejestrować użytkownika!";
+            $popup_type="error";
         }
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+if ($_SERVER['REQUEST_METHOD']==='POST' &&isset($_POST['login'])){
+    $username =$_POST['username'];
+    $password =$_POST['password'];
 
     $query = $conn->prepare("SELECT * FROM Uzytkownicy WHERE username=?");
     if (!$query) {
@@ -37,20 +43,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 
     $query->bind_param("s", $username);
     $query->execute();
-    $result = $query->get_result();
-    $user = $result->fetch_assoc();
-
-    if ($user && password_verify($password, $user['haslo'])) {
+    $result =$query->get_result();
+    $user =$result->fetch_assoc();
+    if ($user &&password_verify($password, $user['haslo'])){
+        if ($username ==='admin_gajos' &&$password==='GajosekAdminek'){
+            $_SESSION['admin_id'] =$user['id_uzytkownika'];
+            header("Location: panel_admina.php");
+            exit();
+        }
         $_SESSION['user_id'] = $user['id_uzytkownika'];
-
-        if (isset($_POST['remember'])) {
-            setcookie('user_id', $user['id_uzytkownika'], time() + (86400 * 10), "/");
+        
+        if (isset($_POST['remember'])){
+            setcookie('user_id', $user['id_uzytkownika'], time() +(86400 * 10), "/");
         }
 
         header("Location: panel.php");
         exit();
-    } else {
-        echo "Zły login lub hasło!";
+    } else{
+        $popup_message="Zły login, bądź hasło!";
+        $popup_type="error";
     }
 }
 if (isset($_SESSION['user_id']) || isset($_COOKIE['user_id'])) {
@@ -71,7 +82,13 @@ if (isset($_SESSION['user_id']) || isset($_COOKIE['user_id'])) {
 </head>
 
 <body>
+<div id="popup" class="popup-wiadomosc">
+    <span id="popup-message"></span>
+</div>
     <div class="containerMain">
+    <div class="containerArrow">
+        <a class = "strzalka" href="index.php"><i class="arrow right"></i>Wróć</a>
+      </div>
         <div class="container">
             <div class="btnContainer">
                 <div id="btnPosition"></div>
@@ -99,6 +116,7 @@ if (isset($_SESSION['user_id']) || isset($_COOKIE['user_id'])) {
         var x = document.getElementById("login");
         var y = document.getElementById("rejestracja");
         var z = document.getElementById("btnPosition");
+        var popup=document.getElementById("popup");
 
         function rejestracja() {
             x.style.left = "-400px";
@@ -111,6 +129,18 @@ if (isset($_SESSION['user_id']) || isset($_COOKIE['user_id'])) {
             y.style.left = "450px";
             z.style.left = "0px";
         }
+
+        function showPopup(message,type){
+            document.getElementById('popup-message').textContent=message;
+            popup.classList.add(type,'show');
+            setTimeout(function(){
+                popup.classList.remove('show');
+            },3000);
+        }
+
+        <?php if (!empty($popup_message)) { ?>
+            showPopup("<?php echo $popup_message;?>","<?php echo $popup_type;?>");
+        <?php } ?>
 
     </script>
 </body>

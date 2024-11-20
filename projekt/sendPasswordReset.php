@@ -14,7 +14,7 @@ if (!$mysqli instanceof mysqli) {
   die("Failed to connect to the database.");
 }
 
-$sql = "UPDATE uzytkownicy
+$sql = "UPDATE Uzytkownicy
         SET reset_token_hash = ?,
         reset_token_expires_at = ?
         WHERE email = ?";
@@ -30,13 +30,12 @@ if ($mysqli->affected_rows) {
 
   $mail->setFrom("noreply@example.com");
   $mail->addAddress($email);
-  $mail->Subject = "Password Reset";
+  $mail->Subject = "Reset hasła";
   $mail->Body = <<<END
 
-  Kliknij w <a href="http://localhost/Projekt/projekt_gajoherni-2/projekt/resetPassword.php?token=$token">ten link</a> aby zresetowac hasło. 
+  Kliknij w <a href="http://gajohernie.ct8.pl/resetPassword.php?token=$token">ten link</a> aby zresetowac hasło. 
 
   END;
-  #zmienic nazwe na prawidlowa strone!
   try {
     $mail->send();
   } catch (Exception $e) {

@@ -1,7 +1,7 @@
 <?php
 
 $host = 'localhost';
-$dbname = 'database';
+$dbname = 'm50521_baza_danych';
 $username = 'root';
 $password = '';
 

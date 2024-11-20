@@ -122,3 +122,53 @@
     .zapomnialesHasla a:visited{
       text-decoration: none;
     }
+    .popup-wiadomosc{
+      visibility: hidden;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 15px;
+      border-radius: 5px;
+      z-index: 1000;
+      color: white;
+      font-weight: bold;
+      opacity: 0;
+      transition: visibility 0s, opacity 0.5s linear;
+      font-family: sans-serif;
+    }
+    .popup-wiadomosc.success{
+      background-color: #28a745;
+    }
+    .popup-wiadomosc.error{
+      background-color: #dc3545;
+    }
+    .popup-wiadomosc.show{
+      visibility: visible;
+      opacity: 1;
+    }
+    .strzalka{
+      margin:30px;
+    }
+    .containerArrow{
+     height:70px;
+     display:flex;
+     align-items:center;
+    }
+    
+    .arrow {
+      border: solid rgb(255, 255, 255);
+      border-width: 0 3px 3px 0;
+      display: inline-block;
+      padding: 3px;
+    }
+
+    i{
+     transform: rotate(135deg);
+     -webkit-transform: rotate(135deg);
+    }
+    
+    a{
+      text-decoration: none;
+      color: white;
+    }
