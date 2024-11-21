@@ -61,6 +61,7 @@ require_once 'database.php';
         </div>
     </div>
   </nav>
+
   <div class="d-flex justify-content-center">
     <div id="carouselExampleRide" class="carousel slide" data-bs-ride="true">
       <div class="carousel-inner">
@@ -94,12 +95,18 @@ require_once 'database.php';
       </button>
     </div>
   </div>
+
   <div class="container-fluid mt-4">
     <div class="row">
       <div class="col-md-3">
         <div class="highlighted-product mb-4">
-          <img src="https://via.placeholder.com/300x300" alt="Highlighted Product">
-          <h5 class="text-center">Highlighted Product</h5>
+          <div class="text-center">
+            <span class="borderp">Wyjątkowa cena</span>
+            <img src="./css/img/iphone16.png" alt="Featured iPhone" class="img-fluid">
+            <h3 class="mb-2">iPhone 16</h3>
+            <p class="text-muted">Cena: 4999 PLN</p>
+            <a href="#" class="btn btn-primary">Dodaj do koszyka</a>
+          </div>
         </div>
       </div>
 
@@ -144,8 +151,6 @@ require_once 'database.php';
       </div>
     </div>
   </div>
-
-
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
