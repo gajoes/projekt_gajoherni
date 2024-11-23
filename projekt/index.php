@@ -29,13 +29,13 @@ require_once 'database.php';
         <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
           <ul class="navbar-nav">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Strona główna <span class="sr-only">(Aktualnie włączone)</span></a>
+              <a class="nav-link" href="./index.php">Strona główna <span class="sr-only">(Aktualnie włączone)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Galeria</a>
+              <a class="nav-link" href="./about.php">O nas</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Kontakt</a>
+              <a class="nav-link" href="./kontakt.php">Kontakt</a>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown"
@@ -68,19 +68,19 @@ require_once 'database.php';
         <div class="carousel-item active">
           <img
             src="https://static.vecteezy.com/system/resources/thumbnails/003/810/922/small/horizontal-banner-for-black-friday-sale-black-balls-with-shiny-ribbons-golden-letters-vector.jpg"
-            class="d-block w-100" alt="...">
+            class="d-block w-100" alt="blackfriday">
           <div class="carousel-caption d-none d-md-block">
           </div>
         </div>
         <div class="carousel-item">
           <img src="https://www.apple.com/v/iphone-16/c/images/meta/iphone-16_overview__fcivqu9d5t6q_og.png"
-            class="d-block w-100" alt="...">
+            class="d-block w-100" alt="iphone">
           <div class="carousel-caption d-none d-md-block">
           </div>
         </div>
         <div class="carousel-item">
           <img src="https://storage-asset.msi.com/global/picture/apluscontent/reseller/1663812116.jpeg"
-            class="d-block w-100" alt="...">
+            class="d-block w-100" alt="nvidia">
           <div class="carousel-caption d-none d-md-block">
           </div>
         </div>
@@ -114,7 +114,7 @@ require_once 'database.php';
         <div class="row">
           <div class="col-md-4 product-card">
             <div class="product">
-              <img src="./css/img/lenovoIdeaPad.png" alt="lenovo idea pad">
+              <img src="./css/img/rtx3080.png" alt="lenovo idea pad">
               <h5 class="mb-2">Lenovo Idea Pad Slim 3-15</h5>
               <br>
               <p class="text-muted leftprice">Cena: 2099 PLN</p>
