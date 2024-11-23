@@ -63,7 +63,7 @@ require_once 'database.php';
   </nav>
 
   <div class="d-flex justify-content-center">
-    <div id="carouselExampleRide" class="carousel slide" data-bs-ride="true">
+    <div id="carouselExampleRide" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
       <div class="carousel-inner">
         <div class="carousel-item active">
           <img
