@@ -65,6 +65,9 @@ if (!isset($_SESSION['admin_id'])){
             <a href="zarzadzaj_uzytkownikami.php" class="btn btn-primary btn-lg w-100 mb-3">Zarządzaj użytkownikami</a>
             <a href="zarzadzaj_pracownikami.php" class="btn btn-primary btn-lg w-100 mb-3">Zarządzaj pracownikami</a>
             <a href="zarzadzaj_produktami.php" class="btn btn-primary btn-lg w-100 mb-3">Zarządzaj produktami</a>
+            <a href="zarzadzaj_zamowieniami.php" class="btn btn-primary btn-lg w-100 mb-3">Zarządzaj zamówieniami</a>
+            <a href="zarzadzaj_kategoriami.php" class="btn btn-primary btn-lg w-100 mb-3">Zarządzaj kategoriami</a>
+            <a href="zarzadzaj_dostawcami.php" class="btn btn-primary btn-lg w-100 mb-3">Zarządzaj dostawcami</a>
         </div>
     </div>
 </div>
