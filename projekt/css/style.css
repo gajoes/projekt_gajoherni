@@ -22470,6 +22470,14 @@ body{
   margin:0;
 }
 
+.product img{
+  max-width: 200px;
+  min-height: 200px;
+}
 
-
-
+.product{
+  display: flex;
+  flex-direction:column;
+  align-content:space-around;
+  align-items:center;
+}

@@ -114,42 +114,61 @@ require_once 'database.php';
         <div class="row">
           <div class="col-md-4 product-card">
             <div class="product">
-              <img src="https://via.placeholder.com/200x200" alt="Computer Part">
+              <img src="./css/img/lenovoIdeaPad.png" alt="lenovo idea pad">
+              <h5 class="mb-2">Lenovo Idea Pad Slim 3-15</h5>
+              <br>
+              <p class="text-muted leftprice">Cena: 2099 PLN</p>
             </div>
           </div>
 
           <div class="col-md-4 product-card">
             <div class="product">
-              <img src="https://via.placeholder.com/200x200" alt="Phone">
+              <img src="./css/img/lenovoIdeaPad.png" alt="lenovo idea pad">
+              <h5 class="mb-2">Lenovo Idea Pad Slim 3-15</h5>
+              <br>
+              <p class="text-muted leftprice">Cena: 2099 PLN</p>
             </div>
           </div>
 
           <div class="col-md-4 product-card">
             <div class="product">
-              <img src="https://via.placeholder.com/200x200" alt="Gadget">
+              <img src="./css/img/lenovoIdeaPad.png" alt="lenovo idea pad">
+              <h5 class="mb-2">Lenovo Idea Pad Slim 3-15</h5>
+              <br>
+              <p class="text-muted leftprice">Cena: 2099 PLN</p>
             </div>
           </div>
 
           <div class="col-md-4 product-card">
             <div class="product">
-              <img src="https://via.placeholder.com/200x200" alt="Computer Part">
+              <img src="./css/img/lenovoIdeaPad.png" alt="lenovo idea pad">
+              <h5 class="mb-2">Lenovo Idea Pad Slim 3-15</h5>
+              <br>
+              <p class="text-muted leftprice">Cena: 2099 PLN</p>
             </div>
           </div>
 
           <div class="col-md-4 product-card">
             <div class="product">
-              <img src="https://via.placeholder.com/200x200" alt="Phone">
+              <img src="./css/img/lenovoIdeaPad.png" alt="lenovo idea pad">
+              <h5 class="mb-2">Lenovo Idea Pad Slim 3-15</h5>
+              <br>
+              <p class="text-muted leftprice">Cena: 2099 PLN</p>
             </div>
           </div>
 
           <div class="col-md-4 product-card">
             <div class="product">
-              <img src="https://via.placeholder.com/200x200" alt="Gadget">
+              <img src="./css/img/lenovoIdeaPad.png" alt="lenovo idea pad">
+              <h5 class="mb-2">Lenovo Idea Pad Slim 3-15</h5>
+              <br>
+              <p class="text-muted leftprice">Cena: 2099 PLN</p>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
