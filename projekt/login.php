@@ -26,15 +26,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
             $popup_message="Pomyślnie zarejestrowano użytkownika!";
             $popup_type="success";
         } else {
-            $popup_message="Nie udano zarejestrować użytkownika!";
+            $popup_message="Nie udało się zarejestrować użytkownika!";
             $popup_type="error";
         }
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+if ($_SERVER['REQUEST_METHOD']==='POST' &&isset($_POST['login'])){
+    $username =$_POST['username'];
+    $password =$_POST['password'];
 
     $query = $conn->prepare("SELECT * FROM Uzytkownicy WHERE username=?");
     if (!$query) {
@@ -43,19 +43,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 
     $query->bind_param("s", $username);
     $query->execute();
-    $result = $query->get_result();
-    $user = $result->fetch_assoc();
-
-    if ($user && password_verify($password, $user['haslo'])) {
+    $result =$query->get_result();
+    $user =$result->fetch_assoc();
+    if ($user &&password_verify($password, $user['haslo'])){
+        if ($username ==='admin_gajos' &&$password==='GajosekAdminek'){
+            $_SESSION['admin_id'] =$user['id_uzytkownika'];
+            header("Location: panel_admina.php");
+            exit();
+        }
         $_SESSION['user_id'] = $user['id_uzytkownika'];
-
-        if (isset($_POST['remember'])) {
-            setcookie('user_id', $user['id_uzytkownika'], time() + (86400 * 10), "/");
+        
+        if (isset($_POST['remember'])){
+            setcookie('user_id', $user['id_uzytkownika'], time() +(86400 * 10), "/");
         }
 
         header("Location: panel.php");
         exit();
-    } else {
+    } else{
         $popup_message="Zły login, bądź hasło!";
         $popup_type="error";
     }
@@ -82,6 +86,9 @@ if (isset($_SESSION['user_id']) || isset($_COOKIE['user_id'])) {
     <span id="popup-message"></span>
 </div>
     <div class="containerMain">
+    <div class="containerArrow">
+        <a class = "strzalka" href="index.php"><i class="arrow right"></i>Wróć</a>
+      </div>
         <div class="container">
             <div class="btnContainer">
                 <div id="btnPosition"></div>
