@@ -2,44 +2,46 @@
 require_once 'database.php';
 session_start();
 $koszyk=[];
-$total=0;
+$razem=0;
 
 if (isset($_SESSION['id_uzytkownika'])){
-    $id_uzytkownika =$_SESSION['id_uzytkownika'];
-    $sql="SELECT k.id_koszyka, p.id_produktu, p.nazwa, p.cena, k.ilosc, (p.cena * k.ilosc) AS suma
+    $id_uzytkownika = $_SESSION['id_uzytkownika'];
+    $sql="SELECT k.id_koszyka,p.id_produktu,p.nazwa,p.cena,k.ilosc, (p.cena *k.ilosc) AS suma
             FROM koszyk k
-            JOIN produkty p ON k.id_produktu = p.id_produktu
+            JOIN produkty p ON k.id_produktu=p.id_produktu
             WHERE k.id_uzytkownika = ?";
     $stmt=$conn->prepare($sql);
-    $stmt->bind_param("i",$id_uzytkownika);
+    $stmt->bind_param("i", $id_uzytkownika);
     $stmt->execute();
-    $result =$stmt->get_result();
+    $result=$stmt->get_result();
     while ($row=$result->fetch_assoc()){
-        $koszyk[] =$row;
-        $total+=$row['suma'];
+        $koszyk[]=$row;
+        $razem+=$row['suma'];
     }
 }else{
     if (isset($_SESSION['koszyk'])&& !empty($_SESSION['koszyk'])){
-        $ids =implode(',',array_keys($_SESSION['koszyk']));
+        $sessionKoszyk = $_SESSION['koszyk'];
+        unset($sessionKoszyk['suma']);
+        $ids = implode(',',array_keys($sessionKoszyk));
+        $ids=mysqli_real_escape_string($conn,$ids);
         $sql="SELECT id_produktu, nazwa, cena FROM produkty WHERE id_produktu IN ($ids)";
-        $result=$conn->query($sql);
-
-
+        $result = $conn->query($sql);
         while ($row=$result->fetch_assoc()){
             $id_produktu=$row['id_produktu'];
             $ilosc=$_SESSION['koszyk'][$id_produktu];
-            $suma=$row['cena'] *$ilosc;
+            $suma=$row['cena']*$ilosc;
             $koszyk[]=[
-                'id_produktu'=>$id_produktu,
+                'id_produktu' =>$id_produktu,
                 'nazwa'=>$row['nazwa'],
                 'cena'=>$row['cena'],
                 'ilosc'=>$ilosc,
                 'suma'=>$suma
             ];
-            $total+=$suma;
+            $razem += $suma;
         }
     }
 }
+$_SESSION['suma_koszyka'] = $razem;
 ?>
 
 <!DOCTYPE html>
@@ -82,13 +84,16 @@ if (isset($_SESSION['id_uzytkownika'])){
         <tfoot>
           <tr>
             <td colspan="3"><strong>Łączna suma:</strong></td>
-            <td colspan="2"><?php echo number_format($total, 2); ?> PLN</td>
+            <td colspan="2"><?php echo number_format($razem, 2); ?> PLN</td>
           </tr>
           <tr>
-            <td colspan="5" class="text-right">
-              <button type="submit" class="btn btn-success">Zaktualizuj koszyk</button>
-            </td>
-          </tr>
+  <td colspan="3">
+    <button type="submit" class="btn btn-success">Zaktualizuj koszyk</button>
+  </td>
+  <td colspan="2">
+    <a href="zamowienie.php" class="btn btn-primary w-100">Przejdź do zakupu</a>
+  </td>
+</tr>
         </tfoot>
       </table>
     </form>
