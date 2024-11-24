@@ -88,15 +88,7 @@ $categories = $query->get_result();
                         <li class="nav-item">
                             <a class="nav-link" href="./kontakt.php">Kontakt</a>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="#produkty">Zakupy</a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            </div>
-                        </li>
                     </ul>
-                </div>
-                <div class="containerArrow">
-                    <a class="strzalka" href="panel.php"><i class="arrow right"></i>Wróć</a>
                 </div>
                 <div class="d-flex align-items-center">
                     <a class="nav-link" href="login.php">
@@ -108,7 +100,9 @@ $categories = $query->get_result();
                 </div>
         </div>
     </nav>
-
+    <div class="containerArrow">
+        <a class="strzalka" href="panel.php"><i class="arrow right"></i>Wróć</a>
+    </div>
     <div class="container mt-5">
         <?php if (!empty($wiadomosc)): ?>
             <div class="alert alert-info text-center">
@@ -125,7 +119,7 @@ $categories = $query->get_result();
                             required>
                     </div>
                     <div class="col-12 text-center">
-                        <button type="submit" name="add_category" class="btn btn-primary w-50">Dodaj kategorię</button>
+                        <button type="submit" name="add_category" class="btn btn-primary w-50 buy">Dodaj kategorię</button>
                     </div>
                 </form>
             </div>

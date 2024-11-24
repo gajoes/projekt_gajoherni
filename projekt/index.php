@@ -1,19 +1,20 @@
 <?php
 require_once 'database.php';
-$sql_kategorie="SELECT * FROM kategorie";
-$wynik_kategorie=$conn->query($sql_kategorie);
-$min_cena=isset($_GET['min_cena']) ? intval($_GET['min_cena']) : 0;
-$max_cena=isset($_GET['max_cena']) ? intval($_GET['max_cena']) : 20000;
-$wybrana_kat=isset($_GET['id_kategorii']) ? intval($_GET['id_kategorii']) : 0;
-$sql_produkty ="SELECT * FROM produkty WHERE cena BETWEEN $min_cena AND $max_cena";
-if ($wybrana_kat>0) {
-    $sql_produkty .=" AND id_kategorii =$wybrana_kat";
+$sql_kategorie = "SELECT * FROM kategorie";
+$wynik_kategorie = $conn->query($sql_kategorie);
+$min_cena = isset($_GET['min_cena']) ? intval($_GET['min_cena']) : 0;
+$max_cena = isset($_GET['max_cena']) ? intval($_GET['max_cena']) : 20000;
+$wybrana_kat = isset($_GET['id_kategorii']) ? intval($_GET['id_kategorii']) : 0;
+$sql_produkty = "SELECT * FROM produkty WHERE cena BETWEEN $min_cena AND $max_cena";
+if ($wybrana_kat > 0) {
+  $sql_produkty .= " AND id_kategorii =$wybrana_kat";
 }
-$wynik_produkty=$conn->query($sql_produkty);
+$wynik_produkty = $conn->query($sql_produkty);
 ?>
 
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -111,70 +112,73 @@ $wynik_produkty=$conn->query($sql_produkty);
         </div>
       </div>
       <div class="container-fluid mt-4">
-    <div class="row">
-      <div class="col-md-3">
-        <div class="categories mb-4">
-          <h5>Filtrowanie:</h5>
-          <form method="GET" action="index.php">
-            <div class="mb-3">
-              <label for="min_cena" class="form-label">Cena minimalna:</label>
-              <input type="number" class="form-control" id="min_cena" name="min_cena" value="<?php echo $min_cena; ?>" min="0">
-            </div>
-            <div class="mb-3">
-              <label for="max_cena" class="form-label">Cena maksymalna:</label>
-              <input type="number" class="form-control" id="max_cena" name="max_cena" value="<?php echo $max_cena; ?>" min="0">
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Filtruj</button>
-          </form>
-          <hr>
-          <h5>Kategorie:</h5>
-          <ul class="list-group">
-            <li class="list-group-item">
-              <a href="index.php" class="text-decoration-none">Wszystkie</a>
-            </li>
-            <?php
-            if ($wynik_kategorie->num_rows >0){
-                while ($kategoria=$wynik_kategorie->fetch_assoc()){
+        <div class="row">
+          <div class="col-md-3">
+            <div class="categories mb-4">
+              <h5>Filtrowanie:</h5>
+              <form method="GET" action="index.php">
+                <div class="mb-3">
+                  <label for="min_cena" class="form-label">Cena minimalna:</label>
+                  <input type="number" class="form-control" id="min_cena" name="min_cena"
+                    value="<?php echo $min_cena; ?>" min="0">
+                </div>
+                <div class="mb-3">
+                  <label for="max_cena" class="form-label">Cena maksymalna:</label>
+                  <input type="number" class="form-control" id="max_cena" name="max_cena"
+                    value="<?php echo $max_cena; ?>" min="0">
+                </div>
+                <button type="submit" class="btn btn-primary w-100 filtrujbtn">Filtruj</button>
+              </form>
+              <hr>
+              <h5>Kategorie:</h5>
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <a href="index.php" class="text-decoration-none">Wszystkie</a>
+                </li>
+                <?php
+                if ($wynik_kategorie->num_rows > 0) {
+                  while ($kategoria = $wynik_kategorie->fetch_assoc()) {
                     echo '<li class="list-group-item">';
-                    echo '<a href="index.php?id_kategorii='.$kategoria['id_kategorii'].'" class="text-decoration-none">';
+                    echo '<a href="index.php?id_kategorii=' . $kategoria['id_kategorii'] . '" class="text-decoration-none">';
                     echo htmlspecialchars($kategoria['nazwa_kategorii']);
                     echo '</a>';
                     echo '</li>';
+                  }
+                } else {
+                  echo '<li class="list-group-item">Brak kategorii.</li>';
                 }
-            }else{
-                echo '<li class="list-group-item">Brak kategorii.</li>';
-            }
-            ?>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-9" id="produkty">
-        <div class="row">
-          <?php
-          if ($wynik_produkty->num_rows>0){
-              while ($produkt=$wynik_produkty->fetch_assoc()){
+                ?>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-9" id="produkty">
+            <div class="row">
+              <?php
+              if ($wynik_produkty->num_rows > 0) {
+                while ($produkt = $wynik_produkty->fetch_assoc()) {
                   echo '<div class="col-md-4 product-card mb-4">';
                   echo '<div class="product text-center">';
-                  echo '<img src="' .htmlspecialchars($produkt['zdjecie']).'" alt="' .htmlspecialchars($produkt['nazwa']) .'" class="img-fluid mb-2">';
-                  echo '<h5 class="mb-2">' .htmlspecialchars($produkt['nazwa']).'</h5>';
-                  echo '<p class="text-muted">Cena: '.number_format($produkt['cena'], 2) .' PLN</p>';
+                  echo '<img src="' . htmlspecialchars($produkt['zdjecie']) . '" alt="' . htmlspecialchars($produkt['nazwa']) . '" class="img-fluid mb-2">';
+                  echo '<h5 class="mb-2">' . htmlspecialchars($produkt['nazwa']) . '</h5>';
+                  echo '<p class="text-muted">Cena: ' . number_format($produkt['cena'], 2) . ' PLN</p>';
                   echo '<form method="POST" action="dodaj_do_koszyka.php">';
-                  echo '<input type="hidden" name="id_produktu" value="'.$produkt['id_produktu'] .'">';
-                  echo '<button type="submit" class="btn btn-primary">Dodaj do koszyka</button>';
+                  echo '<input type="hidden" name="id_produktu" value="' . $produkt['id_produktu'] . '">';
+                  echo '<button type="submit" class="btn btn-primary buy">Dodaj do koszyka</button>';
                   echo '</form>';
                   echo '</div>';
                   echo '</div>';
+                }
+              } else {
+                echo '<p>Brak produktów w tej kategorii.</p>';
               }
-          }else{
-              echo '<p>Brak produktów w tej kategorii.</p>';
-          }
-          ?>
+              ?>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

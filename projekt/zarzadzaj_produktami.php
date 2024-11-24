@@ -98,11 +98,6 @@ $products = $query->get_result();
                         <li class="nav-item">
                             <a class="nav-link" href="./kontakt.php">Kontakt</a>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="#produkty">Zakupy</a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            </div>
-                        </li>
                     </ul>
                 </div>
 
@@ -143,7 +138,7 @@ $products = $query->get_result();
                         <input type="number" name="cena" class="form-control" placeholder="Cena" required>
                     </div>
                     <div class="col-12 text-center">
-                        <button type="submit" name="add_product" class="btn btn-primary w-50">Dodaj produkt</button>
+                        <button type="submit" name="add_product" class="btn btn-primary w-50 buy">Dodaj produkt</button>
                     </div>
                 </form>
             </div>

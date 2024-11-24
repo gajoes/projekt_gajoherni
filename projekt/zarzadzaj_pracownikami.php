@@ -95,11 +95,6 @@ $employees = $query->get_result();
                         <li class="nav-item">
                             <a class="nav-link" href="./kontakt.php">Kontakt</a>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="#produkty">Zakupy</a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            </div>
-                        </li>
                     </ul>
                 </div>
 
@@ -143,7 +138,8 @@ $employees = $query->get_result();
                         <input type="text" name="nazwisko" class="form-control" placeholder="Nazwisko" required>
                     </div>
                     <div class="col-12 text-center">
-                        <button type="submit" name="add_employee" class="btn btn-primary w-50">Dodaj pracownika</button>
+                        <button type="submit" name="add_employee" class="btn btn-primary w-50 buy">Dodaj
+                            pracownika</button>
                     </div>
                 </form>
             </div>
