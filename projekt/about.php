@@ -15,33 +15,31 @@ require_once 'database.php';
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-elements-font">
+<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-elements-font">
     <div class="container-fluid">
       <a class="navbar-brand">
         <img src="./css/img/Tech.png" width="30" height="30" class="d-inline-block align-top brand-logo-sizing"
           alt="Jurzyk">
         <a class="navbar-brand navbar-custom-font"><span class="logop1">B</span><span class="logop2">Y</span><span
             class="logop3">T</span><span class="logop4">E</span></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
           <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="./index.php">Strona główna</a>
-            </li>
             <li class="nav-item active">
+              <a class="nav-link" href="./index.php">Strona główna <span class="sr-only">(Aktualnie włączone)</span></a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="./about.php">O nas</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="./kontakt.php">Kontakt</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                Oferta
-              </a>
+            <li class="nav-item ">
+              <a class="nav-link" href="#produkty">Zakupy</a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">Usługi</a>
-                <a class="dropdown-item" href="#">Zakupy</a>
-                <a class="dropdown-item" href="#">Merchendise</a>
               </div>
             </li>
           </ul>
@@ -55,10 +53,6 @@ require_once 'database.php';
             <i class="fa-solid fa-cart-shopping fa-xl fa-fw navicon"></i>
           </a>
         </div>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
     </div>
   </nav>
   <div class="container mt-5">
