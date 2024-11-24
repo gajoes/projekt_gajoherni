@@ -12,7 +12,7 @@
     .containerMain{
     height: 100%;
     width:100%;
-    background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url(./img/tloLogin1.jpg);
+    background-image: linear-gradient(rgba(0,0,0,5%),rgba(0,0,0,0.5%)),url(./img/tlologowanie.png);
     background-position: center;
     background-size:cover;
     position: absolute;
@@ -51,7 +51,7 @@
     width: 130px;
     height: 100%;
     position: absolute;
-    background:linear-gradient(to right, #afa8a8,#696969);
+    background:linear-gradient(to right, #d4b0e2,#a66fff);
     border-radius: 30px;
     transition: 0.5s;
     }
@@ -91,7 +91,7 @@
     cursor: pointer;
     display: block;
     margin: auto;
-    background:linear-gradient(to right, #afa8a8,#696969);
+    background:linear-gradient(to right, #bce3f5,#28b9f3);
     border: 0;
     outline: none;
     border-radius: 30px;
@@ -151,24 +151,26 @@
       margin:30px;
     }
     .containerArrow{
-     height:70px;
-     display:flex;
-     align-items:center;
+      height:70px;
+      display:flex;
+      align-items:center;
     }
     
     .arrow {
-      border: solid rgb(255, 255, 255);
+      border: solid rgb(0, 0, 0);
       border-width: 0 3px 3px 0;
       display: inline-block;
       padding: 3px;
+      margin-bottom: 1.5px;
+      margin-right: 3.5px;
     }
 
     i{
-     transform: rotate(135deg);
-     -webkit-transform: rotate(135deg);
+      transform: rotate(135deg);
+      -webkit-transform: rotate(135deg);
     }
     
     a{
       text-decoration: none;
-      color: white;
+      color: rgb(0, 0, 0);
     }
