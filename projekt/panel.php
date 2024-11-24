@@ -59,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel użytkownika</title>
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://kit.fontawesome.com/78fa2015f8.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-elements-font">
@@ -75,23 +76,17 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
         <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
           <ul class="navbar-nav">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Strona główna <span class="sr-only">(Aktualnie włączone)</span></a>
+              <a class="nav-link" href="./index.php">Strona główna <span class="sr-only">(Aktualnie włączone)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Galeria</a>
+              <a class="nav-link" href="./about.php">O nas</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Kontakt</a>
+              <a class="nav-link" href="./kontakt.php">Kontakt</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                Oferta
-              </a>
+            <li class="nav-item ">
+              <a class="nav-link" href="#produkty">Zakupy</a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">Usługi</a>
-                <a class="dropdown-item" href="#">Zakupy</a>
-                <a class="dropdown-item" href="#">Merchendise</a>
               </div>
             </li>
           </ul>
