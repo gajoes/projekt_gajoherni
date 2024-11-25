@@ -188,6 +188,10 @@ if (isset($_SESSION['user_id'])){
                     echo '<input type="hidden" name="id_produktu" value="'.$wybrany['id_produktu'] . '">';
                     echo '<button type="submit" class="btn btn-primary">Dodaj do koszyka</button>';
                     echo '</form>';
+                    echo '<div class="parametry-overlay">';
+                    echo '<h6>Parametry:</h6>';
+                    echo '<p>'.htmlspecialchars($wybrany['parametry']).'</p>';
+                    echo '</div>';
                     echo '</div>';
                     echo '</div>';
                 }
@@ -281,6 +285,10 @@ if (isset($_SESSION['user_id'])){
                             echo '<input type="hidden" name="id_produktu" value="'.$produkt['id_produktu'].'">';
                             echo '<button type="submit" class="btn btn-primary">Dodaj do koszyka</button>';
                             echo '</form>';
+                            echo '<div class="parametry-overlay">';
+                            echo '<h6>Parametry:</h6>';
+                            echo '<p>' .htmlspecialchars($produkt['parametry']).'</p>';
+                            echo '</div>';
                             echo '</div>';
                             echo '</div>';
                         }

@@ -22501,6 +22501,34 @@ body{
   padding-bottom: 10px;
 }
 
+.parametry-overlay {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  max-height: calc(100% - 50px);
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 10px;
+  box-sizing: border-box;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  overflow-y: auto;
+  z-index: 1;
+  border-radius: 25px;
+}
+
+.product:hover .parametry-overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.add-to-cart-form {
+  margin-top: 10px;
+  position: relative;
+  z-index: 2;
+}
+
 #aboutusimg{
   max-height: 550px;
   max-width:550px;
