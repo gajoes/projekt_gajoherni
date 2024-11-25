@@ -13,7 +13,7 @@ if (!isset($_SESSION['admin_id'])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel Admina</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="style.css">
   <script src="https://kit.fontawesome.com/78fa2015f8.js" crossorigin="anonymous"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -110,10 +110,16 @@ if (!isset($_SESSION['admin_id'])) {
           <div>Zarządzaj dostawcami</div>
         </a>
       </div>
-        <a href="wyloguj.php">
+      <div class="col-12 col-sm-6 col-md-4 col-lg-2 d-flex justify-content-center align-items-center">
+        <a href="zarzadzaj_aktualnosciami.php" class="btn btn-light text-center w-100 p-4 rounded shadow-sm">
+          <i class="fa-solid fa-newspaper fa-3x mb-3"></i>
+          <div>Zarządzaj aktualnościami</div>
+        </a>
+      </div>
+    </div>
+    <a href="wyloguj.php" class="wyloguj">
           <button type="button" class="btn btn-secondary mt-3">Wyloguj</button>
         </a>
-    </div>
   </div>
 
   <style>
@@ -179,6 +185,9 @@ if (!isset($_SESSION['admin_id'])) {
 
     #wybor .btn-light:hover div {
       color: #000;
+    }
+    .wyloguj{
+      text-align: center;
     }
   </style>
 

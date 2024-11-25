@@ -10,7 +10,7 @@ require_once 'database.php';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>O nas</title>
 
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="style.css">
   <script src="https://kit.fontawesome.com/78fa2015f8.js" crossorigin="anonymous"></script>
 </head>
 
@@ -37,6 +37,9 @@ require_once 'database.php';
             <li class="nav-item">
               <a class="nav-link" href="./kontakt.php">Kontakt</a>
             </li>
+            <a class="nav-link" href="./index.php">Zakupy</a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              </div>
           </ul>
         </div>
 

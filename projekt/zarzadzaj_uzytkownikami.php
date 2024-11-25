@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_user'])) {
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
     $notatka = $_POST['notatka'];
 
-    $query = $conn->prepare("INSERT INTO Uzytkownicy (username, email, haslo, notatka) VALUES (?, ?, ?, ?)");
+    $query = $conn->prepare("INSERT INTO uzytkownicy (username, email, haslo, notatka) VALUES (?, ?, ?, ?)");
     $query->bind_param("ssss", $username, $email, $password, $notatka);
 
     if ($query->execute()) {
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_user'])) {
     $email = $_POST['email'];
     $notatka = $_POST['notatka'];
 
-    $query = $conn->prepare("UPDATE Uzytkownicy SET username = ?, email = ?, notatka = ? WHERE id_uzytkownika = ?");
+    $query = $conn->prepare("UPDATE uzytkownicy SET username = ?, email = ?, notatka = ? WHERE id_uzytkownika = ?");
     $query->bind_param("sssi", $username, $email, $notatka, $id);
     if ($query->execute()) {
         $wiadomosc = "Dane użytkownika zostały zapisane!";
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_user'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user'])) {
     $id = $_POST['id'];
 
-    $query = $conn->prepare("DELETE FROM Uzytkownicy WHERE id_uzytkownika = ?");
+    $query = $conn->prepare("DELETE FROM uzytkownicy WHERE id_uzytkownika = ?");
     $query->bind_param("i", $id);
 
     if ($query->execute()) {
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user'])) {
         $wiadomosc = "Błąd podczas usuwania użytkownika!";
     }
 }
-$query = $conn->prepare("SELECT id_uzytkownika, username, email, notatka FROM Uzytkownicy");
+$query = $conn->prepare("SELECT id_uzytkownika, username, email, notatka FROM uzytkownicy");
 $query->execute();
 $users = $query->get_result();
 ?>

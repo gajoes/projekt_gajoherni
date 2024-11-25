@@ -14,7 +14,7 @@ if (!$mysqli instanceof mysqli) {
   die("Failed to connect to the database.");
 }
 
-$sql = "UPDATE Uzytkownicy
+$sql = "UPDATE uzytkownicy
         SET reset_token_hash = ?,
         reset_token_expires_at = ?
         WHERE email = ?";
@@ -50,7 +50,7 @@ if ($mysqli->affected_rows) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Odzyskiwanie hasła</title>
-  <link rel="stylesheet" href="./css/stylesForgotPassword.css">
+  <link rel="stylesheet" href="stylesForgotPassword.css">
 </head>
 
 <body>
