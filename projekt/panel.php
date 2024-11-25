@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
       </div>
 <div class="container mt-5 contFormularz">
     <h2>Witamy, <?php echo htmlspecialchars($user['username']); ?>!</h2>
-    <h4>Jeżeli masz chwilę czasu, dokończ konfigurację konta podając resztę potrzebnych danych!</h4>
+    <h4>Jeżeli masz chwilę czasu, uzupełnij dane konta podając resztę potrzebnych danych!</h4>
     <form method="POST" action="">
         <div class="form-group">
             <label for="imie">Imię</label>
@@ -146,24 +146,70 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
     <a href="wyloguj.php">
         <button type="button" class="btn btn-secondary mt-3" class="btnWyloguj">Wyloguj</button>
     </a>
+
+
+<div class="container mt-5">
+    <h2>Lista ulubionych przedmiotów</h2>
+    <?php
+    $ulubione_kw=$conn->prepare("SELECT ulubione.id_ulubione,produkty.nazwa FROM ulubione 
+                                       JOIN produkty ON ulubione.id_produktu =produkty.id_produktu
+                                       WHERE ulubione.id_uzytkownika =?");
+    $ulubione_kw->bind_param("i",$user_id);
+    $ulubione_kw->execute();
+    $ulubione_wynik=$ulubione_kw->get_result();
+
+    if ($ulubione_wynik->num_rows>0){
+        echo "<ul>";
+        while ($row=$ulubione_wynik->fetch_assoc()){
+            echo "<li>".htmlspecialchars($row['nazwa'])."</li>";
+        }
+        echo "</ul>";
+    }else{
+        echo "Nie masz żadnych ulubionych przedmiotów.";
+    }
+    $ulubione_kw->close();
+    ?>
+    <h2>Lista zamówień</h2>
+    <?php
+    $zamowienia_kw=$conn->prepare("SELECT id_zamowienia,data_zamowienia, username,email,imie,nazwisko FROM zamowienia 
+                                    WHERE id_uzytkownika =?");
+    $zamowienia_kw->bind_param("i",$user_id);
+    $zamowienia_kw->execute();
+    $zamowienia_wynik=$zamowienia_kw->get_result();
+
+    if ($zamowienia_wynik->num_rows>0){
+        echo "<table border='1' class='table'><tr><th>ID Zamówienia</th><th>Data Zamówienia</th><th>Username</th><th>Email</th><th>Imię</th><th>Nazwisko</th></tr>";
+        while ($row=$zamowienia_wynik->fetch_assoc()) {
+            echo "<tr><td>".htmlspecialchars($row['id_zamowienia'])."</td>
+                      <td>".htmlspecialchars($row['data_zamowienia'])."</td>
+                      <td>".htmlspecialchars($row['username'])."</td>
+                      <td>".htmlspecialchars($row['email'])."</td>
+                      <td>".htmlspecialchars($row['imie'])."</td>
+                      <td>".htmlspecialchars($row['nazwisko'])."</td>
+                  </tr>";
+        }
+        echo "</table>";
+    } else {
+        echo "Nie masz żadnych zamówień.";
+    }
+    $zamowienia_kw->close();
+    ?>
+</div>
 </div>
 
 <script>
-
-window.onload=function(){
-  <?php if(isset($_SESSION['update_success'])):?>
+window.onload=function (){
+    <?php if (isset($_SESSION['update_success'])) : ?>
     document.getElementById('popup-message').textContent="<?php echo $_SESSION['update_success']; ?>";
     document.getElementById('popup').style.display='block';
 
-    setTimeout(function(){
-      document.getElementById('popup').style.display='none';
-    },3000);
-  
+    setTimeout(function (){
+        document.getElementById('popup').style.display='none';
+    }, 3000);
+
     <?php unset($_SESSION['update_success']); ?>
     <?php endif; ?>
-
 };
-
 </script>
 
 <style>
@@ -173,6 +219,7 @@ window.onload=function(){
     margin-right: auto;
     padding: 20px;
     color: black;
+    display: fle
 }
   .form-group{
     margin-bottom: 15px;

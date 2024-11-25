@@ -87,10 +87,7 @@ $_SESSION['suma_koszyka'] = $razem;
             <td colspan="2"><?php echo number_format($razem, 2); ?> PLN</td>
           </tr>
           <tr>
-  <td colspan="3">
-    <button type="submit" class="btn btn-success">Zaktualizuj koszyk</button>
-  </td>
-  <td colspan="2">
+  <td colspan="5">
     <a href="zamowienie.php" class="btn btn-primary w-100">Przejdź do zakupu</a>
   </td>
 </tr>
@@ -98,5 +95,29 @@ $_SESSION['suma_koszyka'] = $razem;
       </table>
     </form>
   </div>
+  <script>
+document.addEventListener('DOMContentLoaded',function (){
+    document.querySelectorAll('input[name^="ilosc"]').forEach(input =>{
+        input.addEventListener('change', function (){
+            const idProduktu=this.name.match(/\d+/)[0];
+            const ilosc=this.value;
+
+            fetch('ilosc_w_koszyku.php',{
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `id_produktu=${idProduktu}&ilosc=${ilosc}`
+            })
+            .then(response=>response.json())
+            .then(data=>{
+                if (data.success){
+                    location.reload();
+                }else{
+                    alert('Błąd aktualizacji koszyka.');
+                }
+            });
+        });
+    });
+});
+</script>
 </body>
 </html>

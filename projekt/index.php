@@ -1,15 +1,43 @@
 <?php
 require_once 'database.php';
+session_start();
 $sql_kategorie="SELECT * FROM kategorie";
 $wynik_kategorie=$conn->query($sql_kategorie);
 $min_cena=isset($_GET['min_cena']) ? intval($_GET['min_cena']) : 0;
 $max_cena=isset($_GET['max_cena']) ? intval($_GET['max_cena']) : 20000;
 $wybrana_kat=isset($_GET['id_kategorii']) ? intval($_GET['id_kategorii']) : 0;
-$sql_produkty ="SELECT * FROM produkty WHERE cena BETWEEN $min_cena AND $max_cena";
-if ($wybrana_kat>0) {
-    $sql_produkty .=" AND id_kategorii =$wybrana_kat";
+$query_wybrane="SELECT * FROM produkty ORDER BY RAND() LIMIT 3";
+$wynik_wybrane=$conn->query($query_wybrane);
+$sql_produkty="SELECT * FROM produkty WHERE 1";
+if ($wybrana_kat>0){
+    $sql_produkty.=" AND id_kategorii=$wybrana_kat";
+}
+if ($min_cena>0){
+    $sql_produkty.=" AND cena>=$min_cena";
+}
+if ($max_cena>0){
+    $sql_produkty.=" AND cena<=$max_cena";
 }
 $wynik_produkty=$conn->query($sql_produkty);
+
+if ($wybrana_kat>0){
+    $sql_produkty .=" AND id_kategorii=$wybrana_kat";
+}
+
+$wynik_produkty=$conn->query($sql_produkty);
+
+$ulubione=array();
+if (isset($_SESSION['user_id'])){
+    $id_uzytkownika=$_SESSION['user_id'];
+    $stmt=$conn->prepare("SELECT id_produktu FROM ulubione WHERE id_uzytkownika = ?");
+    $stmt->bind_param("i",$id_uzytkownika);
+    $stmt->execute();
+    $result=$stmt->get_result();
+    while ($row=$result->fetch_assoc()){
+        $ulubione[]=$row['id_produktu'];
+    }
+    $stmt->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -21,6 +49,7 @@ $wynik_produkty=$conn->query($sql_produkty);
 
   <link rel="stylesheet" href="css/style.css">
   <script src="https://kit.fontawesome.com/78fa2015f8.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -98,8 +127,8 @@ $wynik_produkty=$conn->query($sql_produkty);
     </div>
   </div>
   <div class="container-fluid mt-4">
-    <div class="row">
-      <div class="col-md-3">
+    <div class="row align-items-center">
+      <div class="col-md-3 d-flex flex-column justify-content-center">
         <div class="highlighted-product mb-4">
           <div class="text-center">
             <span class="borderp">Wyjątkowa cena</span>
@@ -110,6 +139,39 @@ $wynik_produkty=$conn->query($sql_produkty);
           </div>
         </div>
       </div>
+      <div class="col-md-9">
+    <div class="selected-for-you d-flex flex-column justify-content-center">
+        <h4 class="mb-4">Wybrane dla Ciebie</h4>
+        <div class="row">
+            <?php
+            if ($wynik_wybrane->num_rows>0){
+                while ($wybrany = $wynik_wybrane->fetch_assoc()){
+                    echo '<div class="col-md-4 product-card mb-4">';
+                    echo '<div class="product text-center position-relative">';
+                    echo '<div class="heart-icon">';
+                    echo '<i class="fa-heart ';
+                    if (in_array($wybrany['id_produktu'],$ulubione)){
+                        echo 'fas filled-heart"';
+                    }else{
+                        echo 'far empty-heart"';
+                    }
+                    echo ' data-product-id="'.$wybrany['id_produktu'].'"></i>';
+                    echo '</div>';
+                    echo '<img src="'.htmlspecialchars($wybrany['zdjecie']).'" alt="'.htmlspecialchars($wybrany['nazwa']).'" class="img-fluid mb-2">';
+                    echo '<h5 class="mb-2">' . htmlspecialchars($wybrany['nazwa']).'</h5>';
+                    echo '<p class="text-muted">Cena: '.number_format($wybrany['cena'],2).' PLN</p>';
+                    echo '<form method="POST" action="dodaj_do_koszyka.php">';
+                    echo '<input type="hidden" name="id_produktu" value="'.$wybrany['id_produktu'] . '">';
+                    echo '<button type="submit" class="btn btn-primary">Dodaj do koszyka</button>';
+                    echo '</form>';
+                    echo '</div>';
+                    echo '</div>';
+                }
+            }
+            ?>
+        </div>
+    </div>
+</div>
       <div class="container-fluid mt-4">
     <div class="row">
       <div class="col-md-3">
@@ -152,28 +214,138 @@ $wynik_produkty=$conn->query($sql_produkty);
         <div class="row">
           <?php
           if ($wynik_produkty->num_rows>0){
-              while ($produkt=$wynik_produkty->fetch_assoc()){
-                  echo '<div class="col-md-4 product-card mb-4">';
-                  echo '<div class="product text-center">';
-                  echo '<img src="' .htmlspecialchars($produkt['zdjecie']).'" alt="' .htmlspecialchars($produkt['nazwa']) .'" class="img-fluid mb-2">';
-                  echo '<h5 class="mb-2">' .htmlspecialchars($produkt['nazwa']).'</h5>';
-                  echo '<p class="text-muted">Cena: '.number_format($produkt['cena'], 2) .' PLN</p>';
-                  echo '<form method="POST" action="dodaj_do_koszyka.php">';
-                  echo '<input type="hidden" name="id_produktu" value="'.$produkt['id_produktu'] .'">';
-                  echo '<button type="submit" class="btn btn-primary">Dodaj do koszyka</button>';
-                  echo '</form>';
-                  echo '</div>';
-                  echo '</div>';
-              }
-          }else{
-              echo '<p>Brak produktów w tej kategorii.</p>';
-          }
-          ?>
+            while ($produkt=$wynik_produkty->fetch_assoc()){
+                echo '<div class="col-md-4 product-card mb-4">';
+                echo '<div class="product text-center position-relative">';
+                echo '<div class="heart-icon">';
+                echo '<i class="fa-heart ';
+                if (in_array($produkt['id_produktu'], $ulubione)){
+                    echo 'fas filled-heart"';
+                }else{
+                    echo 'far empty-heart"';
+                }
+                echo ' data-product-id="'.$produkt['id_produktu'].'"></i>';
+                echo '</div>';
+                echo '<img src="'.htmlspecialchars($produkt['zdjecie']).'" alt="'.htmlspecialchars($produkt['nazwa']).'" class="img-fluid mb-2">';
+                echo '<h5 class="mb-2">'.htmlspecialchars($produkt['nazwa']).'</h5>';
+                echo '<p class="text-muted">Cena: '.number_format($produkt['cena'],2).' PLN</p>';
+                echo '<form method="POST" action="dodaj_do_koszyka.php">';
+                echo '<input type="hidden" name="id_produktu" value="'.$produkt['id_produktu'].'">';
+                echo '<button type="submit" class="btn btn-primary">Dodaj do koszyka</button>';
+                echo '</form>';
+                echo '</div>';
+                echo '</div>';
+            }
+        }else{
+            echo '<p>Brak produktów w tej kategorii.</p>';
+        }
+        ?>
         </div>
       </div>
     </div>
   </div>
 
+  <script>
+  $(document).ready(function(){
+      $('.heart-icon i').on('click', function(){
+          var productId=$(this).data('product-id');
+          var heartIcon=$(this);
+          <?php if (isset($_SESSION['user_id'])){ ?>
+              if (heartIcon.hasClass('filled-heart')){
+                  $.ajax({
+                      url: 'usun_z_ulubionych.php',
+                      type: 'POST',
+                      data: { id_produktu: productId },
+                      success: function(response){
+                          heartIcon.removeClass('fas filled-heart').addClass('far empty-heart');
+                          showPopup('Usunięto produkt z ulubionych','green');
+                      },
+                      error: function(){
+                          showPopup('Nie udało się usunąć produktu z ulubionych','red');
+                      }
+                  });
+              }else{
+                  $.ajax({
+                      url: 'dodaj_do_ulubionych.php',
+                      type: 'POST',
+                      data: { id_produktu: productId },
+                      success: function(response){
+                          heartIcon.removeClass('far empty-heart').addClass('fas filled-heart');
+                          showPopup('Dodano produkt do ulubionych','green');
+                      },
+                      error: function(){
+                          showPopup('Nie udało się dodać produktu do ulubionych','red');
+                      }
+                  });
+              }
+          <?php }else{ ?>
+              showPopup('Musisz być zalogowany, aby dodać produkt do ulubionych','red');
+          <?php } ?>
+      });
+
+      function showPopup(message,color){
+          var popup=$('<div class="popup-message"></div>').text(message).css({
+              'background-color': color,
+              'color': 'white',
+              'padding': '10px',
+              'position': 'fixed',
+              'top': '20px',
+              'right': '20px',
+              'z-index': '10000',
+              'border-radius': '5px',
+              'display': 'none'
+          });
+          $('body').append(popup);
+          popup.fadeIn().delay(2000).fadeOut(function(){
+              $(this).remove();
+          });
+      }
+  });
+  </script>
+      <script>
+  $(document).ready(function (){
+      $('form[action="dodaj_do_koszyka.php"]').on('submit',function (e){
+          e.preventDefault();
+          var form=$(this);
+          var formData=form.serialize();
+
+          $.ajax({
+              url: 'dodaj_do_koszyka.php',
+              type: 'POST',
+              data: formData,
+              dataType: 'json',
+              success: function (response){
+                  if (response.status === 'success'){
+                      showPopup(response.message, 'green');
+                  }else{
+                      showPopup(response.message, 'red');
+                  }
+              },
+              error: function (){
+                  showPopup('Wystąpił błąd podczas dodawania produktu do koszyka', 'red');
+              }
+          });
+      });
+
+      function showPopup(message, color){
+          var popup=$('<div class="popup-message"></div>').text(message).css({
+              'background-color': color,
+              'color': 'white',
+              'padding': '10px',
+              'position': 'fixed',
+              'top': '20px',
+              'right': '20px',
+              'z-index': '10000',
+              'border-radius': '5px',
+              'display': 'none'
+          });
+          $('body').append(popup);
+          popup.fadeIn().delay(2000).fadeOut(function (){
+              $(this).remove();
+          });
+      }
+  });
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
