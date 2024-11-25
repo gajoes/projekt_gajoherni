@@ -104,6 +104,9 @@ $users = $query->get_result();
                 </div>
         </div>
     </nav>
+    <br>
+    <br>
+    <br>
     <div class="containerArrow">
         <a class="strzalka" href="panel.php"><i class="arrow right"></i>Wróć</a>
     </div>

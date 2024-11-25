@@ -38,9 +38,11 @@ require_once 'database.php';
             <li class="nav-item">
               <a class="nav-link" href="./kontakt.php">Kontakt</a>
             </li>
-            <a class="nav-link" href="./index.php">Zakupy</a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              </div>
+            <li class="nav-item">
+              <a class="nav-link" href="./regulamin.php">Regulamin</a>
+            </li>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            </div>
           </ul>
         </div>
 

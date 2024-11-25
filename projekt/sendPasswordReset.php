@@ -50,7 +50,7 @@ if ($mysqli->affected_rows) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Odzyskiwanie hasła</title>
-  <link rel="stylesheet" href="stylesForgotPassword.css">
+  <link rel="stylesheet" href="./css/stylesLogin.css">
 </head>
 
 <body>

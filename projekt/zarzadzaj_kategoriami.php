@@ -2,7 +2,7 @@
 require_once 'database.php';
 session_start();
 
-if (!isset($_SESSION['admin_id'])&&!isset($_SESSION['employee_id'])){
+if (!isset($_SESSION['admin_id']) && !isset($_SESSION['employee_id'])) {
     header("Location: login.php");
     exit();
 }
@@ -102,6 +102,9 @@ $categories = $query->get_result();
                 </div>
         </div>
     </nav>
+    <br>
+    <br>
+    <br>
     <div class="containerArrow">
         <a class="strzalka" href="panel.php"><i class="arrow right"></i>Wróć</a>
     </div>

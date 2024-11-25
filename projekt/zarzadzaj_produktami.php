@@ -2,7 +2,7 @@
 require_once 'database.php';
 session_start();
 
-if (!isset($_SESSION['admin_id'])&&!isset($_SESSION['employee_id'])){
+if (!isset($_SESSION['admin_id']) && !isset($_SESSION['employee_id'])) {
     header("Location: login.php");
     exit();
 }
@@ -24,12 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
     }
 }
 
-if ($_SERVER['REQUEST_METHOD']==='POST' &&isset($_POST['edit_product'])){
-    $id =$_POST['id'];
-    $nazwa =$_POST['nazwa'];
-    $id_kategorii=$_POST['id_kategorii'];
-    $id_dostawcy =$_POST['id_dostawcy'];
-    $cena=$_POST['cena'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_product'])) {
+    $id = $_POST['id'];
+    $nazwa = $_POST['nazwa'];
+    $id_kategorii = $_POST['id_kategorii'];
+    $id_dostawcy = $_POST['id_dostawcy'];
+    $cena = $_POST['cena'];
 
     $query = $conn->prepare("UPDATE produkty SET nazwa = ?, id_kategorii = ?, id_dostawcy = ?, cena = ? WHERE id_produktu = ?");
     $query->bind_param("siidi", $nazwa, $id_kategorii, $id_dostawcy, $cena, $id);
@@ -112,6 +112,9 @@ $products = $query->get_result();
                 </div>
         </div>
     </nav>
+    <br>
+    <br>
+    <br>
     <div class="containerArrow">
         <a class="strzalka" href="panel.php"><i class="arrow right"></i>Wróć</a>
     </div>

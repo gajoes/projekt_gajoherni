@@ -35,7 +35,7 @@ if (strtotime($username["reset_token_expires_at"]) <= time()) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reset hasła</title>
-  <link rel="stylesheet" href="stylesForgotPassword.css">
+  <link rel="stylesheet" href="./css/stylesLogin.css">
 </head>
 
 <body>
@@ -43,10 +43,12 @@ if (strtotime($username["reset_token_expires_at"]) <= time()) {
     <div class="container">
       <p class="forgetText">Ustaw nowe hasło</p>
       <div id="error-popup" class="error-popup">Hasła do siebie nie pasują!</div>
-      <form id="login" class="forms" method="POST" action="processResetPassword.php" onsubmit="return walidacjaHasla();">
+      <form id="login" class="forms" method="POST" action="processResetPassword.php"
+        onsubmit="return walidacjaHasla();">
         <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
         <input type="password" id="password" class="data" name="password" placeholder="Nowe hasło" required>
-        <input type="password" id="confirm_password" class="data" name="confirm_password" placeholder="Powtórz hasło" required>
+        <input type="password" id="confirm_password" class="data" name="confirm_password" placeholder="Powtórz hasło"
+          required>
         <button type="submit" name="login" class="btn-submit">Ustaw</button>
       </form>
     </div>
@@ -55,16 +57,16 @@ if (strtotime($username["reset_token_expires_at"]) <= time()) {
 
 <script>
 
-  function walidacjaHasla(){
-    var password=document.getElementById("password").value;
-    var confirmPassword=document.getElementById("confirm_password").value;
-    var errorPopup=document.getElementById("error-popup");
+  function walidacjaHasla() {
+    var password = document.getElementById("password").value;
+    var confirmPassword = document.getElementById("confirm_password").value;
+    var errorPopup = document.getElementById("error-popup");
 
-    if(password !== confirmPassword){
-      errorPopup.style.display="block";
+    if (password !== confirmPassword) {
+      errorPopup.style.display = "block";
       return false;
     }
-    errorPopup.style.display="none";
+    errorPopup.style.display = "none";
     return true;
   }
 
