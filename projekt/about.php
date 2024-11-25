@@ -10,12 +10,12 @@ require_once 'database.php';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>O nas</title>
 
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="style.css">
   <script src="https://kit.fontawesome.com/78fa2015f8.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-elements-font">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-elements-font">
     <div class="container-fluid">
       <a class="navbar-brand">
         <img src="./css/img/Tech.png" width="30" height="30" class="d-inline-block align-top brand-logo-sizing"
@@ -37,11 +37,9 @@ require_once 'database.php';
             <li class="nav-item">
               <a class="nav-link" href="./kontakt.php">Kontakt</a>
             </li>
-            <li class="nav-item ">
-              <a class="nav-link" href="#produkty">Zakupy</a>
+            <a class="nav-link" href="./index.php">Zakupy</a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
               </div>
-            </li>
           </ul>
         </div>
 
@@ -57,7 +55,7 @@ require_once 'database.php';
   </nav>
   <div class="container mt-5">
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-6 navcwe">
         <h2 id="onasab">O nas</h2>
         <p>
           Jesteśmy nowoczesnym sklepem internetowym, który specjalizuje się w sprzedaży urządzeń technologicznych
@@ -84,7 +82,7 @@ require_once 'database.php';
         </p>
       </div>
 
-      <div class="col-md-6">
+      <div class="col-md-6 navcwe">
         <img id="aboutusimg" src="./css/img/aboutus.png" alt="Zdjęcie sklepu" class="img-fluid rounded">
       </div>
     </div>

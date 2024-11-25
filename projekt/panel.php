@@ -14,9 +14,9 @@ if(isset($_COOKIE['user_id'])){
 $user_id=$_SESSION['user_id'];
 
 $query=$conn->prepare("SELECT u.username,u.email,u.imie,u.nazwisko,k.nr_tel,a.ulica,a.nr_domu,a.nr_mieszkania,a.miasto,a.kod_pocztowy
-FROM Uzytkownicy u
-LEFT JOIN Adresy a ON u.id_uzytkownika=a.id_uzytkownika
-LEFT JOIN Kontakty k ON u.id_uzytkownika=k.id_uzytkownika
+FROM uzytkownicy u
+LEFT JOIN adresy a ON u.id_uzytkownika=a.id_uzytkownika
+LEFT JOIN kontakty k ON u.id_uzytkownika=k.id_uzytkownika
 WHERE u.id_uzytkownika=?");
 
 $query->bind_param("i",$user_id);
@@ -34,15 +34,15 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
     $miasto=$_POST['miasto'];
     $kod_pocztowy=$_POST['kod_pocztowy'];
 
-    $updateUser=$conn->prepare("UPDATE Uzytkownicy SET imie=?,nazwisko=? WHERE id_uzytkownika=?");
+    $updateUser=$conn->prepare("UPDATE uzytkownicy SET imie=?,nazwisko=? WHERE id_uzytkownika=?");
     $updateUser->bind_param("ssi",$imie,$nazwisko,$user_id);
     $updateUser->execute();
 
-    $updateContact=$conn->prepare("REPLACE INTO Kontakty (nr_tel,email,id_uzytkownika) VALUES (?,?,?)");
+    $updateContact=$conn->prepare("REPLACE INTO kontakty (nr_tel,email,id_uzytkownika) VALUES (?,?,?)");
     $updateContact->bind_param("ssi",$nr_tel,$user['email'],$user_id);
     $updateContact->execute();
 
-    $updateAddress=$conn->prepare("REPLACE INTO Adresy (ulica,nr_domu,nr_mieszkania,miasto,kod_pocztowy,id_uzytkownika) VALUES (?,?,?,?,?,?)");
+    $updateAddress=$conn->prepare("REPLACE INTO adresy (ulica,nr_domu,nr_mieszkania,miasto,kod_pocztowy,id_uzytkownika) VALUES (?,?,?,?,?,?)");
     $updateAddress->bind_param("sssssi",$ulica,$nr_domu,$nr_mieszkania,$miasto,$kod_pocztowy,$user_id);
     $updateAddress->execute();
 
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel użytkownika</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/78fa2015f8.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
           <a class="nav-link" href="login.php">
             <i class="fa-solid fa-user fa-xl fa-fw navicon"></i>
           </a>
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="koszyk.php">
             <i class="fa-solid fa-cart-shopping fa-xl fa-fw navicon"></i>
           </a>
         </div>

@@ -6,7 +6,7 @@ $token_hash = hash("sha256", $token);
 
 $mysqli = require __DIR__ . "/database.php";
 
-$sql = "SELECT * FROM Uzytkownicy
+$sql = "SELECT * FROM uzytkownicy
         WHERE reset_token_hash = ?";
 
 $stmt = $mysqli->prepare($sql);
@@ -35,7 +35,7 @@ if (strtotime($username["reset_token_expires_at"]) <= time()) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reset hasła</title>
-  <link rel="stylesheet" href="./css/stylesForgotPassword.css">
+  <link rel="stylesheet" href="stylesForgotPassword.css">
 </head>
 
 <body>

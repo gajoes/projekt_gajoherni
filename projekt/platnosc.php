@@ -16,7 +16,16 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     $karta_numer= $_POST['karta_numer'] ?? '';
     $karta_data=$_POST['karta_data'] ?? '';
     $karta_cvv=$_POST['karta_cvv'] ?? '';
+    $metoda_dostawy=$_POST['metoda_dostawy'] ?? '';
+    $inpost_id=$_POST['inpost_id'] ?? '';
     $bledy= [];
+
+    if (empty($metoda_dostawy)){
+        $bledy[]='Wybierz metodę dostawy.';
+    }
+    if ($metoda_dostawy==='inpost'&&empty($inpost_id)){
+        $bledy[]='Musisz podać identyfikator paczkomatu.';
+    }
 
     if($metoda_platnosci==='blik'){
         if(empty($blik_kod)||strlen($blik_kod)!==6||!ctype_digit($blik_kod)){
@@ -110,7 +119,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
 <head>
     <meta charset="UTF-8">
     <title>Płatność</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="container mt-4">
@@ -126,6 +135,19 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
             </ul>
         </div>
     <?php endif;?>
+
+    <form method="POST">
+        <h2>Wybierz metodę dostawy</h2>
+        <select name="metoda_dostawy" id="metoda_dostawy" required>
+            <option value="">Wybierz metodę dostawy</option>
+            <option value="inpost">InPost Paczkomat</option>
+            <option value="poczta">Poczta Polska</option>
+            <option value="dhl">DHL</option>
+        </select>
+        <div id="inpost_input" style="display: none;">
+            <label for="inpost_id">Identyfikator Paczkomatu:</label>
+            <input type="text" name="inpost_id" id="inpost_id" placeholder="Wpisz identyfikator Paczkomatu">
+        </div>
 
     <form method="POST" action="platnosc.php">
         <h4>Wybierz metodę płatności:</h4>
@@ -161,7 +183,10 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     </form>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function(){
+        document.getElementById('metoda_dostawy').addEventListener('change',function (){
+        document.getElementById('inpost_input').style.display=this.value==='inpost' ? 'block' : 'none';
+        });
+        document.addEventListener('DOMContentLoaded', function(){
         const metodaPlatnosci=document.getElementsByName('metoda_platnosci');
         const blikForm=document.getElementById('blik-form');
         const kartaForm=document.getElementById('karta-form');

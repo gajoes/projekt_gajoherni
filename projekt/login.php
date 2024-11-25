@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST'&&isset($_POST['register'])){
     $email=$_POST['email'];
     $password=password_hash($_POST['password'], PASSWORD_BCRYPT);
 
-    $query=$conn->prepare("SELECT * FROM Uzytkownicy WHERE email =? OR username =?");
+    $query=$conn->prepare("SELECT * FROM uzytkownicy WHERE email =? OR username =?");
     $query->bind_param("ss",$email,$username);
     $query->execute();
     $result=$query->get_result();
@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST'&&isset($_POST['register'])){
         $popup_message="Taki użytkownik już jest zarejestrowany!";
         $popup_type="error";
     }else{
-        $query=$conn->prepare("INSERT INTO Uzytkownicy (username,email,haslo) VALUES (?, ?, ?)");
+        $query=$conn->prepare("INSERT INTO uzytkownicy (username,email,haslo) VALUES (?, ?, ?)");
         $query->bind_param("sss",$username,$email,$password);
 
         if ($query->execute()){
@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] ==='POST'&&isset($_POST['login'])){
     $username=$_POST['username'];
     $password=$_POST['password'];
 
-    $query=$conn->prepare("SELECT * FROM Uzytkownicy WHERE username =?");
+    $query=$conn->prepare("SELECT * FROM uzytkownicy WHERE username =?");
     if (!$query){
         die("Przygotowanie zapytania nie powiodło się!".$conn->error);
     }
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] ==='POST'&&isset($_POST['login'])){
         header("Location: panel.php");
         exit();
     }else{
-        $query=$conn->prepare("SELECT * FROM Pracownicy WHERE username = ?");
+        $query=$conn->prepare("SELECT * FROM pracownicy WHERE username = ?");
         if (!$query){
             die("Przygotowanie zapytania nie pyklo ".$conn->error);
         }
