@@ -16,7 +16,7 @@ require_once 'database.php';
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-elements-font">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-elements-font">
     <div class="container-fluid">
       <a class="navbar-brand">
         <img src="./css/img/Tech.png" width="30" height="30" class="d-inline-block align-top brand-logo-sizing"
@@ -38,11 +38,6 @@ require_once 'database.php';
             <li class="nav-item">
               <a class="nav-link" href="./kontakt.php">Kontakt</a>
             </li>
-            <li class="nav-item ">
-              <a class="nav-link" href="#produkty">Zakupy</a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              </div>
-            </li>
           </ul>
         </div>
 
@@ -58,7 +53,13 @@ require_once 'database.php';
   </nav>
   <br>
   <br>
-  <div class="container mt-5">
+  <div class="container mt-5 navcwe">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
     <h3 class="text-center mb-5">Skontaktuj się z nami za pomocą poniższych danych.</h3>
     <br>
     <div class="row">

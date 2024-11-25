@@ -42,6 +42,7 @@ if (isset($_SESSION['user_id'])){
 
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -173,35 +174,40 @@ if (isset($_SESSION['user_id'])){
     </div>
 </div>
       <div class="container-fluid mt-4">
-    <div class="row">
-      <div class="col-md-3">
-        <div class="categories mb-4">
-          <h5>Filtrowanie:</h5>
-          <form method="GET" action="index.php">
-            <div class="mb-3">
-              <label for="min_cena" class="form-label">Cena minimalna:</label>
-              <input type="number" class="form-control" id="min_cena" name="min_cena" value="<?php echo $min_cena; ?>" min="0">
-            </div>
-            <div class="mb-3">
-              <label for="max_cena" class="form-label">Cena maksymalna:</label>
-              <input type="number" class="form-control" id="max_cena" name="max_cena" value="<?php echo $max_cena; ?>" min="0">
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Filtruj</button>
-          </form>
-          <hr>
-          <h5>Kategorie:</h5>
-          <ul class="list-group">
-            <li class="list-group-item">
-              <a href="index.php" class="text-decoration-none">Wszystkie</a>
-            </li>
-            <?php
-            if ($wynik_kategorie->num_rows >0){
-                while ($kategoria=$wynik_kategorie->fetch_assoc()){
+        <div class="row">
+          <div class="col-md-3">
+            <div class="categories mb-4">
+              <h5>Filtrowanie:</h5>
+              <form method="GET" action="index.php">
+                <div class="mb-3">
+                  <label for="min_cena" class="form-label">Cena minimalna:</label>
+                  <input type="number" class="form-control" id="min_cena" name="min_cena"
+                    value="<?php echo $min_cena; ?>" min="0">
+                </div>
+                <div class="mb-3">
+                  <label for="max_cena" class="form-label">Cena maksymalna:</label>
+                  <input type="number" class="form-control" id="max_cena" name="max_cena"
+                    value="<?php echo $max_cena; ?>" min="0">
+                </div>
+                <button type="submit" class="btn btn-primary w-100 filtrujbtn">Filtruj</button>
+              </form>
+              <hr>
+              <h5>Kategorie:</h5>
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <a href="index.php" class="text-decoration-none">Wszystkie</a>
+                </li>
+                <?php
+                if ($wynik_kategorie->num_rows > 0) {
+                  while ($kategoria = $wynik_kategorie->fetch_assoc()) {
                     echo '<li class="list-group-item">';
-                    echo '<a href="index.php?id_kategorii='.$kategoria['id_kategorii'].'" class="text-decoration-none">';
+                    echo '<a href="index.php?id_kategorii=' . $kategoria['id_kategorii'] . '" class="text-decoration-none">';
                     echo htmlspecialchars($kategoria['nazwa_kategorii']);
                     echo '</a>';
                     echo '</li>';
+                  }
+                } else {
+                  echo '<li class="list-group-item">Brak kategorii.</li>';
                 }
             }else{
                 echo '<li class="list-group-item">Brak kategorii.</li>';
@@ -242,9 +248,6 @@ if (isset($_SESSION['user_id'])){
         ?>
         </div>
       </div>
-    </div>
-  </div>
-
   <script>
   $(document).ready(function(){
       $('.heart-icon i').on('click', function(){
@@ -348,5 +351,7 @@ if (isset($_SESSION['user_id'])){
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
+
 </html>

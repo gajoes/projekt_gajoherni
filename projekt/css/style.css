@@ -22303,9 +22303,6 @@ body {
   width: 100%;
 }
 
-.carousel-item {
-  height: 300px;
-}
 
 .card-product {
   margin-top: 50px;
@@ -22314,7 +22311,7 @@ body {
 .btnDane {
   width: 100%;
   padding: 10px;
-  background-color: #007bff;
+  background-color: #000000;
   color: white;
   border: none;
   border-radius: 4px;
@@ -22322,7 +22319,7 @@ body {
 }
 
 .btnDane:hover {
-  background-color: #0056b3;
+  background-color: #242424;
 }
 
 .btnWyloguj {
@@ -22419,6 +22416,20 @@ body{
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 
+.buy:active{
+  animation: pulse-animation 0.3s ease-out;
+  background-color: black !important;
+}
+
+.buy{
+  background-color: black;
+  border: black;
+}
+
+.buy:hover{
+  background-color: black;
+}
+
 .highlighted-product img {
   width: 100%;
   height: auto;
@@ -22449,6 +22460,10 @@ body{
   background-color: #242424;
 }
 
+.highlighted-product .btn:active {
+  background-color: #242424;
+  animation: pulse-animation 0.3s ease-out;
+}
 .container-fluid.mt-4 {
   padding: 0 15px;
 }
@@ -22560,6 +22575,102 @@ body{
   animation-duration: 1s;
   animation-iteration-count: 1;
   animation-timing-function: linear;
+}
+
+.strzalka{
+  margin:30px;
+}
+
+.containerArrow{
+  height:70px;
+  display:flex;
+  align-items:center;
+}
+
+.arrow {
+  border: solid rgb(0, 0, 0);
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 3px;
+  margin-bottom: 1.5px;
+  margin-right: 3.5px;
+}
+
+
+.containerArrow i{
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
+
+.containerArrow a{
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+}
+
+nav{
+  position: fixed !important;
+  top:0px;
+  left:0px;
+  width:100%;
+  z-index: 1000;
+}
+
+.carousel-item{
+  margin-top: 86px;
+}
+
+.carousel-item {
+  height: 300px;
+}
+
+.carousel-control-next-icon{
+  margin-top:86px;
+}
+
+.carousel-control-prev-icon{
+  margin-top:86px;
+}
+
+.filtrujbtn{
+  background-color:black;
+  border:black;
+}
+
+.filtrujbtn:hover{
+  background-color:#242424 !important;
+}
+
+.filtrujbtn:active{
+  background-color:#242424 !important;
+  animation: pulse-animation 0.3s ease-out;
+}
+
+.filtrujbtn:focus{
+  background-color:#242424 !important;
+}
+
+.list-group-item a:hover{
+  color: black;
+}
+
+.list-group-item a{
+  color: #242424;
+}
+
+@keyframes pulse-animation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.navcwe{
+  margin-top:89px;
 }
 
 .selected-for-you {
