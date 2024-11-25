@@ -1,23 +1,25 @@
 <?php
 require_once 'database.php';
 session_start();
-if (!isset($_SESSION['employee_id'])){
-    header("Location: login.php");
-    exit();
+if (!isset($_SESSION['employee_id'])) {
+  header("Location: login.php");
+  exit();
 }
 ?>
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Admina</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://kit.fontawesome.com/78fa2015f8.js" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Pracownika</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="https://kit.fontawesome.com/78fa2015f8.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-elements-font">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-elements-font">
     <div class="container-fluid">
       <a class="navbar-brand">
         <img src="./css/img/Tech.png" width="30" height="30" class="d-inline-block align-top brand-logo-sizing"
@@ -39,11 +41,6 @@ if (!isset($_SESSION['employee_id'])){
             <li class="nav-item">
               <a class="nav-link" href="./kontakt.php">Kontakt</a>
             </li>
-            <li class="nav-item ">
-              <a class="nav-link" href="#produkty">Zakupy</a>
-              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              </div>
-            </li>
           </ul>
         </div>
 
@@ -57,36 +54,75 @@ if (!isset($_SESSION['employee_id'])){
         </div>
     </div>
   </nav>
-      <div class="container mt-5" id="wybor">
-    <h1 class=" mb-4">Panel Pracownika</h1>
-    <div class="row">
-        <div class="col-md-3">
-            <a href="zarzadzaj_produktami.php" class="btn btn-primary btn-lg w-100 mb-3">Zarządzaj produktami</a>
-            <a href="zarzadzaj_zamowieniami.php" class="btn btn-primary btn-lg w-100 mb-3">Zarządzaj zamówieniami</a>
-            <a href="zarzadzaj_kategoriami.php" class="btn btn-primary btn-lg w-100 mb-3">Zarządzaj kategoriami</a>
-            <a href="zarzadzaj_dostawcami.php" class="btn btn-primary btn-lg w-100 mb-3">Zarządzaj dostawcami</a>
-        </div>
-        <a href="wyloguj.php">
-            <button type="button" class="btn btn-secondary mt-3">Wyloguj</button>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <div class="container-fluid d-flex flex-column flex-grow-1" id="wybor">
+    <h1 class="admin-title text-center mb-4">Panel Pracownika</h1>
+    <br><br>
+    <div class="row g-4 justify-content-center">
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
+        <a href="zarzadzaj_produktami.php" class="btn btn-light text-center w-100 p-4 rounded shadow-sm">
+          <i class="fa-solid fa-box fa-3x mb-3"></i>
+          <div>Zarządzaj produktami</div>
         </a>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
+        <a href="zarzadzaj_zamowieniami.php" class="btn btn-light text-center w-100 p-4 rounded shadow-sm">
+          <i class="fa-solid fa-shopping-cart fa-3x mb-3"></i>
+          <div>Zarządzaj zamówieniami</div>
+        </a>
+      </div>
     </div>
-</div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
+        <a href="zarzadzaj_kategoriami.php" class="btn btn-light text-center w-100 p-4 rounded shadow-sm">
+          <i class="fa-solid fa-tags fa-3x mb-3"></i>
+          <div>Zarządzaj kategoriami</div>
+        </a>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex justify-content-center align-items-center">
+        <a href="zarzadzaj_dostawcami.php" class="btn btn-light text-center w-100 p-4 rounded shadow-sm">
+          <i class="fa-solid fa-truck fa-3x mb-3"></i>
+          <div>Zarządzaj dostawcami</div>
+        </a>
+      </div>
+    </div>
+
+    <a href="wyloguj.php" class="wyloguj">
+      <button type="button" class="btn btn-secondary mt-3">Wyloguj</button>
+    </a>
+  </div>
 
 
-<style>
-    #wybor{
-        overflow:hidden;
-        float:left;
+  <style>
+    #wybor {
+      overflow: hidden;
+      float: left;
     }
-    h1{
-        color:black;
+
+    h1 {
+      color: black;
     }
-    .col-md-3{
-        border: 4px solid black;
-        border-radius:25px;
-        padding-top:15px;
+
+    .col-md-3 {
+      border: 4px solid black;
+      border-radius: 25px;
+      padding-top: 15px;
     }
-</style>
+
+    .wyloguj {
+      text-align: center;
+    }
+  </style>
 
 </body>
+
 </html>

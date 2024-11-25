@@ -52,13 +52,13 @@ $stmt->execute();
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sukces</title>
-  <link rel="stylesheet" href="stylesForgotPassword.css">
+  <link rel="stylesheet" href="./css/stylesLogin.css">
 </head>
 
 <body>
   <div class="containerMain">
     <div class="container">
-    <p class="forgetText">Hasło zostało zaktualizowane</p>
+      <p class="forgetText">Hasło zostało zaktualizowane</p>
       <form id="login" class="forms" method="" action="">
         <button type="button" name="login" class="btn-submit"><a href="./login.php">Login</a></button>
       </form>

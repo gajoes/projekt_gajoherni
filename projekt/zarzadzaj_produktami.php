@@ -1,6 +1,7 @@
 <?php
 require_once 'database.php';
 session_start();
+
 if (!isset($_SESSION['admin_id'])&&!isset($_SESSION['employee_id'])){
     header("Location: login.php");
     exit();
@@ -59,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST'&&isset($_POST['add_product'])){
         $wiadomosc="Nie przesłano pliku lub wystąpił błąd.";
     }
 }
+
 
 if ($_SERVER['REQUEST_METHOD']==='POST'&&isset($_POST['edit_product'])){
     $id=$_POST['id'];
@@ -146,6 +148,9 @@ $products =$query->get_result();
                 </div>
         </div>
     </nav>
+    <br>
+    <br>
+    <br>
     <div class="containerArrow">
         <a class="strzalka" href="panel.php"><i class="arrow right"></i>Wróć</a>
     </div>

@@ -46,10 +46,13 @@ foreach ($produkty as $produkt){
 <body>
 <div class="container mt-4">
     <h2>Dziękujemy za złożenie zamówienia!</h2>
+    <br>
     <h3>Szczegóły zamówienia:</h3>
+    <br>
     <p><strong>ID zamówienia:</strong> <?php echo htmlspecialchars($zamowienie['id_zamowienia']); ?></p>
     <p><strong>Data zamówienia:</strong> <?php echo htmlspecialchars($zamowienie['data_zamowienia']); ?></p>
     <h4>Dane kupującego:</h4>
+    <br>
     <p><strong>Imię i nazwisko:</strong> <?php echo htmlspecialchars($zamowienie['imie'].' '.$zamowienie['nazwisko']); ?></p>
     <p><strong>Email:</strong> <?php echo htmlspecialchars($zamowienie['email']); ?></p>
     <h4>Adres dostawy:</h4>
