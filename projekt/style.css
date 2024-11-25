@@ -22677,19 +22677,41 @@ nav{
   margin-top:89px;
 }
 
-.selected-for-you {
-  background-color: rgba(77, 130, 255, 0.075);
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
-  margin-bottom: 20px;
+.selected-for-you{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
-.selected-for-you h4 {
-  font-weight: bold;
-  color: #333;
-  text-align: center;
+.selected-for-you .row{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.selected-for-you .product-card{
+  flex: 0 1 calc(33.33% - 20px);
+  max-width: calc(33.33% - 20px);
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px){
+  .selected-for-you .product-card{
+    flex: 0 1 calc(50% - 20px);
+    max-width: calc(50% - 20px);
+  }
+}
+
+@media (max-width: 576px){
+  .selected-for-you .product-card{
+    flex: 0 1 100%;
+    max-width: 100%;
+  }
 }
 
 .product-card img {
@@ -22718,4 +22740,26 @@ nav{
 
 .popup-message {
   font-size: 16px;
+}
+.aktualnosci-sekcja {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.aktualnosci-sekcja h2 {
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+}
+
+.aktualnosci-sekcja .card {
+  border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.aktualnosci-sekcja .card-title {
+  font-size: 18px;
+  font-weight: bold;
 }
