@@ -22677,39 +22677,65 @@ nav{
   margin-top:89px;
 }
 
-.selected-for-you{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 100%;
-  overflow: hidden;
+.selected-for-you {
+  background-color: rgba(77, 130, 255, 0.075);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.selected-for-you .row{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-}
-
-.selected-for-you .product-card{
-  flex: 0 1 calc(33.33% - 20px);
+.selected-for-you .product-card {
+  flex: 1 1 calc(33.33% - 20px);
   max-width: calc(33.33% - 20px);
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
 }
 
-@media (max-width: 768px){
-  .selected-for-you .product-card{
-    flex: 0 1 calc(50% - 20px);
+.selected-for-you .product-card img {
+  max-height: 120px;
+  object-fit: contain;
+}
+
+.selected-for-you .product-card h5 {
+  font-size: 16px;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.selected-for-you .product-card p {
+  font-size: 14px;
+  color: #666;
+}
+
+.selected-for-you .product-card .btn {
+  margin-top: auto;
+  background-color: #000;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.selected-for-you .product-card .btn:hover {
+  background-color: #333;
+}
+
+@media (max-width: 768px) {
+  .selected-for-you .product-card {
+    flex: 1 1 calc(50% - 20px);
     max-width: calc(50% - 20px);
   }
 }
 
-@media (max-width: 576px){
-  .selected-for-you .product-card{
-    flex: 0 1 100%;
+@media (max-width: 576px) {
+  .selected-for-you .product-card {
+    flex: 1 1 100%;
     max-width: 100%;
   }
 }
@@ -22721,21 +22747,32 @@ nav{
 
 .heart-icon {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  cursor: pointer;
-}
-
-.filled-heart {
-  color: red;
-}
-
-.empty-heart {
-  color: gray;
+  top: -10px;
+  right: -10px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  padding: 3px;
+  z-index: 10;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .heart-icon i {
-  font-size: 24px;
+  font-size: 18px;
+  color: gray;
+}
+
+.heart-icon i.filled-heart {
+  color: red;
+}
+
+.product-card {
+  position: relative;
+}
+
+.heart-icon:hover {
+  background-color: #f8f8f8;
+  cursor: pointer;
 }
 
 .popup-message {
