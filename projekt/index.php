@@ -108,20 +108,26 @@ if (isset($_SESSION['user_id'])){
       <div class="carousel-inner">
         <div class="carousel-item active">
           <img
-            src="https://static.vecteezy.com/system/resources/thumbnails/003/810/922/small/horizontal-banner-for-black-friday-sale-black-balls-with-shiny-ribbons-golden-letters-vector.jpg"
-            class="d-block w-100" alt="blackfriday">
+            src="./css/img/slajd4.png"
+            class="d-block w-100" alt="station">
           <div class="carousel-caption d-none d-md-block">
           </div>
         </div>
         <div class="carousel-item">
-          <img src="https://www.apple.com/v/iphone-16/c/images/meta/iphone-16_overview__fcivqu9d5t6q_og.png"
+          <img src="./css/img/slajd2.png"
             class="d-block w-100" alt="iphone">
           <div class="carousel-caption d-none d-md-block">
           </div>
         </div>
         <div class="carousel-item">
-          <img src="https://storage-asset.msi.com/global/picture/apluscontent/reseller/1663812116.jpeg"
+          <img src="./css/img/slajd3.png"
             class="d-block w-100" alt="nvidia">
+          <div class="carousel-caption d-none d-md-block">
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="./css/img/slajd1.png"
+            class="d-block w-100" alt="station">
           <div class="carousel-caption d-none d-md-block">
           </div>
         </div>
@@ -182,6 +188,10 @@ if (isset($_SESSION['user_id'])){
                     echo '<input type="hidden" name="id_produktu" value="'.$wybrany['id_produktu'] . '">';
                     echo '<button type="submit" class="btn btn-primary">Dodaj do koszyka</button>';
                     echo '</form>';
+                    echo '<div class="parametry-overlay">';
+                    echo '<h6>Parametry:</h6>';
+                    echo '<p>'.htmlspecialchars($wybrany['parametry']).'</p>';
+                    echo '</div>';
                     echo '</div>';
                     echo '</div>';
                 }
@@ -275,6 +285,10 @@ if (isset($_SESSION['user_id'])){
                             echo '<input type="hidden" name="id_produktu" value="'.$produkt['id_produktu'].'">';
                             echo '<button type="submit" class="btn btn-primary">Dodaj do koszyka</button>';
                             echo '</form>';
+                            echo '<div class="parametry-overlay">';
+                            echo '<h6>Parametry:</h6>';
+                            echo '<p>' .htmlspecialchars($produkt['parametry']).'</p>';
+                            echo '</div>';
                             echo '</div>';
                             echo '</div>';
                         }
@@ -326,20 +340,24 @@ if (isset($_SESSION['user_id'])){
           <?php } ?>
       });
 
-      function showPopup(message,color){
+      function showPopup(message, color){
           var popup=$('<div class="popup-message"></div>').text(message).css({
-              'background-color': color,
-              'color': 'white',
-              'padding': '10px',
-              'position': 'fixed',
-              'top': '20px',
-              'right': '20px',
-              'z-index': '10000',
-              'border-radius': '5px',
-              'display': 'none'
-          });
+                'background-color': color,
+                'color': 'white',
+                'padding': '10px',
+                'position': 'fixed',
+                'top': '100px',
+                'left': '50%',
+                'transform': 'translateX(-50%)',
+                'z-index': '10000',
+                'border-radius': '6px',
+                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                'text-align': 'center',
+                'max-width': '300px',
+                'display': 'none'
+            });
           $('body').append(popup);
-          popup.fadeIn().delay(2000).fadeOut(function(){
+          popup.fadeIn().delay(2000).fadeOut(function (){
               $(this).remove();
           });
       }
@@ -372,16 +390,20 @@ if (isset($_SESSION['user_id'])){
 
       function showPopup(message, color){
           var popup=$('<div class="popup-message"></div>').text(message).css({
-              'background-color': color,
-              'color': 'white',
-              'padding': '10px',
-              'position': 'fixed',
-              'top': '20px',
-              'right': '20px',
-              'z-index': '10000',
-              'border-radius': '5px',
-              'display': 'none'
-          });
+                'background-color': color,
+                'color': 'white',
+                'padding': '10px',
+                'position': 'fixed',
+                'top': '100px',
+                'left': '50%',
+                'transform': 'translateX(-50%)',
+                'z-index': '10000',
+                'border-radius': '6px',
+                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                'text-align': 'center',
+                'max-width': '300px',
+                'display': 'none'
+            });
           $('body').append(popup);
           popup.fadeIn().delay(2000).fadeOut(function (){
               $(this).remove();
@@ -451,21 +473,25 @@ $(document).ready(function (){
     });
 
     function showPopup(message, color){
-        var popup = $('<div class="popup-message"></div>').text(message).css({
-            'background-color': color,
-            'color': 'white',
-            'padding': '10px',
-            'position': 'fixed',
-            'top': '20px',
-            'right': '20px',
-            'z-index': '10000',
-            'border-radius': '5px',
-            'display': 'none'
-        });
-        $('body'). append(popup);
-        popup.fadeIn().delay(2000).fadeOut(function (){
-            $(this).remove();
-        });
+          var popup=$('<div class="popup-message"></div>').text(message).css({
+                'background-color': color,
+                'color': 'white',
+                'padding': '10px',
+                'position': 'fixed',
+                'top': '100px',
+                'left': '50%',
+                'transform': 'translateX(-50%)',
+                'z-index': '10000',
+                'border-radius': '6px',
+                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                'text-align': 'center',
+                'max-width': '300px',
+                'display': 'none'
+            });
+          $('body').append(popup);
+          popup.fadeIn().delay(2000).fadeOut(function (){
+              $(this).remove();
+          });
     }
 
     function zalaczDodajKoszyk(){
