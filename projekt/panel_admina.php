@@ -110,6 +110,9 @@ if (!isset($_SESSION['admin_id'])) {
           <div>Zarządzaj dostawcami</div>
         </a>
       </div>
+        <a href="wyloguj.php">
+          <button type="button" class="btn btn-secondary mt-3">Wyloguj</button>
+        </a>
     </div>
   </div>
 
