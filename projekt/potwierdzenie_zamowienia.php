@@ -41,7 +41,7 @@ foreach ($produkty as $produkt){
 <head>
     <meta charset="UTF-8">
     <title>Potwierdzenie Zamówienia</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="container mt-4">

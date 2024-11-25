@@ -54,11 +54,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_product'])) {
     }
 }
 
-$query = $conn->prepare("SELECT produkty.id_produktu, produkty.nazwa, Kategorie.id_kategorii, Kategorie.nazwa_kategorii, 
-                         Dostawcy.id_dostawcy, Dostawcy.nazwa_dostawcy, produkty.cena
+$query = $conn->prepare("SELECT produkty.id_produktu, produkty.nazwa, kategorie.id_kategorii, kategorie.nazwa_kategorii, 
+                         dostawcy.id_dostawcy, dostawcy.nazwa_dostawcy, produkty.cena
                          FROM produkty
-                         LEFT JOIN Kategorie ON produkty.id_kategorii = Kategorie.id_kategorii
-                         LEFT JOIN Dostawcy ON produkty.id_dostawcy = Dostawcy.id_dostawcy");
+                         LEFT JOIN kategorie ON produkty.id_kategorii = kategorie.id_kategorii
+                         LEFT JOIN dostawcy ON produkty.id_dostawcy = dostawcy.id_dostawcy");
 $query->execute();
 $products = $query->get_result();
 ?>

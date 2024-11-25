@@ -4,11 +4,20 @@ session_start();
 $sql_kategorie="SELECT * FROM kategorie";
 $wynik_kategorie=$conn->query($sql_kategorie);
 $min_cena=isset($_GET['min_cena']) ? intval($_GET['min_cena']) : 0;
-$max_cena=isset($_GET['max_cena']) ? intval($_GET['max_cena']) : 20000;
+$max_cena=isset($_GET['max_cena']) ? intval($_GET['max_cena']) : 0;
 $wybrana_kat=isset($_GET['id_kategorii']) ? intval($_GET['id_kategorii']) : 0;
 $query_wybrane="SELECT * FROM produkty ORDER BY RAND() LIMIT 3";
 $wynik_wybrane=$conn->query($query_wybrane);
+$sql_featured="SELECT id_produktu,nazwa,cena,zdjecie,parametry FROM produkty WHERE nazwa LIKE 'iPhone 16'";
+$result_featured=$conn->query($sql_featured);
+$wyszukaj=isset($_GET['wyszukaj']) ? $conn->real_escape_string($_GET['wyszukaj']) : '';
 $sql_produkty="SELECT * FROM produkty WHERE 1";
+$sql_aktualnosci="SELECT tytul,tresc,data_utworzenia FROM aktualnosci ORDER BY data_utworzenia DESC LIMIT 1";
+$wynik_aktualnosci=$conn->query($sql_aktualnosci);
+
+if (!empty($wyszukaj)){
+  $sql_produkty.=" AND nazwa LIKE '%$wyszukaj%'";
+}
 if ($wybrana_kat>0){
     $sql_produkty.=" AND id_kategorii=$wybrana_kat";
 }
@@ -128,17 +137,25 @@ if (isset($_SESSION['user_id'])){
     </div>
   </div>
   <div class="container-fluid mt-4">
-    <div class="row align-items-center">
+    <div class="row align-items-center mb-4">
       <div class="col-md-3 d-flex flex-column justify-content-center">
-        <div class="highlighted-product mb-4">
-          <div class="text-center">
-            <span class="borderp">Wyjątkowa cena</span>
-            <img src="./css/img/iphone16.png" alt="Featured iPhone" class="img-fluid">
-            <h3 class="mb-2">iPhone 16</h3>
-            <p class="text-muted">Cena: 4999 PLN</p>
-            <a href="#" class="btn btn-primary">Dodaj do koszyka</a>
-          </div>
-        </div>
+        <?php
+        if ($result_featured->num_rows>0){
+          $featured=$result_featured->fetch_assoc();
+          echo '<div class="highlighted-product mb-4">
+                  <div class="text-center">
+                      <span class="borderp">Wyjątkowa cena</span>
+                      <img src="' . htmlspecialchars($featured['zdjecie']) . '" alt="' . htmlspecialchars($featured['nazwa']) . '" class="img-fluid">
+                      <h3 class="mb-2">' . htmlspecialchars($featured['nazwa']) . '</h3>
+                      <p class="text-muted">Cena: ' . number_format($featured['cena'], 2, ',', ' ') . ' PLN</p>
+                      <p class="text-muted">' . htmlspecialchars($featured['parametry']) . '</p>';
+                      echo '<form method="POST" action="dodaj_do_koszyka.php" class="add-to-cart-form">';
+                      echo '<input type="hidden" name="id_produktu" value="'.$featured['id_produktu'].'">';
+                      echo '<button type="submit" class="btn btn-primary">Dodaj do koszyka</button>';
+                      echo '</form>';
+                      echo '</div>';
+                      echo '</div>';}
+        ?>
       </div>
       <div class="col-md-9">
     <div class="selected-for-you d-flex flex-column justify-content-center">
@@ -173,78 +190,98 @@ if (isset($_SESSION['user_id'])){
         </div>
     </div>
 </div>
-      <div class="container-fluid mt-4">
-        <div class="row">
-          <div class="col-md-3">
-            <div class="categories mb-4">
-              <h5>Filtrowanie:</h5>
-              <form method="GET" action="index.php">
-                <div class="mb-3">
-                  <label for="min_cena" class="form-label">Cena minimalna:</label>
-                  <input type="number" class="form-control" id="min_cena" name="min_cena"
-                    value="<?php echo $min_cena; ?>" min="0">
+</div>
+<div class="row d-flex align-items-stretch">
+  <div class="col-md-3 d-flex flex-column">
+                <div class="filter-section mb-4">
+                    <h5>Filtrowanie:</h5>
+                    <form id="filter-form">
+                        <div class="mb-3">
+                            <label for="wyszukaj" class="form-label">Wyszukaj produkt:</label>
+                            <input type="text" class="form-control" id="wyszukaj" name="wyszukaj" placeholder="Wpisz nazwę produktu">
+                        </div>
+                        <div class="mb-3">
+                            <label for="min_cena" class="form-label">Cena minimalna:</label>
+                            <input type="number" class="form-control" id="min_cena" name="min_cena" value="<?php echo $min_cena; ?>" min="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="max_cena" class="form-label">Cena maksymalna:</label>
+                            <input type="number" class="form-control" id="max_cena" name="max_cena" value="<?php echo $max_cena; ?>" min="0">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 filtrujbtn">Filtruj</button>
+                    </form>
                 </div>
-                <div class="mb-3">
-                  <label for="max_cena" class="form-label">Cena maksymalna:</label>
-                  <input type="number" class="form-control" id="max_cena" name="max_cena"
-                    value="<?php echo $max_cena; ?>" min="0">
+
+              <div class="categories mb-4">
+                    <h5>Kategorie:</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <a href="#" class="text-decoration-none category-link" data-id_kategorii="0">Wszystkie</a>
+                        </li>
+                        <?php
+                        if ($wynik_kategorie->num_rows>0){
+                            while ($kategoria=$wynik_kategorie->fetch_assoc()){
+                                echo '<li class="list-group-item">';
+                                echo '<a href="#" class="text-decoration-none category-link" data-id_kategorii="'.$kategoria['id_kategorii'].'">';
+                                echo htmlspecialchars($kategoria['nazwa_kategorii']);
+                                echo '</a>';
+                                echo '</li>';
+                            }
+                        } else {
+                            echo '<li class="list-group-item">Brak kategorii.</li>';
+                        }
+                        ?>
+                    </ul>
                 </div>
-                <button type="submit" class="btn btn-primary w-100 filtrujbtn">Filtruj</button>
-              </form>
-              <hr>
-              <h5>Kategorie:</h5>
-              <ul class="list-group">
-                <li class="list-group-item">
-                  <a href="index.php" class="text-decoration-none">Wszystkie</a>
-                </li>
-                <?php
-                if ($wynik_kategorie->num_rows > 0) {
-                  while ($kategoria = $wynik_kategorie->fetch_assoc()) {
-                    echo '<li class="list-group-item">';
-                    echo '<a href="index.php?id_kategorii=' . $kategoria['id_kategorii'] . '" class="text-decoration-none">';
-                    echo htmlspecialchars($kategoria['nazwa_kategorii']);
-                    echo '</a>';
-                    echo '</li>';
-                  }
-                } else {
-                  echo '<li class="list-group-item">Brak kategorii.</li>';
-                }
-            ?>
-          </ul>
-        </div>
+
+                <div class="aktualnosci-sekcja">
+                    <h5>Aktualności</h5>
+                    <?php if ($wynik_aktualnosci->num_rows>0) : ?>
+                        <ul class="list-group">
+                            <?php while ($aktualnosc=$wynik_aktualnosci->fetch_assoc()) : ?>
+                                <li class="list-group-item">
+                                    <h6><?php echo htmlspecialchars($aktualnosc['tytul']); ?></h6>
+                                    <p><?php echo htmlspecialchars(substr($aktualnosc['tresc'],0,100)); ?></p>
+                                    <small class="text-muted"><?php echo date("d-m-Y",strtotime($aktualnosc['data_utworzenia'])); ?></small>
+                                </li>
+                            <?php endwhile; ?>
+                        </ul>
+                    <?php else : ?>
+                        <p>Brak nowych aktualności.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="col-md-9 d-flex flex-column" id="produkty">
+                <div class="row" id="produkty-lista">
+                    <?php
+                    if ($wynik_produkty->num_rows > 0){
+                        while ($produkt=$wynik_produkty->fetch_assoc()){
+                            echo '<div class="col-md-4 product-card mb-4">';
+                            echo '<div class="product text-center position-relative">';
+                            echo '<div class="heart-icon">';
+                            echo '<i class="fa-heart '.(in_array($produkt['id_produktu'],$ulubione) ? 'fas filled-heart' : 'far empty-heart') . '" data-product-id="'.$produkt['id_produktu'] . '"></i>';
+                            echo '</div>';
+                            echo '<img src="'.htmlspecialchars($produkt['zdjecie']).'" alt="'.htmlspecialchars($produkt['nazwa']).'" class="img-fluid mb-2">';
+                            echo '<h5>'.htmlspecialchars($produkt['nazwa']) . '</h5>';
+                            echo '<p class="text-muted">Cena: '.number_format($produkt['cena'],2,',',' ') .' PLN</p>';
+                            echo '<form method="POST" action="dodaj_do_koszyka.php" class="add-to-cart-form">';
+                            echo '<input type="hidden" name="id_produktu" value="'.$produkt['id_produktu'].'">';
+                            echo '<button type="submit" class="btn btn-primary">Dodaj do koszyka</button>';
+                            echo '</form>';
+                            echo '</div>';
+                            echo '</div>';
+                        }
+                    }else{
+                        echo '<p>Brak produktów do wyświetlenia.</p>';
+                    }
+                    ?>
+                </div>
+            </div>
       </div>
-      <div class="col-md-9" id="produkty">
-        <div class="row">
-          <?php
-          if ($wynik_produkty->num_rows>0){
-            while ($produkt=$wynik_produkty->fetch_assoc()){
-                echo '<div class="col-md-4 product-card mb-4">';
-                echo '<div class="product text-center position-relative">';
-                echo '<div class="heart-icon">';
-                echo '<i class="fa-heart ';
-                if (in_array($produkt['id_produktu'], $ulubione)){
-                    echo 'fas filled-heart"';
-                }else{
-                    echo 'far empty-heart"';
-                }
-                echo ' data-product-id="'.$produkt['id_produktu'].'"></i>';
-                echo '</div>';
-                echo '<img src="'.htmlspecialchars($produkt['zdjecie']).'" alt="'.htmlspecialchars($produkt['nazwa']).'" class="img-fluid mb-2">';
-                echo '<h5 class="mb-2">'.htmlspecialchars($produkt['nazwa']).'</h5>';
-                echo '<p class="text-muted">Cena: '.number_format($produkt['cena'],2).' PLN</p>';
-                echo '<form method="POST" action="dodaj_do_koszyka.php">';
-                echo '<input type="hidden" name="id_produktu" value="'.$produkt['id_produktu'].'">';
-                echo '<button type="submit" class="btn btn-primary">Dodaj do koszyka</button>';
-                echo '</form>';
-                echo '</div>';
-                echo '</div>';
-            }
-        }else{
-            echo '<p>Brak produktów w tej kategorii.</p>';
-        }
-        ?>
-        </div>
-      </div>
+    </div>
+</div>
+
   <script>
   $(document).ready(function(){
       $('.heart-icon i').on('click', function(){
@@ -306,7 +343,7 @@ if (isset($_SESSION['user_id'])){
   $(document).ready(function (){
       $('form[action="dodaj_do_koszyka.php"]').on('submit',function (e){
           e.preventDefault();
-          var form=$(this);
+          var form=$(this );
           var formData=form.serialize();
 
           $.ajax({
@@ -315,14 +352,14 @@ if (isset($_SESSION['user_id'])){
               data: formData,
               dataType: 'json',
               success: function (response){
-                  if (response.status === 'success'){
-                      showPopup(response.message, 'green');
+                  if (response.status==='success'){
+                      showPopup(response.message,'green');
                   }else{
-                      showPopup(response.message, 'red');
+                      showPopup(response.message,'red');
                   }
               },
               error: function (){
-                  showPopup('Wystąpił błąd podczas dodawania produktu do koszyka', 'red');
+                  showPopup('Wystąpił błąd podczas dodawania produktu do koszyka','red');
               }
           });
       });
@@ -346,6 +383,151 @@ if (isset($_SESSION['user_id'])){
       }
   });
   </script>
+  <script>
+$(document).ready(function (){
+    function wyswietlProdukty() {
+        var wyszukaj=$('#wyszukaj').val();
+        var min_cena=$('#min_cena').val();
+        var max_cena=$('#max_cena').val();
+        var id_kategorii=$('.category-link.active').data('id_kategorii') || 0;
+
+        $.ajax({
+            url: 'wyswietl_produkty.php',
+            type: 'GET',
+            data: {
+                wyszukaj: wyszukaj, 
+                min_cena: min_cena,
+                max_cena: max_cena,
+                id_kategorii: id_kategorii
+            },
+            dataType: 'json',
+            success: function (response){
+                if (response.status==='success'){
+                    $('#produkty-lista').html(response.produkty_html);
+                    zalaczDodajKoszyk();
+                    zalaczDodajUlub();
+                }else{
+                    showPopup('Wystąpił problem z filtrowaniem.','red');
+                }
+            },
+            error:function (){
+                showPopup('Wystąpił błąd komunikacji z serwerem.','red');
+                $('#produkty-lista').html('<p>Wystąpił błąd podczas ładowania produktów.</p>');
+            }
+        });
+    }
+    var typingTimer;
+    var typingInterval=500; //pul sek
+
+    $('#wyszukaj').on('keyup',function (){
+        clearTimeout(typingTimer);
+        typingTimer=setTimeout(wyswietlProdukty,typingInterval);
+    });
+
+    $('#wyszukaj').on('keydown',function (){
+        clearTimeout(typingTimer);
+    });
+
+    $('#min_cena, #max_cena').on('input',function (){
+      wyswietlProdukty();
+    });
+
+    $(document).on('click','.category-link',function (e){
+        e.preventDefault();
+        $('.category-link').removeClass('active');
+        $(this).addClass('active');
+        wyswietlProdukty();
+    });
+
+    $('#filter-form').on('submit',function (e){
+        e.preventDefault();
+        wyswietlProdukty();
+    });
+
+    function showPopup(message, color){
+        var popup = $('<div class="popup-message"></div>').text(message).css({
+            'background-color': color,
+            'color': 'white',
+            'padding': '10px',
+            'position': 'fixed',
+            'top': '20px',
+            'right': '20px',
+            'z-index': '10000',
+            'border-radius': '5px',
+            'display': 'none'
+        });
+        $('body'). append(popup);
+        popup.fadeIn().delay(2000).fadeOut(function (){
+            $(this).remove();
+        });
+    }
+
+    function zalaczDodajKoszyk(){
+        $('form.add-to-cart-form').off('submit').on('submit', function (e){
+            e.preventDefault();
+            var form=$(this);
+            var formData=form.serialize();
+
+            $.ajax({
+                url: 'dodaj_do_koszyka.php',
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function (response){
+                    if (response.status==='success'){
+                        showPopup(response.message,'green');
+                    }else{
+                        showPopup(response.message,'red');
+                    }
+                },
+                error: function (){
+                    showPopup('Wystąpił błąd podczas dodawania do koszyka','red');
+                }
+            });
+        });
+    }
+
+    function zalaczDodajUlub(){
+        $('.heart-icon i').off('click').on('click',function (){
+            var productId=$(this).data('product-id');
+            var heartIcon=$(this);
+            <?php if (isset($_SESSION['user_id'])){ ?>
+                if (heartIcon.hasClass('filled-heart')){
+                    $.ajax({
+                        url: 'usun_z_ulubionych.php',
+                        type: 'POST',
+                        data: { id_produktu: productId },
+                        success: function (response){
+                            heartIcon.removeClass('fas filled-heart').addClass('far empty-heart');
+                            showPopup('Usunięto produkt z ulubionych','green');
+                        },
+                        error: function (){
+                            showPopup('Nie udało się usunąć produktu z ulubionych','red');
+                        }
+                    });
+                } else {
+                    $.ajax({
+                        url: 'dodaj_do_ulubionych.php',
+                        type: 'POST',
+                        data: { id_produktu: productId },
+                        success: function (response){
+                            heartIcon.removeClass('far empty-heart').addClass('fas filled-heart');
+                            showPopup('Dodano produkt do ulubionych','green');
+                        },
+                        error: function (){
+                            showPopup('Nie udało się dodać produktu do ulubionych','red');
+                        }
+                    });
+                }
+            <?php }else{ ?>
+              showPopup('Musisz być zalogowany, żeby dodać produkt do ulubionych','red');
+            <?php } ?>
+        });
+    }
+    zalaczDodajKoszyk();
+  zalaczDodajUlub();
+});
+</script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 

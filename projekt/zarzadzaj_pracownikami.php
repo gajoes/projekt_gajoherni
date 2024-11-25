@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_employee'])) {
     $imie = $_POST['imie'];
     $nazwisko = $_POST['nazwisko'];
 
-    $query = $conn->prepare("INSERT INTO Pracownicy (username, email, haslo, imie, nazwisko) VALUES (?, ?, ?, ?, ?)");
+    $query = $conn->prepare("INSERT INTO pracownicy (username, email, haslo, imie, nazwisko) VALUES (?, ?, ?, ?, ?)");
     $query->bind_param("sssss", $username, $email, $password, $imie, $nazwisko);
 
     if ($query->execute()) {
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_employee'])) {
     $imie = $_POST['imie'];
     $nazwisko = $_POST['nazwisko'];
 
-    $query = $conn->prepare("UPDATE Pracownicy SET username = ?, email = ?, imie = ?, nazwisko = ? WHERE id_prac = ?");
+    $query = $conn->prepare("UPDATE pracownicy SET username = ?, email = ?, imie = ?, nazwisko = ? WHERE id_prac = ?");
     $query->bind_param("ssssi", $username, $email, $imie, $nazwisko, $id);
 
     if ($query->execute()) {
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_employee'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_employee'])) {
     $id = $_POST['id'];
 
-    $query = $conn->prepare("DELETE FROM Pracownicy WHERE id_prac = ?");
+    $query = $conn->prepare("DELETE FROM pracownicy WHERE id_prac = ?");
     $query->bind_param("i", $id);
 
     if ($query->execute()) {
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_employee'])) {
     }
 }
 
-$query = $conn->prepare("SELECT id_prac, username, email, imie, nazwisko FROM Pracownicy");
+$query = $conn->prepare("SELECT id_prac, username, email, imie, nazwisko FROM pracownicy");
 $query->execute();
 $employees = $query->get_result();
 ?>

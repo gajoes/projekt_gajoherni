@@ -11,7 +11,7 @@ $wiadomosc = "";
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_category'])) {
     $nazwa_kategorii = $_POST['nazwa_kategorii'];
 
-    $query = $conn->prepare("INSERT INTO Kategorie (nazwa_kategorii) VALUES (?)");
+    $query = $conn->prepare("INSERT INTO kategorie (nazwa_kategorii) VALUES (?)");
     $query->bind_param("s", $nazwa_kategorii);
 
     if ($query->execute()) {
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_category'])) {
     $id_kategorii = $_POST['id_kategorii'];
     $nazwa_kategorii = $_POST['nazwa_kategorii'];
 
-    $query = $conn->prepare("UPDATE Kategorie SET nazwa_kategorii = ? WHERE id_kategorii = ?");
+    $query = $conn->prepare("UPDATE kategorie SET nazwa_kategorii = ? WHERE id_kategorii = ?");
     $query->bind_param("si", $nazwa_kategorii, $id_kategorii);
 
     if ($query->execute()) {
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_category'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_category'])) {
     $id_kategorii = $_POST['id_kategorii'];
 
-    $query = $conn->prepare("DELETE FROM Kategorie WHERE id_kategorii = ?");
+    $query = $conn->prepare("DELETE FROM kategorie WHERE id_kategorii = ?");
     $query->bind_param("i", $id_kategorii);
 
     if ($query->execute()) {
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_category'])) {
     }
 }
 
-$query = $conn->prepare("SELECT id_kategorii, nazwa_kategorii FROM Kategorie");
+$query = $conn->prepare("SELECT id_kategorii, nazwa_kategorii FROM kategorie");
 $query->execute();
 $categories = $query->get_result();
 ?>
