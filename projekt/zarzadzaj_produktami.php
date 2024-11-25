@@ -1,7 +1,7 @@
 <?php
 require_once 'database.php';
 session_start();
-if (!isset($_SESSION['admin_id'])){
+if (!isset($_SESSION['admin_id'])&&!isset($_SESSION['employee_id'])){
     header("Location: login.php");
     exit();
 }
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST'&&isset($_POST['add_product'])){
     }
 }
 
-if ($_SERVER['REQUEST_METHOD']==='POST'&&isset($_POST['edit_product'])){
+if ($_SERVER['REQUEST_METHOD']==='POST' &&isset($_POST['edit_product'])){
     $id =$_POST['id'];
     $nazwa =$_POST['nazwa'];
     $id_kategorii=$_POST['id_kategorii'];

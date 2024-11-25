@@ -1,7 +1,7 @@
 <?php
 require_once 'database.php';
 session_start();
-if (!isset($_SESSION['admin_id'])){
+if (!isset($_SESSION['employee_id'])){
     header("Location: login.php");
     exit();
 }
@@ -58,11 +58,9 @@ if (!isset($_SESSION['admin_id'])){
     </div>
   </nav>
       <div class="container mt-5" id="wybor">
-    <h1 class=" mb-4">Panel Admina</h1>
+    <h1 class=" mb-4">Panel Pracownika</h1>
     <div class="row">
         <div class="col-md-3">
-            <a href="zarzadzaj_uzytkownikami.php" class="btn btn-primary btn-lg w-100 mb-3">Zarządzaj użytkownikami</a>
-            <a href="zarzadzaj_pracownikami.php" class="btn btn-primary btn-lg w-100 mb-3">Zarządzaj pracownikami</a>
             <a href="zarzadzaj_produktami.php" class="btn btn-primary btn-lg w-100 mb-3">Zarządzaj produktami</a>
             <a href="zarzadzaj_zamowieniami.php" class="btn btn-primary btn-lg w-100 mb-3">Zarządzaj zamówieniami</a>
             <a href="zarzadzaj_kategoriami.php" class="btn btn-primary btn-lg w-100 mb-3">Zarządzaj kategoriami</a>
@@ -73,6 +71,8 @@ if (!isset($_SESSION['admin_id'])){
         </a>
     </div>
 </div>
+
+
 <style>
     #wybor{
         overflow:hidden;
