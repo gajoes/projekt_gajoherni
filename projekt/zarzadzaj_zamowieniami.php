@@ -113,7 +113,7 @@ $orders =$query->get_result();
                 <th>Ilość</th>
                 <th>Adres</th>
                 <th>ID użytkownika</th>
-                <th>Akcje</th>
+                <th>Zmiany</th>
             </tr>
         </thead>
         <tbody>
@@ -135,11 +135,11 @@ $orders =$query->get_result();
                             <input type="email" name="email" value="<?php echo htmlspecialchars($order['email']); ?>" class="form-control form-control-sm mb-1" required>
                             <input type="text" name="imie" value="<?php echo htmlspecialchars($order['imie']); ?>" class="form-control form-control-sm mb-1" required>
                             <input type="text" name="nazwisko" value="<?php echo htmlspecialchars($order['nazwisko']); ?>" class="form-control form-control-sm mb-1" required>
-                            <button type="submit" name="edit_order" class="btn btn-warning btn-sm">Edytuj</button>
+                            <button type="submit" name="edit_order" class="btn btn-warning btn-sm w-100">Edytuj</button>
                         </form>
                         <form method="POST" class="d-inline">
                             <input type="hidden" name="id" value="<?php echo $order['id_zamowienia']; ?>">
-                            <button type="submit" name="delete_order" class="btn btn-danger btn-sm">Usuń</button>
+                            <button type="submit" name="delete_order" class="btn btn-danger btn-sm w-100">Usuń</button>
                         </form>
                     </td>
                 </tr>
