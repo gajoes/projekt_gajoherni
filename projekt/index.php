@@ -191,6 +191,12 @@ if (isset($_SESSION['user_id'])){
     </div>
 </div>
 </div>
+<div>
+<br id="produkty">
+<br>
+<br>
+<br>
+</div>
 <div class="row d-flex align-items-stretch">
   <div class="col-md-3 d-flex flex-column">
                 <div class="filter-section mb-4">
@@ -252,7 +258,7 @@ if (isset($_SESSION['user_id'])){
                 </div>
             </div>
 
-            <div class="col-md-9 d-flex flex-column" id="produkty">
+            <div class="col-md-9 d-flex flex-column">
                 <div class="row" id="produkty-lista">
                     <?php
                     if ($wynik_produkty->num_rows > 0){

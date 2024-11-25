@@ -22684,6 +22684,7 @@ nav{
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
   margin-bottom: 20px;
+  height: 520px;
 }
 
 .selected-for-you h4 {
@@ -22718,4 +22719,26 @@ nav{
 
 .popup-message {
   font-size: 16px;
+}
+.aktualnosci-sekcja {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.aktualnosci-sekcja h2 {
+  font-size: 24px;
+  color: #333;
+  text-align: center;
+}
+
+.aktualnosci-sekcja .card {
+  border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.aktualnosci-sekcja .card-title {
+  font-size: 18px;
+  font-weight: bold;
 }
