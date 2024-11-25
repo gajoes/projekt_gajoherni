@@ -36,7 +36,18 @@ if ($_SERVER['REQUEST_METHOD']==='POST' &&isset($_POST['delete_order'])){
     }
 }
 
-$query =$conn->prepare("SELECT * FROM zamowienia");
+$query =$conn->prepare("
+    SELECT z.id_zamowienia,z.username,z.email,z.imie,z.nazwisko,z.data_zamowienia,z.id_uzytkownika,p.nazwa AS nazwa_produktu,zp.ilosc,
+        CONCAT(za.ulica,' ',za.nr_domu,'/',za.nr_mieszkania,',',za.miasto,' ',za.kod_pocztowy) AS adres
+    FROM 
+        zamowienia z
+    LEFT JOIN 
+        zamowienia_produkty zp ON z.id_zamowienia=zp.id_zamowienia
+    LEFT JOIN 
+        produkty p ON zp.id_produktu = p.id_produktu
+    LEFT JOIN 
+        zamowienia_adresy za ON z.id_zamowienia=za.id_zamowienia
+");
 $query->execute();
 $orders =$query->get_result();
 ?>
@@ -51,7 +62,36 @@ $orders =$query->get_result();
     <script src="https://kit.fontawesome.com/78fa2015f8.js" crossorigin="anonymous"></script>
 </head>
 <body class="bg-light text-dark">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-elements-font">
+    <div class="container-fluid">
+        <a class="navbar-brand">
+            <img src="./css/img/Tech.png" width="30" height="30" class="d-inline-block align-top brand-logo-sizing" alt="Jurzyk">
+            <a class="navbar-brand navbar-custom-font"><span class="logop1">B</span><span class="logop2">Y</span><span class="logop3">T</span><span class="logop4">E</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="./index.php">Strona główna <span class="sr-only">(Aktualnie włączone)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./about.php">O nas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./kontakt.php">Kontakt</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="d-flex align-items-center">
+                <a class="nav-link" href="login.php">
+                    <i class="fa-solid fa-user fa-xl fa-fw navicon"></i>
+                </a>
+                <a class="nav-link" href="#">
+                    <i class="fa-solid fa-cart-shopping fa-xl fa-fw navicon"></i>
+                </a>
+            </div>
+    </div>
 </nav>
 <div class="container mt-5">
     <?php if (!empty($wiadomosc)): ?>
@@ -60,8 +100,8 @@ $orders =$query->get_result();
         </div>
     <?php endif; ?>
     <h2 class="text-center">Lista zamówień</h2>
-    <table class="table table-light table-hover border">
-        <thead class="thead-light">
+    <table class="table table-hover">
+        <thead>
             <tr>
                 <th>ID</th>
                 <th>Username</th>
@@ -69,12 +109,15 @@ $orders =$query->get_result();
                 <th>Imię</th>
                 <th>Nazwisko</th>
                 <th>Data zamówienia</th>
+                <th>Produkt</th>
+                <th>Ilość</th>
+                <th>Adres</th>
                 <th>ID użytkownika</th>
                 <th>Zmiany</th>
             </tr>
         </thead>
         <tbody>
-            <?php while ($order =$orders->fetch_assoc()): ?>
+            <?php while ($order = $orders->fetch_assoc()): ?>
                 <tr>
                     <td><?php echo htmlspecialchars($order['id_zamowienia']); ?></td>
                     <td><?php echo htmlspecialchars($order['username']); ?></td>
@@ -82,6 +125,9 @@ $orders =$query->get_result();
                     <td><?php echo htmlspecialchars($order['imie']); ?></td>
                     <td><?php echo htmlspecialchars($order['nazwisko']); ?></td>
                     <td><?php echo htmlspecialchars($order['data_zamowienia']); ?></td>
+                    <td><?php echo htmlspecialchars($order['nazwa_produktu']); ?></td>
+                    <td><?php echo htmlspecialchars($order['ilosc']); ?></td>
+                    <td><?php echo htmlspecialchars($order['adres']); ?></td>
                     <td><?php echo htmlspecialchars($order['id_uzytkownika']); ?></td>
                     <td>
                         <form method="POST" class="d-inline">
@@ -89,7 +135,7 @@ $orders =$query->get_result();
                             <input type="email" name="email" value="<?php echo htmlspecialchars($order['email']); ?>" class="form-control form-control-sm mb-1" required>
                             <input type="text" name="imie" value="<?php echo htmlspecialchars($order['imie']); ?>" class="form-control form-control-sm mb-1" required>
                             <input type="text" name="nazwisko" value="<?php echo htmlspecialchars($order['nazwisko']); ?>" class="form-control form-control-sm mb-1" required>
-                            <button type="submit" name="edit_order" class="btn btn-warning btn-sm w-100 mb-2">Edytuj</button>
+                            <button type="submit" name="edit_order" class="btn btn-warning btn-sm w-100">Edytuj</button>
                         </form>
                         <form method="POST" class="d-inline">
                             <input type="hidden" name="id" value="<?php echo $order['id_zamowienia']; ?>">
