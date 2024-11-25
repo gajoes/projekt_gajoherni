@@ -209,9 +209,6 @@ if (isset($_SESSION['user_id'])){
                 } else {
                   echo '<li class="list-group-item">Brak kategorii.</li>';
                 }
-            }else{
-                echo '<li class="list-group-item">Brak kategorii.</li>';
-            }
             ?>
           </ul>
         </div>

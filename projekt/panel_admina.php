@@ -110,10 +110,10 @@ if (!isset($_SESSION['admin_id'])) {
           <div>Zarządzaj dostawcami</div>
         </a>
       </div>
-        <a href="wyloguj.php">
+    </div>
+    <a href="wyloguj.php" class="wyloguj">
           <button type="button" class="btn btn-secondary mt-3">Wyloguj</button>
         </a>
-    </div>
   </div>
 
   <style>
@@ -179,6 +179,9 @@ if (!isset($_SESSION['admin_id'])) {
 
     #wybor .btn-light:hover div {
       color: #000;
+    }
+    .wyloguj{
+      text-align: center;
     }
   </style>
 
