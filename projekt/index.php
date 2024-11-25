@@ -57,7 +57,7 @@ if (isset($_SESSION['user_id'])){
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Strona Główna</title>
 
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="style.css">
   <script src="https://kit.fontawesome.com/78fa2015f8.js" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
