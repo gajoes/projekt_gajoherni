@@ -108,20 +108,26 @@ if (isset($_SESSION['user_id'])){
       <div class="carousel-inner">
         <div class="carousel-item active">
           <img
-            src="https://static.vecteezy.com/system/resources/thumbnails/003/810/922/small/horizontal-banner-for-black-friday-sale-black-balls-with-shiny-ribbons-golden-letters-vector.jpg"
-            class="d-block w-100" alt="blackfriday">
+            src="./css/img/slajd4.png"
+            class="d-block w-100" alt="station">
           <div class="carousel-caption d-none d-md-block">
           </div>
         </div>
         <div class="carousel-item">
-          <img src="https://www.apple.com/v/iphone-16/c/images/meta/iphone-16_overview__fcivqu9d5t6q_og.png"
+          <img src="./css/img/slajd2.png"
             class="d-block w-100" alt="iphone">
           <div class="carousel-caption d-none d-md-block">
           </div>
         </div>
         <div class="carousel-item">
-          <img src="https://storage-asset.msi.com/global/picture/apluscontent/reseller/1663812116.jpeg"
+          <img src="./css/img/slajd3.png"
             class="d-block w-100" alt="nvidia">
+          <div class="carousel-caption d-none d-md-block">
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="./css/img/slajd1.png"
+            class="d-block w-100" alt="station">
           <div class="carousel-caption d-none d-md-block">
           </div>
         </div>
