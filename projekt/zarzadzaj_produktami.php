@@ -2,70 +2,106 @@
 require_once 'database.php';
 session_start();
 
-if (!isset($_SESSION['admin_id']) && !isset($_SESSION['employee_id'])) {
+if (!isset($_SESSION['admin_id'])&&!isset($_SESSION['employee_id'])){
     header("Location: login.php");
     exit();
 }
 
 $wiadomosc = "";
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_product'])) {
-    $nazwa = $_POST['nazwa'];
-    $id_kategorii = $_POST['id_kategorii'];
-    $id_dostawcy = $_POST['id_dostawcy'];
-    $cena = $_POST['cena'];
+if ($_SERVER['REQUEST_METHOD']==='POST'&&isset($_POST['add_product'])){
+    $nazwa =$_POST['nazwa'];
+    $id_kategorii=$_POST['id_kategorii'];
+    $id_dostawcy =$_POST['id_dostawcy'];
+    $cena=$_POST['cena'];
+    $parametry=$_POST['parametry'];
 
-    $query = $conn->prepare("INSERT INTO produkty (nazwa, id_kategorii, id_dostawcy, cena) VALUES (?, ?, ?, ?)");
-    $query->bind_param("siid", $nazwa, $id_kategorii, $id_dostawcy, $cena);
+    if (isset($_FILES["zdjecie"]) && $_FILES["zdjecie"]["error"]==0){
+        $target_dir="css/img/";
+        $file_name=basename($_FILES["zdjecie"]["name"]);
+        $target_file=$target_dir.$file_name;
+        $upload_zdjecia=1;
+        $typ_zdjecia=strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        $sprawdz_czyObraz=getimagesize($_FILES["zdjecie"]["tmp_name"]);
+        if ($sprawdz_czyObraz===false){
+            $wiadomosc="Plik nie jest obrazem.";
+            $upload_zdjecia=0;
+        }
 
-    if ($query->execute()) {
-        $wiadomosc = "Produkt został dodany!";
-    } else {
-        $wiadomosc = "Błąd podczas dodawania produktu!";
+        if (file_exists($target_file)){
+            $wiadomosc="Plik już istnieje.";
+            $upload_zdjecia=0;
+        }
+
+        if ($_FILES["zdjecie"]["size"]>5000000){ // 5 megabajtuw
+            $wiadomosc="Plik jest za duży.";
+            $upload_zdjecia=0;
+        }
+
+        if (!in_array($typ_zdjecia,['jpg','jpeg','png'])){
+            $wiadomosc="Dozwolone są tylko pliki JPG, JPEG i PNG.";
+            $upload_zdjecia=0;
+        }
+
+        if ($upload_zdjecia===1){
+            if (move_uploaded_file($_FILES["zdjecie"]["tmp_name"], $target_file)){
+                $query = $conn->prepare("INSERT INTO produkty (nazwa, id_kategorii, id_dostawcy, cena, parametry, zdjecie) VALUES (?, ?, ?, ?, ?, ?)");
+                $query->bind_param("siidss",$nazwa,$id_kategorii,$id_dostawcy,$cena,$parametry,$target_file);
+
+                if ($query->execute()){
+                    $wiadomosc="Produkt został dodany!";
+                } else {
+                    $wiadomosc="Błąd podczas dodawania produktu! ".$conn->error;
+                }
+            } else {
+                $wiadomosc="Wystąpił błąd podczas przesyłania pliku.";
+            }
+        }
+    }else{
+        $wiadomosc="Nie przesłano pliku lub wystąpił błąd.";
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_product'])) {
-    $id = $_POST['id'];
-    $nazwa = $_POST['nazwa'];
-    $id_kategorii = $_POST['id_kategorii'];
-    $id_dostawcy = $_POST['id_dostawcy'];
-    $cena = $_POST['cena'];
 
-    $query = $conn->prepare("UPDATE produkty SET nazwa = ?, id_kategorii = ?, id_dostawcy = ?, cena = ? WHERE id_produktu = ?");
-    $query->bind_param("siidi", $nazwa, $id_kategorii, $id_dostawcy, $cena, $id);
+if ($_SERVER['REQUEST_METHOD']==='POST'&&isset($_POST['edit_product'])){
+    $id=$_POST['id'];
+    $nazwa=$_POST['nazwa'];
+    $id_kategorii=$_POST['id_kategorii'];
+    $id_dostawcy=$_POST['id_dostawcy'];
+    $cena=$_POST['cena'];
+    $parametry=$_POST['parametry'];
 
-    if ($query->execute()) {
-        $wiadomosc = "Dane produktu zostały zapisane!";
-    } else {
-        $wiadomosc = "Błąd podczas edycji produktu!";
+    $query =$conn->prepare("UPDATE produkty SET nazwa = ?, id_kategorii = ?, id_dostawcy = ?, cena = ?, parametry = ? WHERE id_produktu = ?");
+    $query->bind_param("siidsi",$nazwa,$id_kategorii,$id_dostawcy,$cena,$parametry,$id);
+
+    if ($query->execute()){
+        $wiadomosc="Dane produktu zostały zapisane!";
+    }else{
+        $wiadomosc="Błąd podczas edycji produktu! ".$conn->error;
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_product'])) {
-    $id = $_POST['id'];
+if ($_SERVER['REQUEST_METHOD']==='POST' &&isset($_POST['delete_product'])){
+    $id=$_POST['id'];
+    $query=$conn->prepare("DELETE FROM produkty WHERE id_produktu =?");
+    $query->bind_param("i",$id);
 
-    $query = $conn->prepare("DELETE FROM produkty WHERE id_produktu = ?");
-    $query->bind_param("i", $id);
-
-    if ($query->execute()) {
-        $wiadomosc = "Produkt został usunięty!";
-    } else {
-        $wiadomosc = "Błąd podczas usuwania produktu!";
+    if ($query->execute()){
+        $wiadomosc="Produkt został usunięty!";
+    }else{
+        $wiadomosc="Błąd podczas usuwania produktu!";
     }
 }
-
-$query = $conn->prepare("SELECT produkty.id_produktu, produkty.nazwa, kategorie.id_kategorii, kategorie.nazwa_kategorii, 
-                         dostawcy.id_dostawcy, dostawcy.nazwa_dostawcy, produkty.cena
+$query =$conn->prepare("SELECT produkty.id_produktu, produkty.nazwa, kategorie.id_kategorii, kategorie.nazwa_kategorii, 
+                         dostawcy.id_dostawcy, dostawcy.nazwa_dostawcy, produkty.cena, produkty.parametry, produkty.zdjecie
                          FROM produkty
-                         LEFT JOIN kategorie ON produkty.id_kategorii = kategorie.id_kategorii
-                         LEFT JOIN dostawcy ON produkty.id_dostawcy = dostawcy.id_dostawcy");
+                         LEFT JOIN kategorie ON produkty.id_kategorii=kategorie.id_kategorii
+                         LEFT JOIN dostawcy ON produkty.id_dostawcy=dostawcy.id_dostawcy");
 $query->execute();
-$products = $query->get_result();
+$products =$query->get_result();
 ?>
 
 <!DOCTYPE html>
 <html lang="pl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -127,19 +163,24 @@ $products = $query->get_result();
         <div class="card bg-white mb-5 text-dark text-center border-light shadow-sm">
             <div class="card-body">
                 <h2 class="card-title">Dodaj produkt</h2>
-                <form method="POST" class="row g-3">
+                <form method="POST" enctype="multipart/form-data" class="row g-3">
                     <div class="col-md-3">
                         <input type="text" name="nazwa" class="form-control" placeholder="Nazwa produktu" required>
                     </div>
                     <div class="col-md-3">
-                        <input type="number" name="id_kategorii" class="form-control" placeholder="ID Kategorii"
-                            required>
+                        <input type="number" name="id_kategorii" class="form-control" placeholder="ID Kategorii" required>
                     </div>
                     <div class="col-md-2">
                         <input type="number" name="id_dostawcy" class="form-control" placeholder="ID Dostawcy" required>
                     </div>
                     <div class="col-md-2">
-                        <input type="number" name="cena" class="form-control" placeholder="Cena" required>
+                        <input type="number" step="0.01" name="cena" class="form-control" placeholder="Cena" required>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="file" name="zdjecie" class="form-control" required>
+                    </div>
+                    <div class="col-md-12">
+                        <textarea name="parametry" class="form-control" placeholder="Parametry produktu" rows="3"></textarea>
                     </div>
                     <div class="col-12 text-center">
                         <button type="submit" name="add_product" class="btn btn-primary w-50 buy">Dodaj produkt</button>
@@ -170,24 +211,16 @@ $products = $query->get_result();
                         <td>
                             <form method="POST" class="d-inline">
                                 <input type="hidden" name="id" value="<?php echo $product['id_produktu']; ?>">
-                                <input type="text" name="nazwa" value="<?php echo htmlspecialchars($product['nazwa']); ?>"
-                                    class="form-control form-control-sm mb-1" required>
-                                <input type="number" name="id_kategorii"
-                                    value="<?php echo htmlspecialchars($product['id_kategorii']); ?>"
-                                    class="form-control form-control-sm mb-1" required>
-                                <input type="number" name="id_dostawcy"
-                                    value="<?php echo htmlspecialchars($product['id_dostawcy']); ?>"
-                                    class="form-control form-control-sm mb-1" required>
-                                <input type="number" step="0.01" name="cena"
-                                    value="<?php echo htmlspecialchars($product['cena']); ?>"
-                                    class="form-control form-control-sm mb-1" required>
-                                <button type="submit" name="edit_product"
-                                    class="btn btn-warning btn-sm w-100 mb-2">Edytuj</button>
+                                <input type="text" name="nazwa" value="<?php echo htmlspecialchars($product['nazwa']); ?>" class="form-control form-control-sm mb-1" required>
+                                <input type="number" name="id_kategorii" value="<?php echo htmlspecialchars($product['id_kategorii']); ?>" class="form-control form-control-sm mb-1" required>
+                                <input type="number" name="id_dostawcy" value="<?php echo htmlspecialchars($product['id_dostawcy']); ?>" class="form-control form-control-sm mb-1" required>
+                                <input type="number" step="0.01" name="cena" value="<?php echo htmlspecialchars($product['cena']); ?>" class="form-control form-control-sm mb-1" required>
+                                <textarea name="parametry" class="form-control form-control-sm mb-1" placeholder="Parametry produktu" rows="2"><?php echo htmlspecialchars($product['parametry']); ?></textarea>
+                                <button type="submit" name="edit_product" class="btn btn-warning btn-sm w-100 mb-2">Edytuj</button>
                             </form>
-                            <form method="POST" class="d-inline">
+                            <form method="POST" class="d-inline" onsubmit="return confirm('Czy na pewno chcesz usunąć ten produkt?');">
                                 <input type="hidden" name="id" value="<?php echo $product['id_produktu']; ?>">
-                                <button type="submit" name="delete_product"
-                                    class="btn btn-danger btn-sm w-100">Usuń</button>
+                                <button type="submit" name="delete_product" class="btn btn-danger btn-sm w-100">Usuń</button>
                             </form>
                         </td>
                     </tr>

@@ -94,54 +94,53 @@ if (isset($_SESSION['user_id'])) {
                     </ul>
                 </div>
 
-                <div class="d-flex align-items-center">
-                    <a class="nav-link" href="login.php">
-                        <i class="fa-solid fa-user fa-xl fa-fw navicon"></i>
-                    </a>
-                    <a class="nav-link" href="koszyk.php">
-                        <i class="fa-solid fa-cart-shopping fa-xl fa-fw navicon"></i>
-                    </a>
-                </div>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+        <div class="d-flex align-items-center">
+          <a class="nav-link" href="login.php">
+            <i class="fa-solid fa-user fa-xl fa-fw navicon"></i>
+          </a>
+          <a class="nav-link" href="koszyk.php">
+            <i class="fa-solid fa-cart-shopping fa-xl fa-fw navicon"></i>
+          </a>
         </div>
-    </nav>
-    <div class="d-flex justify-content-center">
-        <div id="carouselExampleRide" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="https://static.vecteezy.com/system/resources/thumbnails/003/810/922/small/horizontal-banner-for-black-friday-sale-black-balls-with-shiny-ribbons-golden-letters-vector.jpg"
-                        class="d-block w-100" alt="blackfriday">
-                    <div class="carousel-caption d-none d-md-block">
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="https://www.apple.com/v/iphone-16/c/images/meta/iphone-16_overview__fcivqu9d5t6q_og.png"
-                        class="d-block w-100" alt="iphone">
-                    <div class="carousel-caption d-none d-md-block">
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <img src="https://storage-asset.msi.com/global/picture/apluscontent/reseller/1663812116.jpeg"
-                        class="d-block w-100" alt="nvidia">
-                    <div class="carousel-caption d-none d-md-block">
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide"
-                data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide"
-                data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+    </div>
+  </nav>
+  <div class="d-flex justify-content-center">
+    <div id="carouselExampleRide" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img
+            src="./css/img/slajd4.png"
+            class="d-block w-100" alt="station">
+          <div class="carousel-caption d-none d-md-block">
+          </div>
         </div>
+        <div class="carousel-item">
+          <img src="./css/img/slajd2.png"
+            class="d-block w-100" alt="iphone">
+          <div class="carousel-caption d-none d-md-block">
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="./css/img/slajd3.png"
+            class="d-block w-100" alt="nvidia">
+          <div class="carousel-caption d-none d-md-block">
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="./css/img/slajd1.png"
+            class="d-block w-100" alt="station">
+          <div class="carousel-caption d-none d-md-block">
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleRide" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
     <div class="container-fluid mt-4 glowny">
         <div class="row align-items-center mb-4">
@@ -160,6 +159,10 @@ if (isset($_SESSION['user_id'])) {
                     echo '<input type="hidden" name="id_produktu" value="' . $featured['id_produktu'] . '">';
                     echo '<button type="submit" class="btn btn-primary">Dodaj do koszyka</button>';
                     echo '</form>';
+                    echo '<div class="parametry-overlay">';
+                    echo '<h6>Parametry:</h6>';
+                    echo '<p>'.htmlspecialchars($wybrany['parametry']).'</p>';
+                    echo '</div>';
                     echo '</div>';
                     echo '</div>';
                 }
@@ -287,6 +290,10 @@ if (isset($_SESSION['user_id'])) {
                             echo '<input type="hidden" name="id_produktu" value="' . $produkt['id_produktu'] . '">';
                             echo '<button type="submit" class="btn btn-primary">Dodaj do koszyka</button>';
                             echo '</form>';
+                            echo '<div class="parametry-overlay">';
+                            echo '<h6>Parametry:</h6>';
+                            echo '<p>' .htmlspecialchars($produkt['parametry']).'</p>';
+                            echo '</div>';
                             echo '</div>';
                             echo '</div>';
                         }
@@ -300,259 +307,264 @@ if (isset($_SESSION['user_id'])) {
     </div>
     </div>
 
-    <script>
-        $(document).ready(function () {
-            $('.heart-icon i').on('click', function () {
-                var productId = $(this).data('product-id');
-                var heartIcon = $(this);
-                <?php if (isset($_SESSION['user_id'])) { ?>
-                    if (heartIcon.hasClass('filled-heart')) {
-                        $.ajax({
-                            url: 'usun_z_ulubionych.php',
-                            type: 'POST',
-                            data: { id_produktu: productId },
-                            success: function (response) {
-                                heartIcon.removeClass('fas filled-heart').addClass('far empty-heart');
-                                showPopup('Usunięto produkt z ulubionych', 'green');
-                            },
-                            error: function () {
-                                showPopup('Nie udało się usunąć produktu z ulubionych', 'red');
-                            }
-                        });
-                    } else {
-                        $.ajax({
-                            url: 'dodaj_do_ulubionych.php',
-                            type: 'POST',
-                            data: { id_produktu: productId },
-                            success: function (response) {
-                                heartIcon.removeClass('far empty-heart').addClass('fas filled-heart');
-                                showPopup('Dodano produkt do ulubionych', 'green');
-                            },
-                            error: function () {
-                                showPopup('Nie udało się dodać produktu do ulubionych', 'red');
-                            }
-                        });
-                    }
-                <?php } else { ?>
-                    showPopup('Musisz być zalogowany, aby dodać produkt do ulubionych', 'red');
-                <?php } ?>
-            });
+<script>
+  $(document).ready(function(){
+      $('.heart-icon i').on('click', function(){
+          var productId=$(this).data('product-id');
+          var heartIcon=$(this);
+          <?php if (isset($_SESSION['user_id'])){ ?>
+              if (heartIcon.hasClass('filled-heart')){
+                  $.ajax({
+                      url: 'usun_z_ulubionych.php',
+                      type: 'POST',
+                      data: { id_produktu: productId },
+                      success: function(response){
+                          heartIcon.removeClass('fas filled-heart').addClass('far empty-heart');
+                          showPopup('Usunięto produkt z ulubionych','green');
+                      },
+                      error: function(){
+                          showPopup('Nie udało się usunąć produktu z ulubionych','red');
+                      }
+                  });
+              }else{
+                  $.ajax({
+                      url: 'dodaj_do_ulubionych.php',
+                      type: 'POST',
+                      data: { id_produktu: productId },
+                      success: function(response){
+                          heartIcon.removeClass('far empty-heart').addClass('fas filled-heart');
+                          showPopup('Dodano produkt do ulubionych','green');
+                      },
+                      error: function(){
+                          showPopup('Nie udało się dodać produktu do ulubionych','red');
+                      }
+                  });
+              }
+          <?php }else{ ?>
+              showPopup('Musisz być zalogowany, aby dodać produkt do ulubionych','red');
+          <?php } ?>
+      });
 
-            function showPopup(message, color) {
-                var popup = $('<div class="popup-message"></div>').text(message).css({
-                    'background-color': color,
-                    'color': 'white',
-                    'padding': '10px',
-                    'position': 'fixed',
-                    'top': '20px',
-                    'right': '20px',
-                    'z-index': '10000',
-                    'border-radius': '5px',
-                    'display': 'none'
-                });
-                $('body').append(popup);
-                popup.fadeIn().delay(2000).fadeOut(function () {
-                    $(this).remove();
-                });
+      function showPopup(message, color){
+          var popup=$('<div class="popup-message"></div>').text(message).css({
+                'background-color': color,
+                'color': 'white',
+                'padding': '10px',
+                'position': 'fixed',
+                'top': '100px',
+                'left': '50%',
+                'transform': 'translateX(-50%)',
+                'z-index': '10000',
+                'border-radius': '6px',
+                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                'text-align': 'center',
+                'max-width': '300px',
+                'display': 'none'
+            });
+          $('body').append(popup);
+          popup.fadeIn().delay(2000).fadeOut(function (){
+              $(this).remove();
+          });
+      }
+  });
+  </script>
+      <script>
+  $(document).ready(function (){
+      $('form[action="dodaj_do_koszyka.php"]').on('submit',function (e){
+          e.preventDefault();
+          var form=$(this );
+          var formData=form.serialize();
+
+          $.ajax({
+              url: 'dodaj_do_koszyka.php',
+              type: 'POST',
+              data: formData,
+              dataType: 'json',
+              success: function (response){
+                  if (response.status==='success'){
+                      showPopup(response.message,'green');
+                  }else{
+                      showPopup(response.message,'red');
+                  }
+              },
+              error: function (){
+                  showPopup('Wystąpił błąd podczas dodawania produktu do koszyka','red');
+              }
+          });
+      });
+
+      function showPopup(message, color){
+          var popup=$('<div class="popup-message"></div>').text(message).css({
+                'background-color': color,
+                'color': 'white',
+                'padding': '10px',
+                'position': 'fixed',
+                'top': '100px',
+                'left': '50%',
+                'transform': 'translateX(-50%)',
+                'z-index': '10000',
+                'border-radius': '6px',
+                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                'text-align': 'center',
+                'max-width': '300px',
+                'display': 'none'
+            });
+          $('body').append(popup);
+          popup.fadeIn().delay(2000).fadeOut(function (){
+              $(this).remove();
+          });
+      }
+  });
+  </script>
+  <script>
+$(document).ready(function (){
+    function wyswietlProdukty() {
+        var wyszukaj=$('#wyszukaj').val();
+        var min_cena=$('#min_cena').val();
+        var max_cena=$('#max_cena').val();
+        var id_kategorii=$('.category-link.active').data('id_kategorii') || 0;
+
+        $.ajax({
+            url: 'wyswietl_produkty.php',
+            type: 'GET',
+            data: {
+                wyszukaj: wyszukaj, 
+                min_cena: min_cena,
+                max_cena: max_cena,
+                id_kategorii: id_kategorii
+            },
+            dataType: 'json',
+            success: function (response){
+                if (response.status==='success'){
+                    $('#produkty-lista').html(response.produkty_html);
+                    zalaczDodajKoszyk();
+                    zalaczDodajUlub();
+                }else{
+                    showPopup('Wystąpił problem z filtrowaniem.','red');
+                }
+            },
+            error:function (){
+                showPopup('Wystąpił błąd komunikacji z serwerem.','red');
+                $('#produkty-lista').html('<p>Wystąpił błąd podczas ładowania produktów.</p>');
             }
         });
-    </script>
-    <script>
-        $(document).ready(function () {
-            $('form[action="dodaj_do_koszyka.php"]').on('submit', function (e) {
-                e.preventDefault();
-                var form = $(this);
-                var formData = form.serialize();
+    }
+    var typingTimer;
+    var typingInterval=500; //pul sek
 
-                $.ajax({
-                    url: 'dodaj_do_koszyka.php',
-                    type: 'POST',
-                    data: formData,
-                    dataType: 'json',
-                    success: function (response) {
-                        if (response.status === 'success') {
-                            showPopup(response.message, 'green');
-                        } else {
-                            showPopup(response.message, 'red');
-                        }
-                    },
-                    error: function () {
-                        showPopup('Wystąpił błąd podczas dodawania produktu do koszyka', 'red');
-                    }
-                });
+    $('#wyszukaj').on('keyup',function (){
+        clearTimeout(typingTimer);
+        typingTimer=setTimeout(wyswietlProdukty,typingInterval);
+    });
+
+    $('#wyszukaj').on('keydown',function (){
+        clearTimeout(typingTimer);
+    });
+
+    $('#min_cena, #max_cena').on('input',function (){
+      wyswietlProdukty();
+    });
+
+    $(document).on('click','.category-link',function (e){
+        e.preventDefault();
+        $('.category-link').removeClass('active');
+        $(this).addClass('active');
+        wyswietlProdukty();
+    });
+
+    $('#filter-form').on('submit',function (e){
+        e.preventDefault();
+        wyswietlProdukty();
+    });
+
+    function showPopup(message, color){
+          var popup=$('<div class="popup-message"></div>').text(message).css({
+                'background-color': color,
+                'color': 'white',
+                'padding': '10px',
+                'position': 'fixed',
+                'top': '100px',
+                'left': '50%',
+                'transform': 'translateX(-50%)',
+                'z-index': '10000',
+                'border-radius': '6px',
+                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                'text-align': 'center',
+                'max-width': '300px',
+                'display': 'none'
             });
+          $('body').append(popup);
+          popup.fadeIn().delay(2000).fadeOut(function (){
+              $(this).remove();
+          });
+    }
 
-            function showPopup(message, color) {
-                var popup = $('<div class="popup-message"></div>').text(message).css({
-                    'background-color': color,
-                    'color': 'white',
-                    'padding': '10px',
-                    'position': 'fixed',
-                    'top': '20px',
-                    'right': '20px',
-                    'z-index': '10000',
-                    'border-radius': '5px',
-                    'display': 'none'
-                });
-                $('body').append(popup);
-                popup.fadeIn().delay(2000).fadeOut(function () {
-                    $(this).remove();
-                });
-            }
+    function zalaczDodajKoszyk(){
+        $('form.add-to-cart-form').off('submit').on('submit', function (e){
+            e.preventDefault();
+            var form=$(this);
+            var formData=form.serialize();
+
+            $.ajax({
+                url: 'dodaj_do_koszyka.php',
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function (response){
+                    if (response.status==='success'){
+                        showPopup(response.message,'green');
+                    }else{
+                        showPopup(response.message,'red');
+                    }
+                },
+                error: function (){
+                    showPopup('Wystąpił błąd podczas dodawania do koszyka','red');
+                }
+            });
         });
-    </script>
-    <footer class="bg-dark text-white py-4">
-        <div class="container">
-            <div class="text-center mt-4 flexf">
-                <p>&copy; 2024 BYTE . Wszelkie prawa zastrzeżone.</p>
-            </div>
-        </div>
-    </footer>
-    <script>
-        $(document).ready(function () {
-            function wyswietlProdukty() {
-                var wyszukaj = $('#wyszukaj').val();
-                var min_cena = $('#min_cena').val();
-                var max_cena = $('#max_cena').val();
-                var id_kategorii = $('.category-link.active').data('id_kategorii') || 0;
+    }
 
-                $.ajax({
-                    url: 'wyswietl_produkty.php',
-                    type: 'GET',
-                    data: {
-                        wyszukaj: wyszukaj,
-                        min_cena: min_cena,
-                        max_cena: max_cena,
-                        id_kategorii: id_kategorii
-                    },
-                    dataType: 'json',
-                    success: function (response) {
-                        if (response.status === 'success') {
-                            $('#produkty-lista').html(response.produkty_html);
-                            zalaczDodajKoszyk();
-                            zalaczDodajUlub();
-                        } else {
-                            showPopup('Wystąpił problem z filtrowaniem.', 'red');
-                        }
-                    },
-                    error: function () {
-                        showPopup('Wystąpił błąd komunikacji z serwerem.', 'red');
-                        $('#produkty-lista').html('<p>Wystąpił błąd podczas ładowania produktów.</p>');
-                    }
-                });
-            }
-            var typingTimer;
-            var typingInterval = 500; //pul sek
-
-            $('#wyszukaj').on('keyup', function () {
-                clearTimeout(typingTimer);
-                typingTimer = setTimeout(wyswietlProdukty, typingInterval);
-            });
-
-            $('#wyszukaj').on('keydown', function () {
-                clearTimeout(typingTimer);
-            });
-
-            $('#min_cena, #max_cena').on('input', function () {
-                wyswietlProdukty();
-            });
-
-            $(document).on('click', '.category-link', function (e) {
-                e.preventDefault();
-                $('.category-link').removeClass('active');
-                $(this).addClass('active');
-                wyswietlProdukty();
-            });
-
-            $('#filter-form').on('submit', function (e) {
-                e.preventDefault();
-                wyswietlProdukty();
-            });
-
-            function showPopup(message, color) {
-                var popup = $('<div class="popup-message"></div>').text(message).css({
-                    'background-color': color,
-                    'color': 'white',
-                    'padding': '10px',
-                    'position': 'fixed',
-                    'top': '20px',
-                    'right': '20px',
-                    'z-index': '10000',
-                    'border-radius': '5px',
-                    'display': 'none'
-                });
-                $('body').append(popup);
-                popup.fadeIn().delay(2000).fadeOut(function () {
-                    $(this).remove();
-                });
-            }
-
-            function zalaczDodajKoszyk() {
-                $('form.add-to-cart-form').off('submit').on('submit', function (e) {
-                    e.preventDefault();
-                    var form = $(this);
-                    var formData = form.serialize();
-
+    function zalaczDodajUlub(){
+        $('.heart-icon i').off('click').on('click',function (){
+            var productId=$(this).data('product-id');
+            var heartIcon=$(this);
+            <?php if (isset($_SESSION['user_id'])){ ?>
+                if (heartIcon.hasClass('filled-heart')){
                     $.ajax({
-                        url: 'dodaj_do_koszyka.php',
+                        url: 'usun_z_ulubionych.php',
                         type: 'POST',
-                        data: formData,
-                        dataType: 'json',
-                        success: function (response) {
-                            if (response.status === 'success') {
-                                showPopup(response.message, 'green');
-                            } else {
-                                showPopup(response.message, 'red');
-                            }
+                        data: { id_produktu: productId },
+                        success: function (response){
+                            heartIcon.removeClass('fas filled-heart').addClass('far empty-heart');
+                            showPopup('Usunięto produkt z ulubionych','green');
                         },
-                        error: function () {
-                            showPopup('Wystąpił błąd podczas dodawania do koszyka', 'red');
+                        error: function (){
+                            showPopup('Nie udało się usunąć produktu z ulubionych','red');
                         }
                     });
-                });
-            }
-
-            function zalaczDodajUlub() {
-                $('.heart-icon i').off('click').on('click', function () {
-                    var productId = $(this).data('product-id');
-                    var heartIcon = $(this);
-                    <?php if (isset($_SESSION['user_id'])) { ?>
-                        if (heartIcon.hasClass('filled-heart')) {
-                            $.ajax({
-                                url: 'usun_z_ulubionych.php',
-                                type: 'POST',
-                                data: { id_produktu: productId },
-                                success: function (response) {
-                                    heartIcon.removeClass('fas filled-heart').addClass('far empty-heart');
-                                    showPopup('Usunięto produkt z ulubionych', 'green');
-                                },
-                                error: function () {
-                                    showPopup('Nie udało się usunąć produktu z ulubionych', 'red');
-                                }
-                            });
-                        } else {
-                            $.ajax({
-                                url: 'dodaj_do_ulubionych.php',
-                                type: 'POST',
-                                data: { id_produktu: productId },
-                                success: function (response) {
-                                    heartIcon.removeClass('far empty-heart').addClass('fas filled-heart');
-                                    showPopup('Dodano produkt do ulubionych', 'green');
-                                },
-                                error: function () {
-                                    showPopup('Nie udało się dodać produktu do ulubionych', 'red');
-                                }
-                            });
+                } else {
+                    $.ajax({
+                        url: 'dodaj_do_ulubionych.php',
+                        type: 'POST',
+                        data: { id_produktu: productId },
+                        success: function (response){
+                            heartIcon.removeClass('far empty-heart').addClass('fas filled-heart');
+                            showPopup('Dodano produkt do ulubionych','green');
+                        },
+                        error: function (){
+                            showPopup('Nie udało się dodać produktu do ulubionych','red');
                         }
-                    <?php } else { ?>
-                        showPopup('Musisz być zalogowany, żeby dodać produkt do ulubionych', 'red');
-                    <?php } ?>
-                });
-            }
-            zalaczDodajKoszyk();
-            zalaczDodajUlub();
+                    });
+                }
+            <?php }else{ ?>
+              showPopup('Musisz być zalogowany, żeby dodać produkt do ulubionych','red');
+            <?php } ?>
         });
-    </script>
+    }
+    zalaczDodajKoszyk();
+  zalaczDodajUlub();
+});
+</script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
