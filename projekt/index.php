@@ -136,7 +136,7 @@ if (isset($_SESSION['user_id'])){
       </button>
     </div>
   </div>
-  <div class="container-fluid mt-4">
+  <div class="container-fluid mt-4 glowny">
     <div class="row align-items-center mb-4">
       <div class="col-md-3 d-flex flex-column justify-content-center">
         <?php
