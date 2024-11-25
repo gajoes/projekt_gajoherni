@@ -12,64 +12,45 @@ $sql = "SELECT * FROM uzytkownicy
 $stmt = $mysqli->prepare($sql);
 
 $stmt->bind_param("s", $token_hash);
-
 $stmt->execute();
 
 $result = $stmt->get_result();
+$user = $result->fetch_assoc();
 
-$username = $result->fetch_assoc();
-
-if ($username === null) {
-  die("token not found");
+if ($user === null || strtotime($user["reset_token_expires_at"]) <= time()) {
+    die("Nieprawidłowy lub wygasły token.");
 }
-
-if (strtotime($username["reset_token_expires_at"]) <= time()) {
-  die("token has expired");
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="pl">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reset hasła</title>
   <link rel="stylesheet" href="./css/stylesLogin.css">
 </head>
-
 <body>
   <div class="containerMain">
     <div class="container">
       <p class="forgetText">Ustaw nowe hasło</p>
-      <div id="error-popup" class="error-popup">Hasła do siebie nie pasują!</div>
-      <form id="login" class="forms" method="POST" action="processResetPassword.php"
-        onsubmit="return walidacjaHasla();">
+      <form id="login" class="forms" method="POST" action="processResetPassword.php">
         <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
         <input type="password" id="password" class="data" name="password" placeholder="Nowe hasło" required>
-        <input type="password" id="confirm_password" class="data" name="confirm_password" placeholder="Powtórz hasło"
-          required>
-        <button type="submit" name="login" class="btn-submit">Ustaw</button>
+        <input type="password" id="confirm_password" class="data" name="confirm_password" placeholder="Powtórz hasło" required>
+        <button type="submit" class="btn-submit">Ustaw</button>
       </form>
     </div>
   </div>
 </body>
-
 <script>
-
-  function walidacjaHasla() {
-    var password = document.getElementById("password").value;
-    var confirmPassword = document.getElementById("confirm_password").value;
-    var errorPopup = document.getElementById("error-popup");
-
-    if (password !== confirmPassword) {
-      errorPopup.style.display = "block";
+  document.getElementById('login').onsubmit = function () {
+    const password = document.getElementById('password').value;
+    const confirm = document.getElementById('confirm_password').value;
+    if (password !== confirm) {
+      alert('Hasła nie pasują do siebie!');
       return false;
     }
-    errorPopup.style.display = "none";
     return true;
-  }
-
+  };
 </script>
-
 </html>
