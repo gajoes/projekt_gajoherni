@@ -326,20 +326,24 @@ if (isset($_SESSION['user_id'])){
           <?php } ?>
       });
 
-      function showPopup(message,color){
+      function showPopup(message, color){
           var popup=$('<div class="popup-message"></div>').text(message).css({
-              'background-color': color,
-              'color': 'white',
-              'padding': '10px',
-              'position': 'fixed',
-              'top': '20px',
-              'right': '20px',
-              'z-index': '10000',
-              'border-radius': '5px',
-              'display': 'none'
-          });
+                'background-color': color,
+                'color': 'white',
+                'padding': '10px',
+                'position': 'fixed',
+                'top': '100px',
+                'left': '50%',
+                'transform': 'translateX(-50%)',
+                'z-index': '10000',
+                'border-radius': '6px',
+                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                'text-align': 'center',
+                'max-width': '300px',
+                'display': 'none'
+            });
           $('body').append(popup);
-          popup.fadeIn().delay(2000).fadeOut(function(){
+          popup.fadeIn().delay(2000).fadeOut(function (){
               $(this).remove();
           });
       }
@@ -372,16 +376,20 @@ if (isset($_SESSION['user_id'])){
 
       function showPopup(message, color){
           var popup=$('<div class="popup-message"></div>').text(message).css({
-              'background-color': color,
-              'color': 'white',
-              'padding': '10px',
-              'position': 'fixed',
-              'top': '20px',
-              'right': '20px',
-              'z-index': '10000',
-              'border-radius': '5px',
-              'display': 'none'
-          });
+                'background-color': color,
+                'color': 'white',
+                'padding': '10px',
+                'position': 'fixed',
+                'top': '100px',
+                'left': '50%',
+                'transform': 'translateX(-50%)',
+                'z-index': '10000',
+                'border-radius': '6px',
+                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                'text-align': 'center',
+                'max-width': '300px',
+                'display': 'none'
+            });
           $('body').append(popup);
           popup.fadeIn().delay(2000).fadeOut(function (){
               $(this).remove();
@@ -451,21 +459,25 @@ $(document).ready(function (){
     });
 
     function showPopup(message, color){
-        var popup = $('<div class="popup-message"></div>').text(message).css({
-            'background-color': color,
-            'color': 'white',
-            'padding': '10px',
-            'position': 'fixed',
-            'top': '20px',
-            'right': '20px',
-            'z-index': '10000',
-            'border-radius': '5px',
-            'display': 'none'
-        });
-        $('body'). append(popup);
-        popup.fadeIn().delay(2000).fadeOut(function (){
-            $(this).remove();
-        });
+          var popup=$('<div class="popup-message"></div>').text(message).css({
+                'background-color': color,
+                'color': 'white',
+                'padding': '10px',
+                'position': 'fixed',
+                'top': '100px',
+                'left': '50%',
+                'transform': 'translateX(-50%)',
+                'z-index': '10000',
+                'border-radius': '6px',
+                'box-shadow': '0 2px 4px rgba(0, 0, 0, 0.2)',
+                'text-align': 'center',
+                'max-width': '300px',
+                'display': 'none'
+            });
+          $('body').append(popup);
+          popup.fadeIn().delay(2000).fadeOut(function (){
+              $(this).remove();
+          });
     }
 
     function zalaczDodajKoszyk(){
