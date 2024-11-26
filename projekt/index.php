@@ -188,10 +188,12 @@ if (isset($_SESSION['user_id'])){
                     echo '<input type="hidden" name="id_produktu" value="'.$wybrany['id_produktu'] . '">';
                     echo '<button type="submit" class="btn btn-primary">Dodaj do koszyka</button>';
                     echo '</form>';
+                    echo '<a href="produkt.php?id_produktu='.$wybrany['id_produktu'].'">';
                     echo '<div class="parametry-overlay">';
                     echo '<h6>Parametry:</h6>';
-                    echo '<p>'.htmlspecialchars($wybrany['parametry']).'</p>';
+                    echo '<p>' .htmlspecialchars($wybrany['parametry']).'</p>';
                     echo '</div>';
+                    echo '</a>';
                     echo '</div>';
                     echo '</div>';
                 }
@@ -285,10 +287,12 @@ if (isset($_SESSION['user_id'])){
                             echo '<input type="hidden" name="id_produktu" value="'.$produkt['id_produktu'].'">';
                             echo '<button type="submit" class="btn btn-primary">Dodaj do koszyka</button>';
                             echo '</form>';
+                            echo '<a href="produkt.php?id_produktu='.$produkt['id_produktu'].'">';
                             echo '<div class="parametry-overlay">';
                             echo '<h6>Parametry:</h6>';
                             echo '<p>' .htmlspecialchars($produkt['parametry']).'</p>';
                             echo '</div>';
+                            echo '</a>';
                             echo '</div>';
                             echo '</div>';
                         }
@@ -560,7 +564,7 @@ $(document).ready(function (){
   zalaczDodajUlub();
 });
 </script>
-<footer class="bg-dark text-white py-4">
+<footer class="bg-dark text-white py-4 stopka">
         <div class="container">
             <div class="text-center mt-4 flexf">
                 <p>&copy; 2024 BYTE . Wszelkie prawa zastrzeżone.</p>

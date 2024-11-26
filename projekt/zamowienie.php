@@ -93,6 +93,9 @@ function calculateCartTotal($koszyk, $conn)
 </head>
 
 <body>
+<div class="containerArrow">
+    <a class="strzalka" href="koszyk.php"><i class="arrow right"></i>Wróć</a>
+  </div>
     <div class="container mt-4">
         <h3>Formularz zamówienia</h3>
         <form method="POST">

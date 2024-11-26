@@ -22838,3 +22838,14 @@ nav{
   font-size: 18px;
   font-weight: bold;
 }
+
+.produkt-zdjecie{
+  max-width: 300px;
+  max-height: 100px;
+}
+
+.stopka{
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}

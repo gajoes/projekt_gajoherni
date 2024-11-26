@@ -16,7 +16,7 @@ require_once 'database.php';
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-elements-font">
+<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-elements-font">
     <div class="container-fluid">
       <a class="navbar-brand">
         <img src="./css/img/Tech.png" width="30" height="30" class="d-inline-block align-top brand-logo-sizing"
@@ -38,11 +38,11 @@ require_once 'database.php';
             <li class="nav-item">
               <a class="nav-link" href="./kontakt.php">Kontakt</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="./regulamin.php">Regulamin</a>
+            <li class="nav-item ">
+              <a class="nav-link" href="index.php">Zakupy</a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              </div>
             </li>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            </div>
           </ul>
         </div>
 
@@ -50,14 +50,16 @@ require_once 'database.php';
           <a class="nav-link" href="login.php">
             <i class="fa-solid fa-user fa-xl fa-fw navicon"></i>
           </a>
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="koszyk.php">
             <i class="fa-solid fa-cart-shopping fa-xl fa-fw navicon"></i>
           </a>
         </div>
     </div>
   </nav>
-  <br>
-  <br>
+<br>
+<br>
+<br>
+<br>
   <div class="container mt-5 navcwe">
     <br>
     <br>

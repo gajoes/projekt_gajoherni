@@ -13,13 +13,13 @@ if (!isset($_SESSION['employee_id'])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel Pracownika</title>
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="style.css">
   <script src="https://kit.fontawesome.com/78fa2015f8.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-elements-font">
+<nav class="navbar navbar-expand-lg navbar-light bg-light navbar-elements-font">
     <div class="container-fluid">
       <a class="navbar-brand">
         <img src="./css/img/Tech.png" width="30" height="30" class="d-inline-block align-top brand-logo-sizing"
@@ -41,6 +41,11 @@ if (!isset($_SESSION['employee_id'])) {
             <li class="nav-item">
               <a class="nav-link" href="./kontakt.php">Kontakt</a>
             </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="index.php">Zakupy</a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              </div>
+            </li>
           </ul>
         </div>
 
@@ -48,16 +53,16 @@ if (!isset($_SESSION['employee_id'])) {
           <a class="nav-link" href="login.php">
             <i class="fa-solid fa-user fa-xl fa-fw navicon"></i>
           </a>
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="koszyk.php">
             <i class="fa-solid fa-cart-shopping fa-xl fa-fw navicon"></i>
           </a>
         </div>
     </div>
   </nav>
-  <br>
-  <br>
-  <br>
-  <br>
+<br>
+<br>
+<br>
+<br>
   <br>
   <br>
   <br>
