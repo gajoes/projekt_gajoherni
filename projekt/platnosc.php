@@ -122,6 +122,9 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="containerArrow">
+    <a class="strzalka" href="zamowienie.php"><i class="arrow right"></i>Wróć</a>
+  </div>
 <div class="container mt-4">
     <h3>Finalizacja płatności</h3>
     <p>Kwota do zapłaty:<strong><?php echo number_format($suma,2);?> PLN</strong></p>

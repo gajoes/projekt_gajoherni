@@ -1,50 +1,40 @@
 <?php
 
 $token = $_POST["token"];
-
 $token_hash = hash("sha256", $token);
 
 $mysqli = require __DIR__ . "/database.php";
 
-$sql = "SELECT * FROM Uzytkownicy
+$sql = "SELECT * FROM uzytkownicy
         WHERE reset_token_hash = ?";
 
 $stmt = $mysqli->prepare($sql);
 
 $stmt->bind_param("s", $token_hash);
-
 $stmt->execute();
 
 $result = $stmt->get_result();
+$user = $result->fetch_assoc();
 
-$username = $result->fetch_assoc();
-
-if ($username === null) {
-  die("token not found");
+if ($user === null || strtotime($user["reset_token_expires_at"]) <= time()) {
+    die("Nieprawidłowy lub wygasły token.");
 }
 
-if (strtotime($username["reset_token_expires_at"]) <= time()) {
-  die("token has expired");
-}
+$new_password = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
-$haslo = password_hash($_POST["password"], PASSWORD_DEFAULT);
-
-$sql = "UPDATE Uzytkownicy
-        SET haslo = ?,
-            reset_token_hash = NULL,
-            reset_token_expires_at = NULL
+$sql = "UPDATE uzytkownicy
+        SET haslo = ?, reset_token_hash = NULL, reset_token_expires_at = NULL
         WHERE id_uzytkownika = ?";
 
 $stmt = $mysqli->prepare($sql);
-if ($stmt === false) {
-  die("MySQL prepare error: " . $mysqli->error);
-}
-
-$stmt->bind_param("ss", $haslo, $username["id_uzytkownika"]);
-
+$stmt->bind_param("si", $new_password, $user["id_uzytkownika"]);
 $stmt->execute();
 
+echo "Hasło zostało pomyślnie zmienione.";
+header("Location: login.php");
+exit;
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
