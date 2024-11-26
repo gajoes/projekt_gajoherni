@@ -22504,6 +22504,7 @@ body{
 .parametry-overlay {
   position: absolute;
   left: 0;
+  top: -30px;
   width: 100%;
   max-height: calc(100% - 50px);
   background: rgba(0, 0, 0, 0.8);
