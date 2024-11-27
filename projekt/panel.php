@@ -187,22 +187,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <h2 class="mt-5">Lista zamówień</h2>
         <?php
-        $zamowienia_kw = $conn->prepare("SELECT id_zamowienia,data_zamowienia, username,email,imie,nazwisko FROM zamowienia 
-                                        WHERE id_uzytkownika =?");
+        $zamowienia_kw = $conn->prepare("SELECT zamowienia.id_zamowienia, zamowienia.data_zamowienia, uzytkownicy.username, uzytkownicy.email, uzytkownicy.imie, uzytkownicy.nazwisko, kontakty.nr_tel, produkty.nazwa AS nazwa_produkt FROM zamowienia
+    JOIN zamowienia_produkty ON zamowienia.id_zamowienia=zamowienia_produkty.id_zamowienia
+    JOIN produkty ON zamowienia_produkty.id_produktu=produkty.id_produktu
+    JOIN uzytkownicy ON zamowienia.id_uzytkownika=uzytkownicy.id_uzytkownika
+    LEFT JOIN kontakty ON uzytkownicy.id_uzytkownika=kontakty.id_uzytkownika
+    WHERE zamowienia.id_uzytkownika =?");
         $zamowienia_kw->bind_param("i", $user_id);
         $zamowienia_kw->execute();
         $zamowienia_wynik = $zamowienia_kw->get_result();
 
         if ($zamowienia_wynik->num_rows > 0) {
           echo "<table class='table table-striped'>";
-          echo "<thead><tr><th>ID Zamówienia</th><th>Data Zamówienia</th><th>Username</th><th>Email</th><th>Imię</th><th>Nazwisko</th></tr></thead><tbody>";
+          echo "<thead><tr><th>ID Zamówienia</th><th>Data Zamówienia</th><th>Email</th><th>Numer telefonu</th><th>Imię</th><th>Nazwisko</th><th>Produkt</th></tr></thead><tbody>";
           while ($row = $zamowienia_wynik->fetch_assoc()) {
             echo "<tr><td>" . htmlspecialchars($row['id_zamowienia']) . "</td>
                       <td>" . htmlspecialchars($row['data_zamowienia']) . "</td>
-                      <td>" . htmlspecialchars($row['username']) . "</td>
                       <td>" . htmlspecialchars($row['email']) . "</td>
+                      <td>" . htmlspecialchars($row['nr_tel']) . "</td>
                       <td>" . htmlspecialchars($row['imie']) . "</td>
                       <td>" . htmlspecialchars($row['nazwisko']) . "</td>
+                      <td>" . htmlspecialchars($row['nazwa_produkt']) . "</td>
                   </tr>";
           }
           echo "</tbody></table>";
