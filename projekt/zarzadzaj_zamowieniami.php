@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_order'])) {
     $nr_tel = $_POST['nr_tel'];
     $imie = $_POST['imie'];
     $nazwisko = $_POST['nazwisko'];
+    $status = $_POST['status'];
 
     $query_user = $conn->prepare("SELECT id_uzytkownika FROM zamowienia WHERE id_zamowienia = ?");
     $query_user->bind_param("i", $id_zamowienia);
@@ -21,8 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_order'])) {
     $user = $result->fetch_assoc();
     $id_uzytkownika = $user['id_uzytkownika'];
 
-    $query = $conn->prepare("UPDATE zamowienia SET email = ?, imie = ?, nazwisko = ? WHERE id_zamowienia = ?");
-    $query->bind_param("sssi", $email, $imie, $nazwisko, $id_zamowienia);
+    $query = $conn->prepare("UPDATE zamowienia SET email = ?, imie = ?, nazwisko = ?, status =? WHERE id_zamowienia = ?");
+    $query->bind_param("sssis", $email, $imie, $nazwisko, $id_zamowienia, $status);
 
     if ($query->execute()){
         $query_tel=$conn->prepare("UPDATE kontakty SET nr_tel = ? WHERE id_uzytkownika = ?");
@@ -54,8 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_order'])) {
 }
 
 $query = $conn->prepare("
-    SELECT z.id_zamowienia, u.username, z.email, z.imie, z.nazwisko, z.data_zamowienia, z.id_uzytkownika, 
-           p.nazwa AS nazwa_produktu, zp.ilosc, k.nr_tel, 
+    SELECT z.id_zamowienia, u.username, z.email, z.imie, z.nazwisko, z.data_zamowienia, z.id_uzytkownika, p.nazwa AS nazwa_produktu, zp.ilosc, k.nr_tel, z.status,
            CONCAT(za.ulica,' ',za.nr_domu,'/',za.nr_mieszkania,',',za.miasto,' ',za.kod_pocztowy) AS adres
     FROM zamowienia z
     LEFT JOIN zamowienia_produkty zp ON z.id_zamowienia = zp.id_zamowienia
@@ -143,6 +143,7 @@ $orders = $query->get_result();
                     <th>Ilość</th>
                     <th>Adres</th>
                     <th>ID użytkownika</th>
+                    <th>Status</th>
                     <th>Zmiany</th>
                 </tr>
             </thead>
@@ -160,6 +161,7 @@ $orders = $query->get_result();
                         <td><?php echo htmlspecialchars($order['ilosc']); ?></td>
                         <td><?php echo htmlspecialchars($order['adres']); ?></td>
                         <td><?php echo htmlspecialchars($order['id_uzytkownika']); ?></td>
+                        <td><?php echo htmlspecialchars($order['status']); ?></td>
                         <td>
                         <form method="POST" class="d-inline zmiany">
                             <input type="hidden" name="id" value="<?php echo $order['id_zamowienia']; ?>">
@@ -173,6 +175,12 @@ $orders = $query->get_result();
                                 class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                             <input type="text" name="nazwisko" value="<?php echo htmlspecialchars($order['nazwisko']); ?>"
                                 class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
+                            <select name="status" class="form-control form-control-sm mb-1">
+                                <option value="Oczekujące" <?php if ($order['status'] == 'Oczekujące') echo 'selected'; ?>>Oczekujące</option>
+                                <option value="W trakcie" <?php if ($order['status'] == 'W trakcie') echo 'selected'; ?>>W trakcie</option>
+                                <option value="Zrealizowane" <?php if ($order['status'] == 'Zrealizowane') echo 'selected'; ?>>Zrealizowane</option>
+                                <option value="Anulowane" <?php if ($order['status'] == 'Anulowane') echo 'selected'; ?>>Anulowane</option>
+                            </select>
                             <button type="submit" name="edit_order" class="btn btn-warning btn-sm w-100">Edytuj</button>
                         </form>
 
@@ -186,6 +194,7 @@ $orders = $query->get_result();
             </tbody>
         </table>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

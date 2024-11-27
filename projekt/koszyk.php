@@ -142,6 +142,11 @@ $_SESSION['suma_koszyka'] = $razem;
     <a href="zamowienie.php" class="btn btn-primary w-100">Przejdź do zakupu</a>
   </td>
 </tr>
+<tr>
+  <td colspan="5">
+    <a href="status_zamowienia.php" class="btn btn-secondary w-100">Zobacz status zamówienia</a>
+  </td>
+</tr>
         </tfoot>
       </table>
     </form>
@@ -170,6 +175,7 @@ document.addEventListener('DOMContentLoaded',function (){
     });
 });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

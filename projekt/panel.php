@@ -187,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <h2 class="mt-5">Lista zamówień</h2>
         <?php
-        $zamowienia_kw = $conn->prepare("SELECT zamowienia.id_zamowienia, zamowienia.data_zamowienia, uzytkownicy.username, uzytkownicy.email, uzytkownicy.imie, uzytkownicy.nazwisko, kontakty.nr_tel, produkty.nazwa AS nazwa_produkt FROM zamowienia
+        $zamowienia_kw = $conn->prepare("SELECT zamowienia.id_zamowienia, zamowienia.data_zamowienia, uzytkownicy.username, uzytkownicy.email, uzytkownicy.imie, uzytkownicy.nazwisko, kontakty.nr_tel, produkty.nazwa AS nazwa_produkt, zamowienia.status FROM zamowienia
     JOIN zamowienia_produkty ON zamowienia.id_zamowienia=zamowienia_produkty.id_zamowienia
     JOIN produkty ON zamowienia_produkty.id_produktu=produkty.id_produktu
     JOIN uzytkownicy ON zamowienia.id_uzytkownika=uzytkownicy.id_uzytkownika
@@ -199,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($zamowienia_wynik->num_rows > 0) {
           echo "<table class='table table-striped'>";
-          echo "<thead><tr><th>ID Zamówienia</th><th>Data Zamówienia</th><th>Email</th><th>Numer telefonu</th><th>Imię</th><th>Nazwisko</th><th>Produkt</th></tr></thead><tbody>";
+          echo "<thead><tr><th>ID Zamówienia</th><th>Data Zamówienia</th><th>Email</th><th>Numer telefonu</th><th>Imię</th><th>Nazwisko</th><th>Produkt</th><th>Status</th></tr></thead><tbody>";
           while ($row = $zamowienia_wynik->fetch_assoc()) {
             echo "<tr><td>" . htmlspecialchars($row['id_zamowienia']) . "</td>
                       <td>" . htmlspecialchars($row['data_zamowienia']) . "</td>
@@ -208,6 +208,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                       <td>" . htmlspecialchars($row['imie']) . "</td>
                       <td>" . htmlspecialchars($row['nazwisko']) . "</td>
                       <td>" . htmlspecialchars($row['nazwa_produkt']) . "</td>
+                      <td>" . htmlspecialchars($row['status']) . "</td>
                   </tr>";
           }
           echo "</tbody></table>";
@@ -262,27 +263,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       text-align: center;
     }
 
-    /* Ustawienie kontenera z formularzem po lewej stronie i listami po prawej */
     .content-wrapper {
       display: flex;
       justify-content: space-between;
-      /* Ustawienie elementów na lewą i prawą stronę */
       gap: 10px;
-      /* Odstęp między sekcjami */
       margin-top: 10px;
     }
 
     .form-container {
       width: 48%;
-      /* Szerokość formularza */
     }
 
     .lists-container {
       width: 48%;
-      /* Szerokość sekcji z listami */
     }
 
-    /* Dostosowanie tabeli i list */
     table {
       width: 100%;
     }
@@ -296,7 +291,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       height: 37px;
     }
   </style>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-
 </html>

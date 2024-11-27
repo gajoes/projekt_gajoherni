@@ -28,67 +28,6 @@ if (isset($_GET['id_produktu'])) {
   <link rel="stylesheet" href="style.css">
   <script src="https://kit.fontawesome.com/78fa2015f8.js" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <style>
-    html,
-    body {
-      height: 100%;
-      margin: 0;
-    }
-
-    .content-wrapper {
-      min-height: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .main-content {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-      margin-bottom: 200px;
-    }
-
-    footer {
-      margin-top: auto;
-    }
-
-    .produkt-info {
-      text-align: center;
-    }
-
-    .produkt-zdjecie img {
-      width: 100%;
-      height: auto;
-      max-height: 600px;
-      object-fit: contain;
-    }
-
-    .produkt-zdjecie {
-      width: 100%;
-      max-width: 900px;
-      max-height: 190px;
-      margin: 0 auto;
-      padding: 10px;
-    }
-
-    .containerArrow {
-      text-align: center;
-    }
-
-    @media (max-width: 768px) {
-      .produkt-zdjecie {
-        width: 100%;
-        max-width: 100%;
-        padding: 0;
-      }
-
-      .produkt-info {
-        width: 100%;
-      }
-    }
-  </style>
 </head>
 
 <body>
@@ -207,6 +146,68 @@ if (isset($_GET['id_produktu'])) {
       }
     });
   </script>
-</body>
+    <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
 
+    .content-wrapper {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      margin-bottom: 200px;
+    }
+
+    footer {
+      margin-top: auto;
+    }
+
+    .produkt-info {
+      text-align: center;
+    }
+
+    .produkt-zdjecie img {
+      width: 100%;
+      height: auto;
+      max-height: 600px;
+      object-fit: contain;
+    }
+
+    .produkt-zdjecie {
+      width: 100%;
+      max-width: 900px;
+      max-height: 190px;
+      margin: 0 auto;
+      padding: 10px;
+    }
+
+    .containerArrow {
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .produkt-zdjecie {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+      }
+
+      .produkt-info {
+        width: 100%;
+      }
+    }
+  </style>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
