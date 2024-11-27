@@ -125,20 +125,19 @@ $employees = $query->get_result();
                 <h2 class="card-title">Dodaj pracownika</h2>
                 <form method="POST" class="row g-3">
                     <div class="col-md-3">
-                        <input type="text" name="username" class="form-control" placeholder="Nazwa użytkownika"
-                            required>
+                        <input type="text" name="username" class="form-control" placeholder="Nazwa użytkownika" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                     </div>
                     <div class="col-md-3">
                         <input type="email" name="email" class="form-control" placeholder="Email" required>
                     </div>
                     <div class="col-md-2">
-                        <input type="password" name="password" class="form-control" placeholder="Hasło" required>
+                        <input type="password" name="password" class="form-control" placeholder="Hasło" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                     </div>
                     <div class="col-md-2">
-                        <input type="text" name="imie" class="form-control" placeholder="Imię" required>
+                        <input type="text" name="imie" class="form-control" placeholder="Imię" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                     </div>
                     <div class="col-md-2">
-                        <input type="text" name="nazwisko" class="form-control" placeholder="Nazwisko" required>
+                        <input type="text" name="nazwisko" class="form-control" placeholder="Nazwisko" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                     </div>
                     <div class="col-12 text-center">
                         <button type="submit" name="add_employee" class="btn btn-primary w-50 buy">Dodaj
@@ -172,14 +171,14 @@ $employees = $query->get_result();
                                 <input type="hidden" name="id" value="<?php echo $employee['id_prac']; ?>">
                                 <input type="text" name="username"
                                     value="<?php echo htmlspecialchars($employee['username']); ?>"
-                                    class="form-control form-control-sm mb-1" required>
+                                    class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                                 <input type="email" name="email" value="<?php echo htmlspecialchars($employee['email']); ?>"
                                     class="form-control form-control-sm mb-1" required>
                                 <input type="text" name="imie" value="<?php echo htmlspecialchars($employee['imie']); ?>"
-                                    class="form-control form-control-sm mb-1" required>
+                                    class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                                 <input type="text" name="nazwisko"
                                     value="<?php echo htmlspecialchars($employee['nazwisko']); ?>"
-                                    class="form-control form-control-sm mb-1" required>
+                                    class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                                 <button type="submit" name="edit_employee"
                                     class="btn btn-warning btn-sm w-100 mb-2">Edytuj</button>
                             </form>

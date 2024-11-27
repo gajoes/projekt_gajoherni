@@ -8,25 +8,42 @@ if (!isset($_SESSION['admin_id']) && !isset($_SESSION['employee_id'])) {
 
 $wiadomosc = "";
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_order'])) {
-    $id = $_POST['id'];
+    $id_zamowienia = $_POST['id'];
     $email = $_POST['email'];
+    $nr_tel = $_POST['nr_tel'];
     $imie = $_POST['imie'];
     $nazwisko = $_POST['nazwisko'];
 
-    $query = $conn->prepare("UPDATE zamowienia SET email = ?, imie = ?, nazwisko = ? WHERE id_zamowienia = ?");
-    $query->bind_param("sssi", $email, $imie, $nazwisko, $id);
+    $query_user = $conn->prepare("SELECT id_uzytkownika FROM zamowienia WHERE id_zamowienia = ?");
+    $query_user->bind_param("i", $id_zamowienia);
+    $query_user->execute();
+    $result = $query_user->get_result();
+    $user = $result->fetch_assoc();
+    $id_uzytkownika = $user['id_uzytkownika'];
 
-    if ($query->execute()) {
-        $wiadomosc = "Dane zamówienia zostały zapisane!";
-    } else {
-        $wiadomosc = "Błąd podczas edycji zamówienia!";
+    $query = $conn->prepare("UPDATE zamowienia SET email = ?, imie = ?, nazwisko = ? WHERE id_zamowienia = ?");
+    $query->bind_param("sssi", $email, $imie, $nazwisko, $id_zamowienia);
+
+    if ($query->execute()){
+        $query_tel=$conn->prepare("UPDATE kontakty SET nr_tel = ? WHERE id_uzytkownika = ?");
+        $query_tel->bind_param("si",$nr_tel,$id_uzytkownika);
+        if ($query_tel->execute()){
+            $wiadomosc="Dane zamówienia zostały zapisane!";
+        }else{
+            $wiadomosc="Błąd podczas aktualizacji numeru telefonu!";
+        }
+    }else{
+        $wiadomosc="Błąd podczas edycji zamówienia!";
     }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_order'])) {
     $id = $_POST['id'];
 
-    $query = $conn->prepare("DELETE FROM zamowienia WHERE id_zamowienia = ?");
+    $query_tel=$conn->prepare("DELETE FROM kontakty WHERE id_uzytkownika = ?");
+    $query_tel->bind_param("i", $id);
+    $query_tel->execute();
+    $query = $conn->prepare("DELETE FROM uzytkownicy WHERE id_uzytkownika = ?");
     $query->bind_param("i", $id);
 
     if ($query->execute()) {
@@ -37,16 +54,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_order'])) {
 }
 
 $query = $conn->prepare("
-    SELECT z.id_zamowienia,z.username,z.email,z.imie,z.nazwisko,z.data_zamowienia,z.id_uzytkownika,p.nazwa AS nazwa_produktu,zp.ilosc,
-        CONCAT(za.ulica,' ',za.nr_domu,'/',za.nr_mieszkania,',',za.miasto,' ',za.kod_pocztowy) AS adres
-    FROM 
-        zamowienia z
-    LEFT JOIN 
-        zamowienia_produkty zp ON z.id_zamowienia=zp.id_zamowienia
-    LEFT JOIN 
-        produkty p ON zp.id_produktu = p.id_produktu
-    LEFT JOIN 
-        zamowienia_adresy za ON z.id_zamowienia=za.id_zamowienia
+    SELECT z.id_zamowienia, u.username, z.email, z.imie, z.nazwisko, z.data_zamowienia, z.id_uzytkownika, 
+           p.nazwa AS nazwa_produktu, zp.ilosc, k.nr_tel, 
+           CONCAT(za.ulica,' ',za.nr_domu,'/',za.nr_mieszkania,',',za.miasto,' ',za.kod_pocztowy) AS adres
+    FROM zamowienia z
+    LEFT JOIN zamowienia_produkty zp ON z.id_zamowienia = zp.id_zamowienia
+    LEFT JOIN produkty p ON zp.id_produktu = p.id_produktu
+    LEFT JOIN zamowienia_adresy za ON z.id_zamowienia = za.id_zamowienia
+    LEFT JOIN kontakty k ON z.id_uzytkownika = k.id_uzytkownika
+    LEFT JOIN uzytkownicy u ON z.id_uzytkownika = u.id_uzytkownika
 ");
 $query->execute();
 $orders = $query->get_result();
@@ -119,6 +135,7 @@ $orders = $query->get_result();
                     <th>ID</th>
                     <th>Username</th>
                     <th>Email</th>
+                    <th>Numer telefonu</th>
                     <th>Imię</th>
                     <th>Nazwisko</th>
                     <th>Data zamówienia</th>
@@ -135,6 +152,7 @@ $orders = $query->get_result();
                         <td><?php echo htmlspecialchars($order['id_zamowienia']); ?></td>
                         <td><?php echo htmlspecialchars($order['username']); ?></td>
                         <td><?php echo htmlspecialchars($order['email']); ?></td>
+                        <td><?php echo htmlspecialchars($order['nr_tel']); ?></td>
                         <td><?php echo htmlspecialchars($order['imie']); ?></td>
                         <td><?php echo htmlspecialchars($order['nazwisko']); ?></td>
                         <td><?php echo htmlspecialchars($order['data_zamowienia']); ?></td>
@@ -143,17 +161,21 @@ $orders = $query->get_result();
                         <td><?php echo htmlspecialchars($order['adres']); ?></td>
                         <td><?php echo htmlspecialchars($order['id_uzytkownika']); ?></td>
                         <td>
-                            <form method="POST" class="d-inline">
-                                <input type="hidden" name="id" value="<?php echo $order['id_zamowienia']; ?>">
-                                <input type="email" name="email" value="<?php echo htmlspecialchars($order['email']); ?>"
-                                    class="form-control form-control-sm mb-1" required>
-                                <input type="text" name="imie" value="<?php echo htmlspecialchars($order['imie']); ?>"
-                                    class="form-control form-control-sm mb-1" required>
-                                <input type="text" name="nazwisko"
-                                    value="<?php echo htmlspecialchars($order['nazwisko']); ?>"
-                                    class="form-control form-control-sm mb-1" required>
-                                <button type="submit" name="edit_order" class="btn btn-warning btn-sm w-100">Edytuj</button>
-                            </form>
+                        <form method="POST" class="d-inline zmiany">
+                            <input type="hidden" name="id" value="<?php echo $order['id_zamowienia']; ?>">
+                            <input type="text" name="username" value="<?php echo htmlspecialchars($order['username']); ?>"
+                                class="form-control form-control-sm mb-1" readonly>
+                            <input type="email" name="email" value="<?php echo htmlspecialchars($order['email']); ?>"
+                                class="form-control form-control-sm mb-1" required>
+                            <input type="text" name="nr_tel" value="<?php echo htmlspecialchars($order['nr_tel']); ?>"
+                                class="form-control form-control-sm mb-1" pattern="\d{9,15}" required>
+                            <input type="text" name="imie" value="<?php echo htmlspecialchars($order['imie']); ?>"
+                                class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
+                            <input type="text" name="nazwisko" value="<?php echo htmlspecialchars($order['nazwisko']); ?>"
+                                class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
+                            <button type="submit" name="edit_order" class="btn btn-warning btn-sm w-100">Edytuj</button>
+                        </form>
+
                             <form method="POST" class="d-inline">
                                 <input type="hidden" name="id" value="<?php echo $order['id_zamowienia']; ?>">
                                 <button type="submit" name="delete_order" class="btn btn-danger btn-sm w-100">Usuń</button>

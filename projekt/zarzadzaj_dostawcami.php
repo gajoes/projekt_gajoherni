@@ -119,12 +119,10 @@ $suppliers = $query->get_result();
                 <h2 class="card-title">Dodaj dostawcę</h2>
                 <form method="POST" class="row g-3">
                     <div class="col-md-6">
-                        <input type="text" name="nazwa_dostawcy" class="form-control" placeholder="Nazwa dostawcy"
-                            required>
+                        <input type="text" name="nazwa_dostawcy" class="form-control" placeholder="Nazwa dostawcy" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                     </div>
                     <div class="col-md-6">
-                        <input type="text" name="kraj_pochodzenia" class="form-control" placeholder="Kraj pochodzenia"
-                            required>
+                        <input type="text" name="kraj_pochodzenia" class="form-control" placeholder="Kraj pochodzenia" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                     </div>
                     <div class="col-12 text-center">
                         <button type="submit" name="add_supplier" class="btn btn-primary w-50 buy">Dodaj
@@ -154,10 +152,10 @@ $suppliers = $query->get_result();
                                 <input type="hidden" name="id_dostawcy" value="<?php echo $supplier['id_dostawcy']; ?>">
                                 <input type="text" name="nazwa_dostawcy"
                                     value="<?php echo htmlspecialchars($supplier['nazwa_dostawcy']); ?>"
-                                    class="form-control form-control-sm mb-1" required>
+                                    class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                                 <input type="text" name="kraj_pochodzenia"
                                     value="<?php echo htmlspecialchars($supplier['kraj_pochodzenia']); ?>"
-                                    class="form-control form-control-sm mb-1" required>
+                                    class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                                 <button type="submit" name="edit_supplier"
                                     class="btn btn-warning btn-sm w-100 mb-2">Edytuj</button>
                             </form>

@@ -180,7 +180,7 @@ $products =$query->get_result();
                         <input type="file" name="zdjecie" class="form-control" required>
                     </div>
                     <div class="col-md-12">
-                        <textarea name="parametry" class="form-control" placeholder="Parametry produktu" rows="3"></textarea>
+                        <textarea name="parametry" class="form-control" placeholder="Parametry produktu" rows="3" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required></textarea>
                     </div>
                     <div class="col-12 text-center">
                         <button type="submit" name="add_product" class="btn btn-primary w-50 buy">Dodaj produkt</button>
@@ -215,7 +215,7 @@ $products =$query->get_result();
                                 <input type="number" name="id_kategorii" value="<?php echo htmlspecialchars($product['id_kategorii']); ?>" class="form-control form-control-sm mb-1" required>
                                 <input type="number" name="id_dostawcy" value="<?php echo htmlspecialchars($product['id_dostawcy']); ?>" class="form-control form-control-sm mb-1" required>
                                 <input type="number" step="0.01" name="cena" value="<?php echo htmlspecialchars($product['cena']); ?>" class="form-control form-control-sm mb-1" required>
-                                <textarea name="parametry" class="form-control form-control-sm mb-1" placeholder="Parametry produktu" rows="2"><?php echo htmlspecialchars($product['parametry']); ?></textarea>
+                                <textarea name="parametry" class="form-control form-control-sm mb-1" placeholder="Parametry produktu" rows="2" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required><?php echo htmlspecialchars($product['parametry']); ?></textarea>
                                 <button type="submit" name="edit_product" class="btn btn-warning btn-sm w-100 mb-2">Edytuj</button>
                             </form>
                             <form method="POST" class="d-inline" onsubmit="return confirm('Czy na pewno chcesz usunąć ten produkt?');">

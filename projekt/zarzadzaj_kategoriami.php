@@ -119,8 +119,7 @@ $categories = $query->get_result();
                 <h2 class="card-title">Dodaj kategorię</h2>
                 <form method="POST" class="row g-3">
                     <div class="col-md-12">
-                        <input type="text" name="nazwa_kategorii" class="form-control" placeholder="Nazwa kategorii"
-                            required>
+                        <input type="text" name="nazwa_kategorii" class="form-control" placeholder="Nazwa kategorii" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                     </div>
                     <div class="col-12 text-center">
                         <button type="submit" name="add_category" class="btn btn-primary w-50 buy">Dodaj
@@ -148,7 +147,7 @@ $categories = $query->get_result();
                                 <input type="hidden" name="id_kategorii" value="<?php echo $category['id_kategorii']; ?>">
                                 <input type="text" name="nazwa_kategorii"
                                     value="<?php echo htmlspecialchars($category['nazwa_kategorii']); ?>"
-                                    class="form-control form-control-sm mb-1" required>
+                                    class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                                 <button type="submit" name="edit_category"
                                     class="btn btn-warning btn-sm w-100 mb-2">Edytuj</button>
                             </form>

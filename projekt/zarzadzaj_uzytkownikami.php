@@ -10,16 +10,26 @@ $wiadomosc = "";
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_user'])) {
     $username = $_POST['username'];
     $email = $_POST['email'];
+    $nr_tel=$_POST['nr_tel'];
     $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
     $notatka = $_POST['notatka'];
 
     $query = $conn->prepare("INSERT INTO uzytkownicy (username, email, haslo, notatka) VALUES (?, ?, ?, ?)");
     $query->bind_param("ssss", $username, $email, $password, $notatka);
 
-    if ($query->execute()) {
-        $wiadomosc = "Użytkownik został dodany!";
-    } else {
-        $wiadomosc = "Błąd podczas dodawania użytkownika!";
+    if ($query->execute()){
+        $user_id=$conn->insert_id;
+
+        $query_tel=$conn->prepare("INSERT INTO kontakty (nr_tel, id_uzytkownika) VALUES (?, ?)");
+        $query_tel->bind_param("si",$nr_tel,$user_id);
+
+        if ($query_tel->execute()){
+            $wiadomosc="Użytkownik został dodany!";
+        }else{
+            $wiadomosc="Błąd podczas dodawania numeru telefonu!";
+        }
+    }else{
+        $wiadomosc="Błąd podczas dodawania użytkownika!";
     }
 }
 
@@ -27,30 +37,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_user'])) {
     $id = $_POST['id'];
     $username = $_POST['username'];
     $email = $_POST['email'];
+    $nr_tel=$_POST['nr_tel'];
     $notatka = $_POST['notatka'];
 
     $query = $conn->prepare("UPDATE uzytkownicy SET username = ?, email = ?, notatka = ? WHERE id_uzytkownika = ?");
     $query->bind_param("sssi", $username, $email, $notatka, $id);
-    if ($query->execute()) {
-        $wiadomosc = "Dane użytkownika zostały zapisane!";
-    } else {
-        $wiadomosc = "Błąd podczas edycji użytkownika!";
+
+    if ($query->execute()){
+        $query_tel=$conn->prepare("UPDATE kontakty SET nr_tel = ? WHERE id_uzytkownika = ?");
+        $query_tel->bind_param("si",$nr_tel, $id);
+        if ($query_tel->execute()){
+            $wiadomosc="Dane użytkownika zostały zapisane!";
+        }else{
+            $wiadomosc="Błąd podczas aktualizacji numeru telefonu!";
+        }
+    }else{
+        $wiadomosc="Błąd podczas edycji użytkownika!";
     }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user'])) {
     $id = $_POST['id'];
-
+    $query_tel=$conn->prepare("DELETE FROM kontakty WHERE id_uzytkownika = ?");
+    $query_tel->bind_param("i", $id);
+    $query_tel->execute();
     $query = $conn->prepare("DELETE FROM uzytkownicy WHERE id_uzytkownika = ?");
     $query->bind_param("i", $id);
 
-    if ($query->execute()) {
-        $wiadomosc = "Użytkownik został usunięty!";
+    if ($query->execute()){
+        $wiadomosc="Użytkownik został usunięty!";
     } else {
-        $wiadomosc = "Błąd podczas usuwania użytkownika!";
+        $wiadomosc="Błąd podczas usuwania użytkownika!";
     }
 }
-$query = $conn->prepare("SELECT id_uzytkownika, username, email, notatka FROM uzytkownicy");
+$query = $conn->prepare("
+    SELECT u.id_uzytkownika, u.username, u.email, k.nr_tel, u.notatka
+    FROM uzytkownicy u
+    LEFT JOIN kontakty k ON u.id_uzytkownika = k.id_uzytkownika
+");
 $query->execute();
 $users = $query->get_result();
 ?>
@@ -121,18 +145,20 @@ $users = $query->get_result();
             <div class="card-body">
                 <h2 class="card-title">Dodaj użytkownika</h2>
                 <form method="POST" class="row g-3">
-                    <div class="col-md-3">
-                        <input type="text" name="username" class="form-control" placeholder="Nazwa użytkownika"
-                            required>
+                    <div class="col-md-2">
+                        <input type="text" name="username" class="form-control" placeholder="Nazwa użytkownika" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                     </div>
                     <div class="col-md-3">
                         <input type="email" name="email" class="form-control" placeholder="Email" required>
                     </div>
-                    <div class="col-md-3">
-                        <input type="password" name="password" class="form-control" placeholder="Hasło" required>
+                    <div class="col-md-2">
+                        <input type="text" name="nr_tel" class="form-control" placeholder="Numer telefonu" pattern="\d{9,15}" required>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" name="notatka" class="form-control" placeholder="Notatka">
+                        <input type="password" name="password" class="form-control" placeholder="Hasło" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" name="notatka" class="form-control" placeholder="Notatka" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+">
                     </div>
                     <div class="col-12 text-center">
                         <button type="submit" name="add_user" class="btn btn-primary w-50 buy">Dodaj
@@ -149,6 +175,7 @@ $users = $query->get_result();
                     <th>ID</th>
                     <th>Nazwa użytkownika</th>
                     <th>Email</th>
+                    <th>Numer telefonu</th>
                     <th>Notatka</th>
                     <th>Zmiany</th>
                 </tr>
@@ -159,6 +186,7 @@ $users = $query->get_result();
                     <tr>
                         <td><?php echo htmlspecialchars($user['id_uzytkownika']); ?></td>
                         <td><?php echo htmlspecialchars($user['username']); ?></td>
+                        <td><?php echo htmlspecialchars($user['nr_tel']); ?></td>
                         <td><?php echo htmlspecialchars($user['email']); ?></td>
                         <td><?php echo htmlspecialchars($user['notatka']); ?></td>
                         <td>
@@ -166,9 +194,11 @@ $users = $query->get_result();
                                 <input type="hidden" name="id" value="<?php echo $user['id_uzytkownika']; ?>">
                                 <input type="text" name="username"
                                     value="<?php echo htmlspecialchars($user['username']); ?>"
-                                    class="form-control form-control-sm mb-1" required>
+                                    class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                                 <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>"
                                     class="form-control form-control-sm mb-1" required>
+                                <input type="nr_tel" name="nr_tel" value="<?php echo htmlspecialchars($user['nr_tel']); ?>"
+                                    class="form-control form-control-sm mb-1" pattern="\d{9,15}" required>
                                 <input type="text" name="notatka" placeholder="notatka"
                                     value="<?php echo htmlspecialchars($user['notatka']); ?>"
                                     class="form-control form-control-sm mb-1">

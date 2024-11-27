@@ -6,6 +6,7 @@ $isLoggedIn = isset($_SESSION['user_id']);
 $user_id = $isLoggedIn ? $_SESSION['user_id'] : null;
 $formData = [
     'email' => '',
+    'nr_tel' => '',
     'imie' => '',
     'nazwisko' => '',
     'ulica' => '',
@@ -16,9 +17,10 @@ $formData = [
 ];
 
 if ($isLoggedIn) {
-    $sql = "SELECT u.email,u.imie,u.nazwisko,a.ulica,a.nr_domu, a.nr_mieszkania,a.miasto,a.kod_pocztowy
+    $sql = "SELECT u.email,u.imie,u.nazwisko,a.ulica,a.nr_domu, a.nr_mieszkania,a.miasto,a.kod_pocztowy,k.nr_tel
             FROM uzytkownicy u
             LEFT JOIN adresy a ON u.id_uzytkownika =a.id_uzytkownika
+            LEFT JOIN kontakty k ON u.id_uzytkownika=k.id_uzytkownika
             WHERE u.id_uzytkownika=?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $user_id);
@@ -84,7 +86,7 @@ function calculateCartTotal($koszyk, $conn)
 
 <!DOCTYPE html>
 <html lang="pl">
-
+ 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -101,50 +103,46 @@ function calculateCartTotal($koszyk, $conn)
         <form method="POST">
             <div class="form-group">
                 <label>Email:</label>
-                <br>
-                <input type="email" name="email" class="form-control"
-                    value="<?php echo htmlspecialchars($formData['email']); ?>" required>
+                <input type="email" name="email" class="form-control" value="<?php echo htmlspecialchars($formData['email']); ?>" required>
+            </div>
+            <div class="form-group">
+                <label>Numer telefonu:</label>
+                <input type="text" name="nr_tel" class="form-control" pattern="\d{9,15}"
+                    value="<?php echo htmlspecialchars($formData['nr_tel']); ?>" required>
             </div>
             <div class="form-group">
                 <label>Imię:</label>
-                <br>
-                <input type="text" name="imie" class="form-control"
+                <input type="text" name="imie" class="form-control" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+"
                     value="<?php echo htmlspecialchars($formData['imie']); ?>" required>
             </div>
             <div class="form-group">
                 <label>Nazwisko:</label>
-                <br>
-                <input type="text" name="nazwisko" class="form-control"
+                <input type="text" name="nazwisko" class="form-control" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+"
                     value="<?php echo htmlspecialchars($formData['nazwisko']); ?>" required>
             </div>
             <div class="form-group">
                 <label>Ulica:</label>
-                <br>
-                <input type="text" name="ulica" class="form-control"
+                <input type="text" name="ulica" class="form-control" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+"
                     value="<?php echo htmlspecialchars($formData['ulica']); ?>" required>
             </div>
             <div class="form-group">
                 <label>Numer domu:</label>
-                <br>
-                <input type="text" name="nr_domu" class="form-control"
+                <input type="text" name="nr_domu" class="form-control" pattern="\d+"
                     value="<?php echo htmlspecialchars($formData['nr_domu']); ?>" required>
             </div>
             <div class="form-group">
-                <label>Numer mieszkania (opcjonalne):</label>
-                <br>
-                <input type="text" name="nr_mieszkania" class="form-control"
+                <label>Numer mieszkania:</label>
+                <input type="text" name="nr_mieszkania" class="form-control" pattern="\d*"
                     value="<?php echo htmlspecialchars($formData['nr_mieszkania']); ?>">
             </div>
             <div class="form-group">
                 <label>Miasto:</label>
-                <br>
-                <input type="text" name="miasto" class="form-control"
+                <input type="text" name="miasto" class="form-control" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+"
                     value="<?php echo htmlspecialchars($formData['miasto']); ?>" required>
             </div>
             <div class="form-group">
                 <label>Kod pocztowy:</label>
-                <br>
-                <input type="text" name="kod_pocztowy" class="form-control"
+                <input type="text" name="kod_pocztowy" class="form-control" pattern="\d{2}-\d{3}"
                     value="<?php echo htmlspecialchars($formData['kod_pocztowy']); ?>" required>
             </div>
             <button type="submit" class="btn btn-primary">Złóż zamówienie</button>

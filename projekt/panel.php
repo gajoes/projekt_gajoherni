@@ -119,50 +119,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <div class="content-wrapper">
       <div class="form-container">
-        <form method="POST" action="" class="mx-auto" style="max-width: 600px;">
-          <div class="form-group mb-3">
-            <label for="imie" class="form-label">Imię</label>
-            <input type="text" class="form-control" id="imie" name="imie"
-              value="<?php echo htmlspecialchars($user['imie']); ?>" required>
-          </div>
-          <div class="form-group mb-3">
-            <label for="nazwisko" class="form-label">Nazwisko</label>
-            <input type="text" class="form-control" id="nazwisko" name="nazwisko"
-              value="<?php echo htmlspecialchars($user['nazwisko']); ?>" required>
-          </div>
-          <div class="form-group mb-3">
-            <label for="nr_tel" class="form-label">Numer telefonu</label>
-            <input type="text" class="form-control" id="nr_tel" name="nr_tel"
-              value="<?php echo htmlspecialchars($user['nr_tel'] ?? ''); ?>" required>
-          </div>
-          <div class="form-group mb-3">
-            <label for="ulica" class="form-label">Ulica</label>
-            <input type="text" class="form-control" id="ulica" name="ulica"
-              value="<?php echo htmlspecialchars($user['ulica'] ?? ''); ?>" required>
-          </div>
-          <div class="form-group mb-3">
-            <label for="nr_domu" class="form-label">Numer domu</label>
-            <input type="text" class="form-control" id="nr_domu" name="nr_domu"
-              value="<?php echo htmlspecialchars($user['nr_domu'] ?? ''); ?>" required>
-          </div>
-          <div class="form-group mb-3">
-            <label for="nr_mieszkania" class="form-label">Numer mieszkania (opcjonalnie)</label>
-            <input type="text" class="form-control" id="nr_mieszkania" name="nr_mieszkania"
-              value="<?php echo htmlspecialchars($user['nr_mieszkania'] ?? ''); ?>">
-          </div>
-          <div class="form-group mb-3">
-            <label for="miasto" class="form-label">Miasto</label>
-            <input type="text" class="form-control" id="miasto" name="miasto"
-              value="<?php echo htmlspecialchars($user['miasto'] ?? ''); ?>" required>
-          </div>
-          <div class="form-group mb-3">
-            <label for="kod_pocztowy" class="form-label">Kod pocztowy</label>
-            <input type="text" class="form-control" id="kod_pocztowy" name="kod_pocztowy"
-              value="<?php echo htmlspecialchars($user['kod_pocztowy'] ?? ''); ?>" required>
-          </div>
-          <button type="submit" class="btn btn-success w-100 mb-3">Zaktualizuj dane</button>
-        </form>
+      <form method="POST" action="" class="mx-auto" style="max-width: 600px;">
+      <div class="form-group mb-3">
+        <label for="imie" class="form-label">Imię</label>
+        <input type="text" class="form-control" id="imie" name="imie" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" 
+          value="<?php echo htmlspecialchars($user['imie']); ?>" required>
       </div>
+      <div class="form-group mb-3">
+        <label for="nazwisko" class="form-label">Nazwisko</label>
+        <input type="text" class="form-control" id="nazwisko" name="nazwisko" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+"
+          value="<?php echo htmlspecialchars($user['nazwisko']); ?>" required>
+      </div>
+      <div class="form-group mb-3">
+        <label for="nr_tel" class="form-label">Numer telefonu</label>
+        <input type="text" class="form-control" id="nr_tel" name="nr_tel" pattern="\d{9,15}"
+          value="<?php echo htmlspecialchars($user['nr_tel'] ?? ''); ?>" required>
+      </div>
+      <div class="form-group mb-3">
+        <label for="ulica" class="form-label">Ulica</label>
+        <input type="text" class="form-control" id="ulica" name="ulica" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+"
+          value="<?php echo htmlspecialchars($user['ulica'] ?? ''); ?>" required>
+      </div>
+      <div class="form-group mb-3">
+        <label for="nr_domu" class="form-label">Numer domu</label>
+        <input type="text" class="form-control" id="nr_domu" name="nr_domu" pattern="\d+" 
+          value="<?php echo htmlspecialchars($user['nr_domu'] ?? ''); ?>" required>
+      </div>
+      <div class="form-group mb-3">
+        <label for="nr_mieszkania" class="form-label">Numer mieszkania</label>
+        <input type="text" class="form-control" id="nr_mieszkania" name="nr_mieszkania" pattern="\d*"
+          value="<?php echo htmlspecialchars($user['nr_mieszkania'] ?? ''); ?>">
+      </div>
+      <div class="form-group mb-3">
+        <label for="miasto" class="form-label">Miasto</label>
+        <input type="text" class="form-control" id="miasto" name="miasto" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+"
+          value="<?php echo htmlspecialchars($user['miasto'] ?? ''); ?>" required>
+      </div>
+      <div class="form-group mb-3">
+        <label for="kod_pocztowy" class="form-label">Kod pocztowy</label>
+        <input type="text" class="form-control" id="kod_pocztowy" name="kod_pocztowy" pattern="\d{2}-\d{3}"
+          value="<?php echo htmlspecialchars($user['kod_pocztowy'] ?? ''); ?>" required>
+      </div>
+      <button type="submit" class="btn btn-success w-100 mb-3">Zaktualizuj dane</button>
+    </form>
+  </div>
       <div class="lists-container">
         <h2>Lista ulubionych przedmiotów</h2>
         <?php
