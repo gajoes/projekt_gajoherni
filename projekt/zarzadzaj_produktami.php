@@ -91,13 +91,37 @@ if ($_SERVER['REQUEST_METHOD']==='POST' &&isset($_POST['delete_product'])){
         $wiadomosc="Błąd podczas usuwania produktu!";
     }
 }
-$query =$conn->prepare("SELECT produkty.id_produktu, produkty.nazwa, kategorie.id_kategorii, kategorie.nazwa_kategorii, 
-                         dostawcy.id_dostawcy, dostawcy.nazwa_dostawcy, produkty.cena, produkty.parametry, produkty.zdjecie
-                         FROM produkty
+$query =$conn->prepare("SELECT produkty.id_produktu, produkty.nazwa, kategorie.id_kategorii, kategorie.nazwa_kategorii, dostawcy.id_dostawcy, dostawcy.nazwa_dostawcy, produkty.cena, produkty.parametry, produkty.zdjecie FROM produkty
                          LEFT JOIN kategorie ON produkty.id_kategorii=kategorie.id_kategorii
                          LEFT JOIN dostawcy ON produkty.id_dostawcy=dostawcy.id_dostawcy");
+
+$szukaj=$_GET['szukaj'] ?? '';
+$query_szukaj="SELECT produkty.id_produktu, produkty.nazwa, kategorie.id_kategorii, kategorie.nazwa_kategorii, dostawcy.id_dostawcy, dostawcy.nazwa_dostawcy, produkty.cena, produkty.parametry, produkty.zdjecie FROM produkty
+                 LEFT JOIN kategorie ON produkty.id_kategorii=kategorie.id_kategorii
+                 LEFT JOIN dostawcy ON produkty.id_dostawcy=dostawcy.id_dostawcy";
+
+if (!empty($szukaj)) {
+    $szukaj_warunki='%'.$szukaj.'%';
+    $query_szukaj .=" WHERE produkty.nazwa LIKE ? OR kategorie.nazwa_kategorii LIKE ? OR 
+                        dostawcy.nazwa_dostawcy LIKE ? OR produkty.cena LIKE ?";
+}
+
+$query=$conn->prepare($query_szukaj);
+
+if (!empty($szukaj)){
+    $query->bind_param("ssss",$szukaj_warunki,$szukaj_warunki,$szukaj_warunki,$szukaj_warunki);
+}
+
 $query->execute();
 $products =$query->get_result();
+
+$kw_kategorie=$conn->prepare("SELECT id_kategorii,nazwa_kategorii FROM kategorie");
+$kw_kategorie->execute();
+$kategorie=$kw_kategorie->get_result();
+
+$kw_dostawcy=$conn->prepare("SELECT id_dostawcy,nazwa_dostawcy FROM dostawcy");
+$kw_dostawcy->execute();
+$dostawcy=$kw_dostawcy->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -109,7 +133,6 @@ $products =$query->get_result();
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/78fa2015f8.js" crossorigin="anonymous"></script>
 </head>
-
 <body class="bg-light text-dark">
     <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-elements-font">
         <div class="container-fluid">
@@ -168,10 +191,24 @@ $products =$query->get_result();
                         <input type="text" name="nazwa" class="form-control" placeholder="Nazwa produktu" required>
                     </div>
                     <div class="col-md-3">
-                        <input type="number" name="id_kategorii" class="form-control" placeholder="ID Kategorii" required>
+                    <select name="id_kategorii" class="form-control" required>
+            <option value="" disabled selected>Wybierz kategorię</option>
+            <?php while ($kategoria=$kategorie->fetch_assoc()): ?>
+                <option value="<?php echo $kategoria['id_kategorii']; ?>">
+                    <?php echo htmlspecialchars($kategoria['nazwa_kategorii']); ?>
+                </option>
+            <?php endwhile; ?>
+        </select>
                     </div>
                     <div class="col-md-2">
-                        <input type="number" name="id_dostawcy" class="form-control" placeholder="ID Dostawcy" required>
+                    <select name="id_dostawcy" class="form-control" required>
+            <option value="" disabled selected>Wybierz dostawcę</option>
+            <?php while ($dostawca=$dostawcy->fetch_assoc()): ?>
+                <option value="<?php echo $dostawca['id_dostawcy']; ?>">
+                    <?php echo htmlspecialchars($dostawca['nazwa_dostawcy']); ?>
+                </option>
+            <?php endwhile; ?>
+        </select>
                     </div>
                     <div class="col-md-2">
                         <input type="number" step="0.01" name="cena" class="form-control" placeholder="Cena" required>
@@ -188,6 +225,18 @@ $products =$query->get_result();
                 </form>
             </div>
         </div>
+        <div class="card bg-white mb-3 text-dark text-center border-light shadow-sm">
+    <div class="card-body">
+        <form method="GET" class="row g-3 justify-content-center">
+            <div class="col-md-6">
+                <input type="text" name="szukaj" class="form-control" placeholder="Wpisz, aby wyszukać..." value="<?php echo htmlspecialchars($_GET['szukaj'] ?? ''); ?>">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100 buy">Szukaj</button>
+            </div>
+        </form>
+    </div>
+</div>
         <h2 class="text-center">Lista produktów</h2>
         <table class="table table-light table-hover border">
             <thead class="thead-light">
@@ -211,10 +260,30 @@ $products =$query->get_result();
                         <td>
                             <form method="POST" class="d-inline">
                                 <input type="hidden" name="id" value="<?php echo $product['id_produktu']; ?>">
-                                <input type="text" name="nazwa" value="<?php echo htmlspecialchars($product['nazwa']); ?>" class="form-control form-control-sm mb-1" required>
-                                <input type="number" name="id_kategorii" value="<?php echo htmlspecialchars($product['id_kategorii']); ?>" class="form-control form-control-sm mb-1" required>
-                                <input type="number" name="id_dostawcy" value="<?php echo htmlspecialchars($product['id_dostawcy']); ?>" class="form-control form-control-sm mb-1" required>
-                                <input type="number" step="0.01" name="cena" value="<?php echo htmlspecialchars($product['cena']); ?>" class="form-control form-control-sm mb-1" required>
+                                <input type="text" name="nazwa" placeholder="Nazwa produktu" value="<?php echo htmlspecialchars($product['nazwa']); ?>" class="form-control form-control-sm mb-1" required>
+                                <select name="id_kategorii" class="form-control form-control-sm mb-1" required>
+                                <?php
+                                $kw_kategorie->execute();
+                                $kategorie=$kw_kategorie->get_result();
+                                while ($kategoria=$kategorie->fetch_assoc()): ?>
+                                    <option value="<?php echo $kategoria['id_kategorii']; ?>" 
+                                        <?php if ($kategoria['id_kategorii']==$product['id_kategorii']) echo 'selected'; ?>>
+                                        <?php echo htmlspecialchars($kategoria['nazwa_kategorii']); ?>
+                                    </option>
+                                <?php endwhile; ?>
+                                </select>
+                                <select name="id_dostawcy" class="form-control form-control-sm mb-1" required>
+                                <?php
+                                $kw_dostawcy->execute();
+                                $dostawcy=$kw_dostawcy->get_result();
+                                while ($dostawca=$dostawcy->fetch_assoc()): ?>
+                                    <option value="<?php echo $dostawca['id_dostawcy']; ?>" 
+                                        <?php if ($dostawca['id_dostawcy']==$product['id_dostawcy']) echo 'selected'; ?>>
+                                        <?php echo htmlspecialchars($dostawca['nazwa_dostawcy']); ?>
+                                    </option>
+                                <?php endwhile; ?>
+                                </select>
+                                <input type="number" step="0.01" name="cena" placeholder="Cena" value="<?php echo htmlspecialchars($product['cena']); ?>" class="form-control form-control-sm mb-1" required>
                                 <textarea name="parametry" class="form-control form-control-sm mb-1" placeholder="Parametry produktu" rows="2" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required><?php echo htmlspecialchars($product['parametry']); ?></textarea>
                                 <button type="submit" name="edit_product" class="btn btn-warning btn-sm w-100 mb-2">Edytuj</button>
                             </form>
@@ -230,5 +299,42 @@ $products =$query->get_result();
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        
+        body{
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container{
+            max-width: 95%;
+            margin: 0 auto;
+        }
+
+        table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td{
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        table th{
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        .btn{
+            margin-top: 5px;
+        }
+
+        .zmiany input, .zmiany select{
+            margin-bottom: 5px;
+        }
+
+    </style>
 </body>
 </html>

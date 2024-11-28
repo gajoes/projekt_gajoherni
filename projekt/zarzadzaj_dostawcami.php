@@ -50,6 +50,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_supplier'])) {
 }
 
 $query = $conn->prepare("SELECT id_dostawcy, nazwa_dostawcy, kraj_pochodzenia FROM dostawcy");
+$szukaj=$_GET['szukaj']??'';
+$query_szukaj="SELECT id_dostawcy, nazwa_dostawcy, kraj_pochodzenia FROM dostawcy";
+
+if(!empty($szukaj)){
+$szukaj_warunki='%'.$szukaj.'%';
+$query_szukaj.=" WHERE nazwa_dostawcy LIKE ? OR kraj_pochodzenia LIKE ? OR id_dostawcy LIKE ?";
+}
+
+$query=$conn->prepare($query_szukaj);
+
+if(!empty($szukaj)){
+$query->bind_param("sss",$szukaj_warunki,$szukaj_warunki,$szukaj_warunki);
+}
 $query->execute();
 $suppliers = $query->get_result();
 ?>
@@ -131,6 +144,18 @@ $suppliers = $query->get_result();
                 </form>
             </div>
         </div>
+        <div class="card bg-white mb-3 text-dark text-center border-light shadow-sm">
+    <div class="card-body">
+        <form method="GET" class="row g-3 justify-content-center">
+            <div class="col-md-6">
+                <input type="text" name="szukaj" class="form-control" placeholder="Wpisz, aby wyszukać..." value="<?php echo htmlspecialchars($_GET['szukaj'] ?? ''); ?>">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100 buy">Szukaj</button>
+            </div>
+        </form>
+    </div>
+</div>
         <h2 class="text-center">Lista dostawców</h2>
         <table class="table table-light table-hover border">
             <thead class="thead-light">
@@ -150,10 +175,10 @@ $suppliers = $query->get_result();
                         <td>
                             <form method="POST" class="d-inline">
                                 <input type="hidden" name="id_dostawcy" value="<?php echo $supplier['id_dostawcy']; ?>">
-                                <input type="text" name="nazwa_dostawcy"
+                                <input type="text" name="nazwa_dostawcy" placeholder="Nazwa dostawcy"
                                     value="<?php echo htmlspecialchars($supplier['nazwa_dostawcy']); ?>"
                                     class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
-                                <input type="text" name="kraj_pochodzenia"
+                                <input type="text" name="kraj_pochodzenia" placeholder="Kraj pochodzenia dostawcy"
                                     value="<?php echo htmlspecialchars($supplier['kraj_pochodzenia']); ?>"
                                     class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                                 <button type="submit" name="edit_supplier"
@@ -172,5 +197,42 @@ $suppliers = $query->get_result();
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        
+        body{
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container{
+            max-width: 95%;
+            margin: 0 auto;
+        }
+
+        table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td{
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        table th{
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        .btn{
+            margin-top: 5px;
+        }
+
+        .zmiany input, .zmiany select{
+            margin-bottom: 5px;
+        }
+
+    </style>
 </body>
 </html>

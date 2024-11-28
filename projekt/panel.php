@@ -111,8 +111,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     style="display:none; position:fixed; top:20px; left:50%; transform:translateX(-50%); background-color:#28a745; color:white; padding:15px; border-radius:5px; z-index:1000;">
     <span id="popup-message"></span>
   </div>
-
-  <div class="container mt-5">
+  <div class="containerArrow">
+      <a class="strzalka" href="index.php"><i class="arrow right"></i>Wróć</a>
+    </div>
+  <div class="container mt-3">
     <h2 class="text-center text-primary">Witamy, <?php echo htmlspecialchars($user['username']); ?>!</h2>
     <h4 class="text-center mb-4">Jeżeli masz chwilę czasu, uzupełnij dane konta podając resztę potrzebnych informacji!
     </h4>
@@ -187,12 +189,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <h2 class="mt-5">Lista zamówień</h2>
         <?php
-        $zamowienia_kw = $conn->prepare("SELECT zamowienia.id_zamowienia, zamowienia.data_zamowienia, uzytkownicy.username, uzytkownicy.email, uzytkownicy.imie, uzytkownicy.nazwisko, kontakty.nr_tel, produkty.nazwa AS nazwa_produkt, zamowienia.status FROM zamowienia
-    JOIN zamowienia_produkty ON zamowienia.id_zamowienia=zamowienia_produkty.id_zamowienia
-    JOIN produkty ON zamowienia_produkty.id_produktu=produkty.id_produktu
-    JOIN uzytkownicy ON zamowienia.id_uzytkownika=uzytkownicy.id_uzytkownika
-    LEFT JOIN kontakty ON uzytkownicy.id_uzytkownika=kontakty.id_uzytkownika
-    WHERE zamowienia.id_uzytkownika =?");
+        $zamowienia_kw = $conn->prepare("SELECT zamowienia.id_zamowienia, zamowienia.data_zamowienia, uzytkownicy.email, uzytkownicy.imie, uzytkownicy.nazwisko, kontakty.nr_tel, 
+                                        GROUP_CONCAT(DISTINCT CONCAT(produkty.nazwa, ' (Ilość: ', zamowienia_produkty.ilosc, ')') SEPARATOR ', ') AS produkty, zamowienia.status FROM zamowienia
+                                        JOIN zamowienia_produkty ON zamowienia.id_zamowienia = zamowienia_produkty.id_zamowienia
+                                        JOIN produkty ON zamowienia_produkty.id_produktu = produkty.id_produktu
+                                        JOIN uzytkownicy ON zamowienia.id_uzytkownika = uzytkownicy.id_uzytkownika
+                                        LEFT JOIN kontakty ON uzytkownicy.id_uzytkownika = kontakty.id_uzytkownika
+                                        WHERE zamowienia.id_uzytkownika = ?
+                                        GROUP BY zamowienia.id_zamowienia");
         $zamowienia_kw->bind_param("i", $user_id);
         $zamowienia_kw->execute();
         $zamowienia_wynik = $zamowienia_kw->get_result();
@@ -207,7 +211,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                       <td>" . htmlspecialchars($row['nr_tel']) . "</td>
                       <td>" . htmlspecialchars($row['imie']) . "</td>
                       <td>" . htmlspecialchars($row['nazwisko']) . "</td>
-                      <td>" . htmlspecialchars($row['nazwa_produkt']) . "</td>
+                      <td class='produkty'>" . htmlspecialchars($row['produkty']) . "</td>
                       <td>" . htmlspecialchars($row['status']) . "</td>
                   </tr>";
           }
@@ -264,22 +268,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     .content-wrapper {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-top: 10px;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 20px;
     }
 
     .form-container {
-      width: 48%;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      margin-bottom: 20px;
     }
 
     .lists-container {
-      width: 48%;
+      padding: 20px;
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
     }
 
-    table {
-      width: 100%;
+    table th,
+    table td {
+      text-align: center;
     }
 
     .list-group-item {

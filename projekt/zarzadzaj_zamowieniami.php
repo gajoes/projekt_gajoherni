@@ -54,16 +54,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_order'])) {
     }
 }
 
-$query = $conn->prepare("
-    SELECT z.id_zamowienia, u.username, z.email, z.imie, z.nazwisko, z.data_zamowienia, z.id_uzytkownika, p.nazwa AS nazwa_produktu, zp.ilosc, k.nr_tel, z.status,
-           CONCAT(za.ulica,' ',za.nr_domu,'/',za.nr_mieszkania,',',za.miasto,' ',za.kod_pocztowy) AS adres
-    FROM zamowienia z
-    LEFT JOIN zamowienia_produkty zp ON z.id_zamowienia = zp.id_zamowienia
-    LEFT JOIN produkty p ON zp.id_produktu = p.id_produktu
-    LEFT JOIN zamowienia_adresy za ON z.id_zamowienia = za.id_zamowienia
-    LEFT JOIN kontakty k ON z.id_uzytkownika = k.id_uzytkownika
-    LEFT JOIN uzytkownicy u ON z.id_uzytkownika = u.id_uzytkownika
-");
+$query = $conn->prepare("SELECT z.id_zamowienia, u.username, z.email, z.imie, z.nazwisko, z.data_zamowienia, z.id_uzytkownika, 
+                        GROUP_CONCAT(DISTINCT CONCAT(p.nazwa, ' (Ilość: ', zp.ilosc, ')') SEPARATOR ', ') AS produkty, k.nr_tel, z.status, 
+                        CONCAT(za.ulica, ' ', za.nr_domu, '/', za.nr_mieszkania, ', ', za.miasto, ' ', za.kod_pocztowy) AS adres FROM zamowienia z
+                        LEFT JOIN zamowienia_produkty zp ON z.id_zamowienia = zp.id_zamowienia
+                        LEFT JOIN produkty p ON zp.id_produktu = p.id_produktu
+                        LEFT JOIN zamowienia_adresy za ON z.id_zamowienia = za.id_zamowienia
+                        LEFT JOIN kontakty k ON z.id_uzytkownika = k.id_uzytkownika
+                        LEFT JOIN uzytkownicy u ON z.id_uzytkownika = u.id_uzytkownika
+                        GROUP BY z.id_zamowienia");
+$szukaj=$_GET['szukaj']??'';
+$query_szukaj="SELECT z.id_zamowienia,u.username,z.email,z.imie,z.nazwisko,z.data_zamowienia,z.id_uzytkownika,
+GROUP_CONCAT(DISTINCT CONCAT(p.nazwa,' (Ilość: ',zp.ilosc,')') SEPARATOR ', ') AS produkty,k.nr_tel,z.status,
+CONCAT(za.ulica,' ',za.nr_domu,'/',za.nr_mieszkania,', ',za.miasto,' ',za.kod_pocztowy) AS adres FROM zamowienia z
+LEFT JOIN zamowienia_produkty zp ON z.id_zamowienia=zp.id_zamowienia
+LEFT JOIN produkty p ON zp.id_produktu=p.id_produktu
+LEFT JOIN zamowienia_adresy za ON z.id_zamowienia=za.id_zamowienia
+LEFT JOIN kontakty k ON z.id_uzytkownika=k.id_uzytkownika
+LEFT JOIN uzytkownicy u ON z.id_uzytkownika=u.id_uzytkownika";
+
+if(!empty($szukaj)){
+$szukaj_warunki='%'.$szukaj.'%';
+$query_szukaj.=" WHERE z.email LIKE ? OR z.imie LIKE ? OR z.nazwisko LIKE ? OR z.status LIKE ? OR u.username LIKE ? OR k.nr_tel LIKE ? OR p.nazwa LIKE ? OR za.ulica LIKE ? OR z.id_zamowienia LIKE ?";
+}
+$query_szukaj.=" GROUP BY z.id_zamowienia";
+
+$query=$conn->prepare($query_szukaj);
+
+if(!empty($szukaj)){
+$query->bind_param("sssssssss",$szukaj_warunki,$szukaj_warunki,$szukaj_warunki,$szukaj_warunki,$szukaj_warunki,$szukaj_warunki,$szukaj_warunki,$szukaj_warunki,$szukaj_warunki);
+}
 $query->execute();
 $orders = $query->get_result();
 ?>
@@ -128,6 +148,18 @@ $orders = $query->get_result();
                 <?php echo htmlspecialchars($wiadomosc); ?>
             </div>
         <?php endif; ?>
+        <div class="card bg-white mb-3 text-dark text-center border-light shadow-sm">
+    <div class="card-body">
+        <form method="GET" class="row g-3 justify-content-center">
+            <div class="col-md-6">
+                <input type="text" name="szukaj" class="form-control" placeholder="Wpisz, aby wyszukać..." value="<?php echo htmlspecialchars($_GET['szukaj'] ?? ''); ?>">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100 buy">Szukaj</button>
+            </div>
+        </form>
+    </div>
+</div>
         <h2 class="text-center">Lista zamówień</h2>
         <table class="table table-hover">
             <thead>
@@ -140,7 +172,6 @@ $orders = $query->get_result();
                     <th>Nazwisko</th>
                     <th>Data zamówienia</th>
                     <th>Produkt</th>
-                    <th>Ilość</th>
                     <th>Adres</th>
                     <th>ID użytkownika</th>
                     <th>Status</th>
@@ -157,23 +188,22 @@ $orders = $query->get_result();
                         <td><?php echo htmlspecialchars($order['imie']); ?></td>
                         <td><?php echo htmlspecialchars($order['nazwisko']); ?></td>
                         <td><?php echo htmlspecialchars($order['data_zamowienia']); ?></td>
-                        <td><?php echo htmlspecialchars($order['nazwa_produktu']); ?></td>
-                        <td><?php echo htmlspecialchars($order['ilosc']); ?></td>
+                        <td><?php echo htmlspecialchars($order['produkty']); ?></td>
                         <td><?php echo htmlspecialchars($order['adres']); ?></td>
                         <td><?php echo htmlspecialchars($order['id_uzytkownika']); ?></td>
                         <td><?php echo htmlspecialchars($order['status']); ?></td>
                         <td>
                         <form method="POST" class="d-inline zmiany">
                             <input type="hidden" name="id" value="<?php echo $order['id_zamowienia']; ?>">
-                            <input type="text" name="username" value="<?php echo htmlspecialchars($order['username']); ?>"
+                            <input type="text" name="username" placeholder="Nazwa użytkownika" value="<?php echo htmlspecialchars($order['username']); ?>"
                                 class="form-control form-control-sm mb-1" readonly>
-                            <input type="email" name="email" value="<?php echo htmlspecialchars($order['email']); ?>"
+                            <input type="email" name="email" placeholder="Email" value="<?php echo htmlspecialchars($order['email']); ?>"
                                 class="form-control form-control-sm mb-1" required>
-                            <input type="text" name="nr_tel" value="<?php echo htmlspecialchars($order['nr_tel']); ?>"
+                            <input type="text" name="nr_tel" placeholder="Numer telefonu" value="<?php echo htmlspecialchars($order['nr_tel']); ?>"
                                 class="form-control form-control-sm mb-1" pattern="\d{9,15}" required>
-                            <input type="text" name="imie" value="<?php echo htmlspecialchars($order['imie']); ?>"
+                            <input type="text" name="imie" placeholder="Imie" value="<?php echo htmlspecialchars($order['imie']); ?>"
                                 class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
-                            <input type="text" name="nazwisko" value="<?php echo htmlspecialchars($order['nazwisko']); ?>"
+                            <input type="text" name="nazwisko" placeholder="Nazwisko" value="<?php echo htmlspecialchars($order['nazwisko']); ?>"
                                 class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                             <select name="status" class="form-control form-control-sm mb-1">
                                 <option value="Oczekujące" <?php if ($order['status'] == 'Oczekujące') echo 'selected'; ?>>Oczekujące</option>
@@ -196,5 +226,42 @@ $orders = $query->get_result();
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <style>
+
+        body{
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container{
+            max-width: 95%;
+            margin: 0 auto;
+        }
+
+        table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td{
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        table th{
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        .btn{
+            margin-top: 5px;
+        }
+
+        .zmiany input, .zmiany select{
+            margin-bottom: 5px;
+        }
+
+    </style>
+</body>]
 </html>

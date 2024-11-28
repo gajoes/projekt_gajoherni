@@ -63,10 +63,9 @@ if (!isset($_SESSION['employee_id'])) {
 <br>
 <br>
 <br>
-  <br>
-  <br>
-  <br>
-  <br>
+  <div class="containerArrow">
+      <a class="strzalka" href="index.php"><i class="arrow right"></i>Wróć</a>
+    </div>
   <div class="container-fluid d-flex flex-column flex-grow-1" id="wybor">
     <h1 class="admin-title text-center mb-4">Panel Pracownika</h1>
     <br><br>

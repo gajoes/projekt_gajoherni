@@ -75,6 +75,22 @@ $query = $conn->prepare("
     FROM uzytkownicy u
     LEFT JOIN kontakty k ON u.id_uzytkownika = k.id_uzytkownika
 ");
+
+$szukaj=$_GET['szukaj'] ?? '';
+$query_szukaj="SELECT u.id_uzytkownika, u.username, u.email, k.nr_tel, u.notatka FROM uzytkownicy u
+    LEFT JOIN kontakty k ON u.id_uzytkownika = k.id_uzytkownika";
+
+if (!empty($szukaj)){
+    $szukaj_warunki='%'.$szukaj.'%';
+    $query_szukaj .=" WHERE u.username LIKE ? OR u.email LIKE ? OR k.nr_tel LIKE ? OR u.notatka LIKE ? OR u.id_uzytkownika LIKE ?";
+}
+
+$query=$conn->prepare($query_szukaj);
+
+if (!empty($szukaj)){
+    $query->bind_param("sssss",$szukaj_warunki,$szukaj_warunki,$szukaj_warunki,$szukaj_warunki,$szukaj_warunki);
+}
+
 $query->execute();
 $users = $query->get_result();
 ?>
@@ -167,15 +183,26 @@ $users = $query->get_result();
                 </form>
             </div>
         </div>
-
+<div class="card bg-white mb-3 text-dark text-center border-light shadow-sm">
+    <div class="card-body">
+        <form method="GET" class="row g-3 justify-content-center">
+            <div class="col-md-6">
+                <input type="text" name="szukaj" class="form-control" placeholder="Wpisz, aby wyszukać..." value="<?php echo htmlspecialchars($_GET['szukaj'] ?? ''); ?>">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100 buy">Szukaj</button>
+            </div>
+        </form>
+    </div>
+</div>
         <h2 class="text-center">Lista użytkowników</h2>
         <table class="table table-light table-bordered table-hover">
             <thead class="thead-light">
                 <tr>
                     <th>ID</th>
                     <th>Nazwa użytkownika</th>
-                    <th>Email</th>
                     <th>Numer telefonu</th>
+                    <th>Email</th>
                     <th>Notatka</th>
                     <th>Zmiany</th>
                 </tr>
@@ -192,14 +219,14 @@ $users = $query->get_result();
                         <td>
                             <form method="POST" class="d-inline">
                                 <input type="hidden" name="id" value="<?php echo $user['id_uzytkownika']; ?>">
-                                <input type="text" name="username"
+                                <input type="text" name="username" placeholder="Nazwa użytkownika"
                                     value="<?php echo htmlspecialchars($user['username']); ?>"
                                     class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
-                                <input type="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>"
-                                    class="form-control form-control-sm mb-1" required>
-                                <input type="nr_tel" name="nr_tel" value="<?php echo htmlspecialchars($user['nr_tel']); ?>"
+                                <input type="nr_tel" name="nr_tel" placeholder="Numer telefonu" value="<?php echo htmlspecialchars($user['nr_tel']); ?>"
                                     class="form-control form-control-sm mb-1" pattern="\d{9,15}" required>
-                                <input type="text" name="notatka" placeholder="notatka"
+                                <input type="email" name="email" placeholder="Email" value="<?php echo htmlspecialchars($user['email']); ?>"
+                                    class="form-control form-control-sm mb-1" required>
+                                <input type="text" name="notatka" placeholder="Notatka"
                                     value="<?php echo htmlspecialchars($user['notatka']); ?>"
                                     class="form-control form-control-sm mb-1">
                                 <button type="submit" name="edit_user"
@@ -217,5 +244,42 @@ $users = $query->get_result();
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        
+        body{
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container{
+            max-width: 95%;
+            margin: 0 auto;
+        }
+
+        table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td{
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        table th{
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        .btn{
+            margin-top: 5px;
+        }
+
+        .zmiany input, .zmiany select{
+            margin-bottom: 5px;
+        }
+
+    </style>
 </body>
 </html>

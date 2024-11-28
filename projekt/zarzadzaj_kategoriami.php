@@ -49,6 +49,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_category'])) {
 }
 
 $query = $conn->prepare("SELECT id_kategorii, nazwa_kategorii FROM kategorie");
+$szukaj=$_GET['szukaj']??'';
+$query_szukaj="SELECT id_kategorii, nazwa_kategorii FROM kategorie";
+
+if(!empty($szukaj)){
+$szukaj_warunki='%'.$szukaj.'%';
+$query_szukaj.=" WHERE nazwa_kategorii LIKE ? OR id_kategorii LIKE ?";
+}
+
+$query=$conn->prepare($query_szukaj);
+
+if(!empty($szukaj)){
+$query->bind_param("ss",$szukaj_warunki,$szukaj_warunki);
+}
 $query->execute();
 $categories = $query->get_result();
 ?>
@@ -128,6 +141,18 @@ $categories = $query->get_result();
                 </form>
             </div>
         </div>
+        <div class="card bg-white mb-3 text-dark text-center border-light shadow-sm">
+    <div class="card-body">
+        <form method="GET" class="row g-3 justify-content-center">
+            <div class="col-md-6">
+                <input type="text" name="szukaj" class="form-control" placeholder="Wpisz, aby wyszukać..." value="<?php echo htmlspecialchars($_GET['szukaj'] ?? ''); ?>">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100 buy">Szukaj</button>
+            </div>
+        </form>
+    </div>
+</div>
         <h2 class="text-center">Lista kategorii</h2>
         <table class="table table-light table-hover border">
             <thead class="thead-light">
@@ -145,7 +170,7 @@ $categories = $query->get_result();
                         <td>
                             <form method="POST" class="d-inline">
                                 <input type="hidden" name="id_kategorii" value="<?php echo $category['id_kategorii']; ?>">
-                                <input type="text" name="nazwa_kategorii"
+                                <input type="text" name="nazwa_kategorii" placeholder="Nazwa kategorii"
                                     value="<?php echo htmlspecialchars($category['nazwa_kategorii']); ?>"
                                     class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
                                 <button type="submit" name="edit_category"
@@ -164,5 +189,42 @@ $categories = $query->get_result();
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        
+        body{
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container{
+            max-width: 95%;
+            margin: 0 auto;
+        }
+
+        table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td{
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        table th{
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        .btn{
+            margin-top: 5px;
+        }
+
+        .zmiany input, .zmiany select{
+            margin-bottom: 5px;
+        }
+
+    </style>
 </body>
 </html>

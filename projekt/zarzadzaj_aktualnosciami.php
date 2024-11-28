@@ -147,10 +147,10 @@ $aktualnosci = $query->get_result();
                         <td>
                             <form method="POST" class="d-inline">
                                 <input type="hidden" name="id" value="<?php echo $aktualnosc['id_aktualnosci']; ?>">
-                                <input type="text" name="tytul"
+                                <input type="text" name="tytul" placeholder="Tytuł"
                                     value="<?php echo htmlspecialchars($aktualnosc['tytul']); ?>"
                                     class="form-control form-control-sm mb-1" required>
-                                <textarea name="tresc" class="form-control form-control-sm mb-1" rows="2"
+                                <textarea name="tresc" placeholder="Treść" class="form-control form-control-sm mb-1" rows="2"
                                     required><?php echo htmlspecialchars($aktualnosc['tresc']); ?></textarea>
                                 <button type="submit" name="edit_news"
                                     class="btn btn-warning btn-sm w-100 mb-2">Edytuj</button>
@@ -167,5 +167,42 @@ $aktualnosci = $query->get_result();
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        
+        body{
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container{
+            max-width: 95%;
+            margin: 0 auto;
+        }
+
+        table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td{
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        table th{
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+
+        .btn{
+            margin-top: 5px;
+        }
+
+        .zmiany input, .zmiany select{
+            margin-bottom: 5px;
+        }
+
+    </style>
 </body>
 </html>
