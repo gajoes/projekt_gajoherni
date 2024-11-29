@@ -193,22 +193,26 @@ $employees = $query->get_result();
                         <td><?php echo htmlspecialchars($employee['imie']); ?></td>
                         <td><?php echo htmlspecialchars($employee['nazwisko']); ?></td>
                         <td>
-                            <form method="POST" class="d-inline">
-                                <input type="hidden" name="id" value="<?php echo $employee['id_prac']; ?>">
-                                <input type="text" name="username" placeholder="Nazwa użytkownika"
-                                    value="<?php echo htmlspecialchars($employee['username']); ?>"
-                                    class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
-                                <input type="email" name="email" placeholder="Email" value="<?php echo htmlspecialchars($employee['email']); ?>"
-                                    class="form-control form-control-sm mb-1" required>
-                                <input type="text" name="imie" placeholder="Imię" value="<?php echo htmlspecialchars($employee['imie']); ?>"
-                                    class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
-                                <input type="text" name="nazwisko" placeholder="Nazwisko"
-                                    value="<?php echo htmlspecialchars($employee['nazwisko']); ?>"
-                                    class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
-                                <button type="submit" name="edit_employee"
-                                    class="btn btn-warning btn-sm w-100 mb-2">Edytuj</button>
-                            </form>
-                            <form method="POST" class="d-inline">
+                        <button class="btn btn-warning btn-sm w-100 mb-1" type="button" data-bs-toggle="collapse" data-bs-target="#editForm<?php echo $employee['id_prac']; ?>" aria-expanded="false" aria-controls="editForm<?php echo $employee['id_prac']; ?>">Edytuj</button>
+                            <div class="collapse" id="editForm<?php echo $employee['id_prac']; ?>">
+                                <form method="POST" class="mt-2">
+                                    <input type="hidden" name="id" value="<?php echo $employee['id_prac']; ?>">
+                                    <div class="mb-1">
+                                        <input type="text" name="username" placeholder="Nazwa użytkownika" value="<?php echo htmlspecialchars($employee['username']); ?>" class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
+                                    </div>
+                                    <div class="mb-1">
+                                        <input type="email" name="email" placeholder="Email" value="<?php echo htmlspecialchars($employee['email']); ?>" class="form-control form-control-sm mb-1" required>
+                                    </div>
+                                    <div class="mb-1">
+                                        <input type="text" name="imie" placeholder="Imię" value="<?php echo htmlspecialchars($employee['imie']); ?>" class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
+                                    </div>
+                                    <div class="mb-1">
+                                        <input type="text" name="nazwisko" placeholder="Nazwisko" value="<?php echo htmlspecialchars($employee['nazwisko']); ?>" class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
+                                    </div>
+                                    <button type="submit" name="edit_employee" class="btn btn-primary btn-sm w-100">Zapisz</button>
+                                </form>
+                            </div>
+                            <form method="POST" class="d-inline" onsubmit="return confirm('Czy na pewno chcesz usunąć tego pracownika?');">
                                 <input type="hidden" name="id" value="<?php echo $employee['id_prac']; ?>">
                                 <button type="submit" name="delete_employee"
                                     class="btn btn-danger btn-sm w-100">Usuń</button>

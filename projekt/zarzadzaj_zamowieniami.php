@@ -6,7 +6,7 @@ if (!isset($_SESSION['admin_id']) && !isset($_SESSION['employee_id'])) {
     exit();
 }
 
-$wiadomosc = "";
+$wiadomosc = $_GET['wiadomosc'] ?? '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_order'])) {
     $id_zamowienia = $_POST['id'];
     $email = $_POST['email'];
@@ -26,12 +26,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_order'])) {
     $query->bind_param("sssis", $email, $imie, $nazwisko, $id_zamowienia, $status);
 
     if ($query->execute()){
-        $query_tel=$conn->prepare("UPDATE kontakty SET nr_tel = ? WHERE id_uzytkownika = ?");
-        $query_tel->bind_param("si",$nr_tel,$id_uzytkownika);
-        if ($query_tel->execute()){
-            $wiadomosc="Dane zamówienia zostały zapisane!";
+        if ($id_uzytkownika){
+            $query_tel=$conn->prepare("UPDATE kontakty SET nr_tel = ? WHERE id_uzytkownika = ?");
+            $query_tel->bind_param("si",$nr_tel, $id_uzytkownika);
+            if ($query_tel->execute()) {
+                $wiadomosc="Dane zamówienia zostały zapisane!";
+            }else{
+                $wiadomosc="Błąd podczas aktualizacji numeru telefonu!";
+            }
         }else{
-            $wiadomosc="Błąd podczas aktualizacji numeru telefonu!";
+            $query_tel=$conn->prepare("UPDATE zamowienia SET nr_tel = ? WHERE id_zamowienia = ?");
+            $query_tel->bind_param("si", $nr_tel, $id_zamowienia);
+            if ($query_tel->execute()){
+                $wiadomosc="Dane zamówienia zostały zapisane (numer telefonu zapisany w zamówieniu)!";
+            }else{
+                $wiadomosc="Błąd podczas zapisywania numeru telefonu w zamówieniu!";
+            }
         }
     }else{
         $wiadomosc="Błąd podczas edycji zamówienia!";
@@ -193,28 +203,8 @@ $orders = $query->get_result();
                         <td><?php echo htmlspecialchars($order['id_uzytkownika']); ?></td>
                         <td><?php echo htmlspecialchars($order['status']); ?></td>
                         <td>
-                        <form method="POST" class="d-inline zmiany">
-                            <input type="hidden" name="id" value="<?php echo $order['id_zamowienia']; ?>">
-                            <input type="text" name="username" placeholder="Nazwa użytkownika" value="<?php echo htmlspecialchars($order['username']); ?>"
-                                class="form-control form-control-sm mb-1" readonly>
-                            <input type="email" name="email" placeholder="Email" value="<?php echo htmlspecialchars($order['email']); ?>"
-                                class="form-control form-control-sm mb-1" required>
-                            <input type="text" name="nr_tel" placeholder="Numer telefonu" value="<?php echo htmlspecialchars($order['nr_tel']); ?>"
-                                class="form-control form-control-sm mb-1" pattern="\d{9,15}" required>
-                            <input type="text" name="imie" placeholder="Imie" value="<?php echo htmlspecialchars($order['imie']); ?>"
-                                class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
-                            <input type="text" name="nazwisko" placeholder="Nazwisko" value="<?php echo htmlspecialchars($order['nazwisko']); ?>"
-                                class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
-                            <select name="status" class="form-control form-control-sm mb-1">
-                                <option value="Oczekujące" <?php if ($order['status'] == 'Oczekujące') echo 'selected'; ?>>Oczekujące</option>
-                                <option value="W trakcie" <?php if ($order['status'] == 'W trakcie') echo 'selected'; ?>>W trakcie</option>
-                                <option value="Zrealizowane" <?php if ($order['status'] == 'Zrealizowane') echo 'selected'; ?>>Zrealizowane</option>
-                                <option value="Anulowane" <?php if ($order['status'] == 'Anulowane') echo 'selected'; ?>>Anulowane</option>
-                            </select>
-                            <button type="submit" name="edit_order" class="btn btn-warning btn-sm w-100">Edytuj</button>
-                        </form>
-
-                            <form method="POST" class="d-inline">
+                        <a href="edytuj_zamowienie.php?id=<?php echo $order['id_zamowienia']; ?>" class="btn btn-warning btn-sm w-100 mb-1">Edytuj</a>
+                            <form method="POST" class="d-inline" onsubmit="return confirm('Czy na pewno chcesz usunąć to zamówienie?');">
                                 <input type="hidden" name="id" value="<?php echo $order['id_zamowienia']; ?>">
                                 <button type="submit" name="delete_order" class="btn btn-danger btn-sm w-100">Usuń</button>
                             </form>
@@ -263,5 +253,5 @@ $orders = $query->get_result();
         }
 
     </style>
-</body>]
+</body>
 </html>

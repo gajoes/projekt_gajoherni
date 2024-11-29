@@ -173,18 +173,20 @@ $suppliers = $query->get_result();
                         <td><?php echo htmlspecialchars($supplier['nazwa_dostawcy']); ?></td>
                         <td><?php echo htmlspecialchars($supplier['kraj_pochodzenia']); ?></td>
                         <td>
-                            <form method="POST" class="d-inline">
-                                <input type="hidden" name="id_dostawcy" value="<?php echo $supplier['id_dostawcy']; ?>">
-                                <input type="text" name="nazwa_dostawcy" placeholder="Nazwa dostawcy"
-                                    value="<?php echo htmlspecialchars($supplier['nazwa_dostawcy']); ?>"
-                                    class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
-                                <input type="text" name="kraj_pochodzenia" placeholder="Kraj pochodzenia dostawcy"
-                                    value="<?php echo htmlspecialchars($supplier['kraj_pochodzenia']); ?>"
-                                    class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
-                                <button type="submit" name="edit_supplier"
-                                    class="btn btn-warning btn-sm w-100 mb-2">Edytuj</button>
-                            </form>
-                            <form method="POST" class="d-inline">
+                        <button class="btn btn-warning btn-sm w-100 mb-1" type="button" data-bs-toggle="collapse" data-bs-target="#editForm<?php echo $supplier['id_dostawcy']; ?>" aria-expanded="false" aria-controls="editForm<?php echo $supplier['id_dostawcy']; ?>">Edytuj</button>
+                            <div class="collapse" id="editForm<?php echo $supplier['id_dostawcy']; ?>">
+                                <form method="POST" class="mt-2">
+                                    <input type="hidden" name="id_dostawcy" value="<?php echo $supplier['id_dostawcy']; ?>">
+                                    <div class="mb-2">
+                                        <input type="text" name="nazwa_dostawcy" placeholder="Nazwa dostawcy" value="<?php echo htmlspecialchars($supplier['nazwa_dostawcy']); ?>" class="form-control form-control-sm" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
+                                    </div>
+                                    <div class="mb-2">
+                                        <input type="text" name="kraj_pochodzenia" placeholder="Kraj pochodzenia" value="<?php echo htmlspecialchars($supplier['kraj_pochodzenia']); ?>" class="form-control form-control-sm" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
+                                    </div>
+                                    <button type="submit" name="edit_supplier" class="btn btn-primary btn-sm w-100">Zapisz</button>
+                                </form>
+                            </div>
+                            <form method="POST" class="d-inline" onsubmit="return confirm('Czy na pewno chcesz usunąć tego dostawcę?');">
                                 <input type="hidden" name="id_dostawcy" value="<?php echo $supplier['id_dostawcy']; ?>">
                                 <button type="submit" name="delete_supplier"
                                     class="btn btn-danger btn-sm w-100">Usuń</button>

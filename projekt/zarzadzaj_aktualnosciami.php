@@ -145,17 +145,20 @@ $aktualnosci = $query->get_result();
                         <td><?php echo htmlspecialchars(substr($aktualnosc['tresc'], 0, 50)); ?></td>
                         <td><?php echo htmlspecialchars($aktualnosc['data_utworzenia']); ?></td>
                         <td>
-                            <form method="POST" class="d-inline">
-                                <input type="hidden" name="id" value="<?php echo $aktualnosc['id_aktualnosci']; ?>">
-                                <input type="text" name="tytul" placeholder="Tytuł"
-                                    value="<?php echo htmlspecialchars($aktualnosc['tytul']); ?>"
-                                    class="form-control form-control-sm mb-1" required>
-                                <textarea name="tresc" placeholder="Treść" class="form-control form-control-sm mb-1" rows="2"
-                                    required><?php echo htmlspecialchars($aktualnosc['tresc']); ?></textarea>
-                                <button type="submit" name="edit_news"
-                                    class="btn btn-warning btn-sm w-100 mb-2">Edytuj</button>
-                            </form>
-                            <form method="POST" class="d-inline">
+                        <button class="btn btn-warning btn-sm w-100 mb-1" type="button" data-bs-toggle="collapse" data-bs-target="#editForm<?php echo $aktualnosc['id_aktualnosci']; ?>" aria-expanded="false" aria-controls="editForm<?php echo $aktualnosc['id_aktualnosci']; ?>">Edytuj</button>
+                            <div class="collapse" id="editForm<?php echo $aktualnosc['id_aktualnosci']; ?>">
+                                <form method="POST" class="mt-2">
+                                    <input type="hidden" name="id" value="<?php echo $aktualnosc['id_aktualnosci']; ?>">
+                                    <div class="mb-2">
+                                        <input type="text" name="tytul" placeholder="Tytuł" value="<?php echo htmlspecialchars($aktualnosc['tytul']); ?>" class="form-control form-control-sm" required>
+                                    </div>
+                                    <div class="mb-2">
+                                        <textarea name="tresc" placeholder="Treść" class="form-control form-control-sm" rows="2" required><?php echo htmlspecialchars($aktualnosc['tresc']); ?></textarea>
+                                    </div>
+                                    <button type="submit" name="edit_news" class="btn btn-primary btn-sm w-100">Zapisz</button>
+                                </form>
+                            </div>
+                            <form method="POST" class="d-inline" onsubmit="return confirm('Czy na pewno chcesz usunąć tą aktualność?');">
                                 <input type="hidden" name="id" value="<?php echo $aktualnosc['id_aktualnosci']; ?>">
                                 <button type="submit" name="delete_news" class="btn btn-danger btn-sm w-100">Usuń</button>
                             </form>

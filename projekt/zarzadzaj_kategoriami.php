@@ -176,7 +176,7 @@ $categories = $query->get_result();
                                 <button type="submit" name="edit_category"
                                     class="btn btn-warning btn-sm w-100 mb-2">Edytuj</button>
                             </form>
-                            <form method="POST" class="d-inline">
+                            <form method="POST" class="d-inline" onsubmit="return confirm('Czy na pewno chcesz usunąć tą kategorię?');">
                                 <input type="hidden" name="id_kategorii" value="<?php echo $category['id_kategorii']; ?>">
                                 <button type="submit" name="delete_category"
                                     class="btn btn-danger btn-sm w-100">Usuń</button>

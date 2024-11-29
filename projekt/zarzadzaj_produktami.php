@@ -70,15 +70,66 @@ if ($_SERVER['REQUEST_METHOD']==='POST'&&isset($_POST['edit_product'])){
     $cena=$_POST['cena'];
     $parametry=$_POST['parametry'];
 
-    $query =$conn->prepare("UPDATE produkty SET nazwa = ?, id_kategorii = ?, id_dostawcy = ?, cena = ?, parametry = ? WHERE id_produktu = ?");
-    $query->bind_param("siidsi",$nazwa,$id_kategorii,$id_dostawcy,$cena,$parametry,$id);
+    $aktualne_zdjecie=$conn->prepare("SELECT zdjecie FROM produkty WHERE id_produktu =?");
+        $aktualne_zdjecie->bind_param("i",$id);
+        $aktualne_zdjecie->execute();
+        $aktualneZdjecie_wynik=$aktualne_zdjecie->get_result();
+        if ($aktualneZdjecie_wynik->num_rows>0){
+            $aktualny_produkt=$aktualneZdjecie_wynik->fetch_assoc();
+            $zdjatko=$aktualny_produkt['zdjecie'];
+        }else{
+            $zdjatko=null;
+        }
+        $new_zdjecie=$zdjatko;
 
-    if ($query->execute()){
-        $wiadomosc="Dane produktu zostały zapisane!";
-    }else{
-        $wiadomosc="Błąd podczas edycji produktu! ".$conn->error;
+        if (isset($_FILES['zdjecie'])&&$_FILES['zdjecie']['error']===0){
+            $target_dir="./css/img/";
+            $file_name=basename($_FILES["zdjecie"]["name"]);
+            $target_file=$target_dir . $file_name;
+            $upload_zdjecia=1;
+            $typ_zdjecia=strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+            $sprawdz_czyObraz=getimagesize($_FILES["zdjecie"]["tmp_name"]);
+            if ($sprawdz_czyObraz===false){
+                $wiadomosc="Plik nie jest obrazem.";
+                $upload_zdjecia=0;
+            }
+
+            if (file_exists($target_file)){
+                $wiadomosc="Plik już istnieje.";
+                $upload_zdjecia=0;
+            }
+
+            if ($_FILES["zdjecie"]["size"] > 5000000){ // 5 megabajtuw
+                $wiadomosc="Plik jest za duży.";
+                $upload_zdjecia=0;
+            }
+
+            if (!in_array($typ_zdjecia,['jpg','jpeg','png'])){
+                $wiadomosc="Dozwolone są tylko pliki JPG, JPEG i PNG.";
+                $upload_zdjecia=0;
+            }
+
+            if ($upload_zdjecia===1){
+                if (move_uploaded_file($_FILES["zdjecie"]["tmp_name"],$target_file)){
+                    $new_zdjecie = $target_file;
+                    if ($zdjatko && file_exists($zdjatko)){
+                        unlink($zdjatko);
+                    }
+                }else{
+                    $wiadomosc="Wystąpił błąd podczas przesyłania pliku.";
+                }
+            }
+        }
+
+        $query = $conn->prepare("UPDATE produkty SET nazwa =?, id_kategorii =?, id_dostawcy =?, cena =?, parametry =?, zdjecie =? WHERE id_produktu =?");
+        $query->bind_param("siidssi",$nazwa,$id_kategorii,$id_dostawcy,$cena,$parametry,$new_zdjecie,$id);
+
+        if ($query->execute()){
+            $wiadomosc="Dane produktu zostały zapisane!";
+        }else{
+            $wiadomosc="Błąd podczas edycji produktu! ".$conn->error;
+        }
     }
-}
 
 if ($_SERVER['REQUEST_METHOD']==='POST' &&isset($_POST['delete_product'])){
     $id=$_POST['id'];
@@ -258,10 +309,15 @@ $dostawcy=$kw_dostawcy->get_result();
                         <td><?php echo htmlspecialchars($product['nazwa_dostawcy']); ?></td>
                         <td><?php echo htmlspecialchars($product['cena']); ?> PLN</td>
                         <td>
-                            <form method="POST" class="d-inline">
-                                <input type="hidden" name="id" value="<?php echo $product['id_produktu']; ?>">
-                                <input type="text" name="nazwa" placeholder="Nazwa produktu" value="<?php echo htmlspecialchars($product['nazwa']); ?>" class="form-control form-control-sm mb-1" required>
-                                <select name="id_kategorii" class="form-control form-control-sm mb-1" required>
+                        <button class="btn btn-warning btn-sm w-100 mb-1" type="button" data-bs-toggle="collapse" data-bs-target="#editForm<?php echo $product['id_produktu']; ?>" aria-expanded="false" aria-controls="editForm<?php echo $product['id_produktu']; ?>">Edytuj</button>
+                            <div class="collapse" id="editForm<?php echo $product['id_produktu']; ?>">
+                                <form method="POST" enctype="multipart/form-data" class="mt-2">
+                                    <input type="hidden" name="id" value="<?php echo $product['id_produktu']; ?>">
+                                    <div class="mb-2">
+                                        <input type="text" name="nazwa" placeholder="Nazwa produktu" value="<?php echo htmlspecialchars($product['nazwa']); ?>" class="form-control form-control-sm" required>
+                                    </div>
+                                    <div class="mb-2">
+                                    <select name="id_kategorii" class="form-control form-control-sm mb-1" required>
                                 <?php
                                 $kw_kategorie->execute();
                                 $kategorie=$kw_kategorie->get_result();
@@ -283,10 +339,19 @@ $dostawcy=$kw_dostawcy->get_result();
                                     </option>
                                 <?php endwhile; ?>
                                 </select>
-                                <input type="number" step="0.01" name="cena" placeholder="Cena" value="<?php echo htmlspecialchars($product['cena']); ?>" class="form-control form-control-sm mb-1" required>
-                                <textarea name="parametry" class="form-control form-control-sm mb-1" placeholder="Parametry produktu" rows="2" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required><?php echo htmlspecialchars($product['parametry']); ?></textarea>
-                                <button type="submit" name="edit_product" class="btn btn-warning btn-sm w-100 mb-2">Edytuj</button>
-                            </form>
+                                    </div>
+                                    <div class="mb-2">
+                                        <input type="number" step="0.01" name="cena" placeholder="Cena" value="<?php echo htmlspecialchars($product['cena']); ?>" class="form-control form-control-sm" required>
+                                    </div>
+                                    <div class="mb-2">
+                                        <textarea name="parametry" class="form-control form-control-sm" placeholder="Parametry produktu" rows="2" required><?php echo htmlspecialchars($product['parametry']); ?></textarea>
+                                    </div>
+                                    <div class="mb-2">
+                                        <input type="file" name="zdjecie" class="form-control form-control-sm">
+                                    </div>
+                                    <button type="submit" name="edit_product" class="btn btn-primary btn-sm w-100">Zapisz</button>
+                                </form>
+                            </div>
                             <form method="POST" class="d-inline" onsubmit="return confirm('Czy na pewno chcesz usunąć ten produkt?');">
                                 <input type="hidden" name="id" value="<?php echo $product['id_produktu']; ?>">
                                 <button type="submit" name="delete_product" class="btn btn-danger btn-sm w-100">Usuń</button>

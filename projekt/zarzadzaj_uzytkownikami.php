@@ -217,22 +217,26 @@ $users = $query->get_result();
                         <td><?php echo htmlspecialchars($user['email']); ?></td>
                         <td><?php echo htmlspecialchars($user['notatka']); ?></td>
                         <td>
-                            <form method="POST" class="d-inline">
-                                <input type="hidden" name="id" value="<?php echo $user['id_uzytkownika']; ?>">
-                                <input type="text" name="username" placeholder="Nazwa użytkownika"
-                                    value="<?php echo htmlspecialchars($user['username']); ?>"
-                                    class="form-control form-control-sm mb-1" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
-                                <input type="nr_tel" name="nr_tel" placeholder="Numer telefonu" value="<?php echo htmlspecialchars($user['nr_tel']); ?>"
-                                    class="form-control form-control-sm mb-1" pattern="\d{9,15}" required>
-                                <input type="email" name="email" placeholder="Email" value="<?php echo htmlspecialchars($user['email']); ?>"
-                                    class="form-control form-control-sm mb-1" required>
-                                <input type="text" name="notatka" placeholder="Notatka"
-                                    value="<?php echo htmlspecialchars($user['notatka']); ?>"
-                                    class="form-control form-control-sm mb-1">
-                                <button type="submit" name="edit_user"
-                                    class="btn btn-warning btn-sm w-100 mb-2">Edytuj</button>
-                            </form>
-                            <form method="POST" class="d-inline">
+                            <button class="btn btn-warning btn-sm w-100 mb-1" type="button" data-bs-toggle="collapse" data-bs-target="#editForm<?php echo $user['id_uzytkownika']; ?>" aria-expanded="false" aria-controls="editForm<?php echo $user['id_uzytkownika']; ?>">Edytuj</button>
+                            <div class="collapse" id="editForm<?php echo $user['id_uzytkownika']; ?>">
+                                <form method="POST" class="mt-2">
+                                    <input type="hidden" name="id" value="<?php echo $user['id_uzytkownika']; ?>">
+                                    <div class="mb-2">
+                                        <input type="text" name="username" placeholder="Nazwa użytkownika" value="<?php echo htmlspecialchars($user['username']); ?>" class="form-control form-control-sm" pattern="[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s]+" required>
+                                    </div>
+                                    <div class="mb-2">
+                                        <input type="email" name="email" placeholder="Email" value="<?php echo htmlspecialchars($user['email']); ?>" class="form-control form-control-sm" required>
+                                    </div>
+                                    <div class="mb-2">
+                                        <input type="text" name="nr_tel" placeholder="Numer telefonu" value="<?php echo htmlspecialchars($user['nr_tel']); ?>" class="form-control form-control-sm" pattern="\d{9,15}" required>
+                                    </div>
+                                    <div class="mb-2">
+                                        <input type="text" name="notatka" placeholder="Notatka" value="<?php echo htmlspecialchars($user['notatka']); ?>" class="form-control form-control-sm">
+                                    </div>
+                                    <button type="submit" name="edit_user" class="btn btn-primary btn-sm w-100">Zapisz</button>
+                                </form>
+                            </div>
+                            <form method="POST" class="d-inline" onsubmit="return confirm('Czy na pewno chcesz usunąć tego użytkownika?');">
                                 <input type="hidden" name="id" value="<?php echo $user['id_uzytkownika']; ?>">
                                 <button type="submit" name="delete_user" class="btn btn-danger btn-sm w-100">Usuń</button>
                             </form>
